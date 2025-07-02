@@ -37,5 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Merge branch 'main' of https://github.com/tinyBigGAMES/CPascal** (2025-07-01 – jarroddavis68)
 
+- **Update README.md** (2025-07-01 – jarroddavis68)
+
+- **Merge branch 'main' of https://github.com/tinyBigGAMES/CPascal** (2025-07-01 – jarroddavis68)
+
 - **Initial commit** (2025-06-29 – Jarrod Davis)
 
