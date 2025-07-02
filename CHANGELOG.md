@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **feat(compiler): Finalize core features and align test suites** (2025-07-01 – jarroddavis68)
+  This major update implements foundational control flow structures, a comprehensive C-compatible type system, and a robust callback architecture. This commit also finalizes the implementation by correcting the lexer for full BNF conformance and aligning the entire test suite with the new type system.
+  - Implemented if-then-else, while-do, repeat-until, and for-to/downto loops.
+  - Replaced the generic Integer type with the full set of Int8/16/32/64 and UInt8/16/32/64 types.
+  - Implemented implicit numeric conversions (narrowing and widening) for integers and floats.
+  - Added support for signed vs. unsigned arithmetic and comparisons in the IR generator.
+  - Corrected the lexer to fully support both $ and 0x prefixed hexadecimal literals, ensuring BNF conformance.
+  - Updated the entire test suite (Lexer, Parser, Semantic, IRGen, Compiler) to use the new specific-width type system.
+  - Refactored the IR generator's binary operator handling to resolve compiler warnings and improve robustness.
+  - Updated project documentation, including TODO.md to reflect current progress and README.md for better clarity.
+  - Generated a new, comprehensive test report validating that all 22 tests pass, confirming system stability.
+  - Introduced a new CPascal.Common unit to resolve a circular reference and hold shared types.
+  - Added OnProgress, OnError, and OnWarning callbacks to the main TCPCompiler class.
+  - Implemented a custom ECPCompilerError exception to pass structured error data.
+  - The semantic analyzer now collects and reports warnings for issues like narrowing conversions.
+
 - **Repo Update** (2025-06-29 – jarroddavis68)
   - Added documentation (language bnf, specification, coverage, api reference, c migration)
 
@@ -15,5 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Changed
+- **Merge branch 'main' of https://github.com/tinyBigGAMES/CPascal** (2025-07-01 – jarroddavis68)
+
 - **Initial commit** (2025-06-29 – Jarrod Davis)
 
