@@ -1,9 +1,8 @@
-
 ![CPascal](media/cpascal.jpg)
-<img src="https://img.shields.io/badge/License-BSD%203--Clause-blue.svg" alt="License: BSD 3-Clause">
-<img src="https://img.shields.io/badge/Language-CPascal-blue.svg" alt="Language">
-<img src="https://img.shields.io/badge/Target-LLVM-orange.svg" alt="LLVM">
-<img src="https://img.shields.io/badge/C%20ABI-Compatible-green.svg" alt="C ABI">
+![License](media/license.svg)
+![CPascal](media/language.svg)
+![LLVM](media/target.svg)
+![License](media/abi.svg)
 
 > 🚧 **CPascal is a Work in Progress**
 >
