@@ -1,9 +1,9 @@
 
 ![CPascal](media/cpascal.jpg)
-[![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Language](https://img.shields.io/badge/Language-CPascal-blue.svg)]()
-[![LLVM](https://img.shields.io/badge/Target-LLVM-orange.svg)]()
-[![C ABI](https://img.shields.io/badge/C%20ABI-Compatible-green.svg)]()
+![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)
+![Language](https://img.shields.io/badge/Language-CPascal-blue.svg)
+![LLVM](https://img.shields.io/badge/Target-LLVM-orange.svg)
+![C ABI](https://img.shields.io/badge/C%20ABI-Compatible-green.svg)
 
 > 🚧 **CPascal is a Work in Progress**
 >
