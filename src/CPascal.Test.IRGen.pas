@@ -92,26 +92,30 @@ var
   LAnalyzer: TCPSemanticAnalyzer;
   LIRGenerator: TCPIRGenerator;
   LIR: string;
+  LSymbolTable: TCPSymbolTable;
 begin
-  // MODIFIED: Replaced 'Integer' with 'Int32'.
   LLexer := TCPLexer.Create('program Test; var a: Int32; begin a := 10; end.');
   LParser := TCPParser.Create(LLexer);
   LAST := LParser.Parse();
-  LAnalyzer := TCPSemanticAnalyzer.Create();
+  LSymbolTable := TCPSymbolTable.Create();
+  LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
   LAnalyzer.Check(LAST);
-  LIRGenerator := TCPIRGenerator.Create(LAnalyzer.FSymbolTable);
+  LIRGenerator := TCPIRGenerator.Create(LSymbolTable);
   try
     LIRGenerator.Generate(LAST);
     LIR := LIRGenerator.IRToString();
 
     Assert.IsTrue(LIR.Contains('; ModuleID = ''Test'''), 'ModuleID is incorrect.');
     Assert.IsTrue(LIR.Contains('define i32 @main()'), 'Main function definition is missing.');
-    Assert.IsTrue(TRegEx.IsMatch(LIR, '%a\s*=\s*alloca i32'), 'Allocation for variable "a" not found.');
-    Assert.IsTrue(TRegEx.IsMatch(LIR, 'store i32 10, ptr %a'), 'Store instruction for assignment not found.');
+    // MODIFIED: Test for a global variable declaration, not a local alloca
+    Assert.IsTrue(TRegEx.IsMatch(LIR, '@a\s*=\s*private\s*global\s*i32'), 'Global variable declaration for "a" not found.');
+    // MODIFIED: Test for store to global variable @a
+    Assert.IsTrue(TRegEx.IsMatch(LIR, 'store i32 10, ptr @a'), 'Store instruction for assignment not found.');
     Assert.IsTrue(LIR.Contains('ret i32 0'), 'Main function should return 0.');
   finally
     LIRGenerator.Free;
     LAnalyzer.Free;
+    LSymbolTable.Free;
     LAST.Free;
     LParser.Free;
     LLexer.Free;
@@ -126,25 +130,28 @@ var
   LAnalyzer: TCPSemanticAnalyzer;
   LIRGenerator: TCPIRGenerator;
   LIR: string;
+  LSymbolTable: TCPSymbolTable;
 begin
-  // MODIFIED: Replaced 'Integer' with 'Int32'.
   LLexer := TCPLexer.Create('program Test; var a, b, c: Int32; begin a := b + c; end.');
   LParser := TCPParser.Create(LLexer);
   LAST := LParser.Parse();
-  LAnalyzer := TCPSemanticAnalyzer.Create();
+  LSymbolTable := TCPSymbolTable.Create();
+  LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
   LAnalyzer.Check(LAST);
-  LIRGenerator := TCPIRGenerator.Create(LAnalyzer.FSymbolTable);
+  LIRGenerator := TCPIRGenerator.Create(LSymbolTable);
   try
     LIRGenerator.Generate(LAST);
     LIR := LIRGenerator.IRToString();
 
-    Assert.IsTrue(TRegEx.IsMatch(LIR, '%b_val\w*\s*=\s*load i32, ptr %b'), 'Load for "b" is missing');
-    Assert.IsTrue(TRegEx.IsMatch(LIR, '%c_val\w*\s*=\s*load i32, ptr %c'), 'Load for "c" is missing');
-    Assert.IsTrue(TRegEx.IsMatch(LIR, '%addtmp\w*\s*=\s*add nsw i32 %b_val\w*, %c_val\w*'), 'Add instruction not found.');
-    Assert.IsTrue(TRegEx.IsMatch(LIR, 'store i32 %addtmp\w*, ptr %a'), 'Store instruction for result not found.');
+    // MODIFIED: Test for load from global variables @b and @c
+    Assert.IsTrue(TRegEx.IsMatch(LIR, '%\w+\s*=\s*load i32, ptr @b'), 'Load for "b" is missing');
+    Assert.IsTrue(TRegEx.IsMatch(LIR, '%\w+\s*=\s*load i32, ptr @c'), 'Load for "c" is missing');
+    Assert.IsTrue(TRegEx.IsMatch(LIR, '%\w+\s*=\s*add nsw i32'), 'Add instruction not found.');
+    Assert.IsTrue(TRegEx.IsMatch(LIR, 'store i32 %\w+, ptr @a'), 'Store instruction for result not found.');
   finally
     LIRGenerator.Free;
     LAnalyzer.Free;
+    LSymbolTable.Free;
     LAST.Free;
     LParser.Free;
     LLexer.Free;

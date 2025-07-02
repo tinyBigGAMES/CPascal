@@ -93,7 +93,7 @@ begin
     // header, version, and copyright notice.
     LCompiler.OnStartup := procedure()
     begin
-      WriteLn(Format('CPascal v%s', [LCompiler.GetVersionString()]));
+      WriteLn(Format('CPascal™ v%s', [LCompiler.GetVersionString()]));
       WriteLn('Copyright © 2025-present tinyBigGAMES™ LLC');
       WriteLn('All Rights Reserved.');
       WriteLn;

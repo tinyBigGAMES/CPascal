@@ -141,23 +141,11 @@ end;
 
 procedure TCPCompiler.InitializeLLVMTargets;
 begin
-  // Initialize for 64-bit Windows or 64-bit Linux (x86-64)
-{$IF DEFINED(WIN64) OR DEFINED(LINUX64)}
-  LLVMInitializeX86TargetInfo;
-  LLVMInitializeX86Target;
-  LLVMInitializeX86TargetMC;
-  LLVMInitializeX86AsmParser;
-  LLVMInitializeX86AsmPrinter;
-{$ENDIF}
-
-  // Initialize for 64-bit macOS (Apple Silicon ARM64)
-{$IF DEFINED(MACOS64)}
-  LLVMInitializeAArch64TargetInfo;
-  LLVMInitializeAArch64Target;
-  LLVMInitializeAArch64TargetMC;
-  LLVMInitializeAArch64AsmParser;
-  LLVMInitializeAArch64AsmPrinter;
-{$ENDIF}
+  LLVMInitializeX86TargetInfo();
+  LLVMInitializeX86Target();
+  LLVMInitializeX86TargetMC();
+  LLVMInitializeX86AsmParser();
+  LLVMInitializeX86AsmPrinter();
 end;
 
 function TCPCompiler.Compile(const ASourceFile, AOutputFile: string): Boolean;
@@ -168,6 +156,7 @@ var
   LAST: TCPASTNode;
   LAnalyzer: TCPSemanticAnalyzer;
   LIRGenerator: TCPIRGenerator;
+  LSymbolTable: TCPSymbolTable;
   LTargetTriple: PAnsiChar;
   LCPU: PAnsiChar;
   LTarget: LLVMTargetRef;
@@ -180,6 +169,8 @@ begin
   LErrorMessage := nil;
   LAST := nil;
   LCurrentPhase := cpFailure;
+  LSymbolTable := nil;
+  LIRGenerator := nil;
 
   DoStartup();
 
@@ -207,9 +198,11 @@ begin
       LLexer.Free;
     end;
 
+    LSymbolTable := TCPSymbolTable.Create();
+
     LCurrentPhase := cpSemanticAnalysis;
     DoProgress(ASourceFile, LCurrentPhase, 'Analyzing...');
-    LAnalyzer := TCPSemanticAnalyzer.Create();
+    LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
     try
       LAnalyzer.Check(LAST);
       if Assigned(FOnWarning) then
@@ -220,17 +213,13 @@ begin
         end;
       end;
     finally
-      // FSymbolTable is passed to IR Generator
+      LAnalyzer.Free;
     end;
 
     LCurrentPhase := cpIRGeneration;
     DoProgress(ASourceFile, LCurrentPhase, 'Generating IR...');
-    LIRGenerator := TCPIRGenerator.Create(LAnalyzer.FSymbolTable);
-    try
-      LIRGenerator.Generate(LAST);
-    finally
-      LAnalyzer.Free;
-    end;
+    LIRGenerator := TCPIRGenerator.Create(LSymbolTable);
+    LIRGenerator.Generate(LAST);
 
     LCurrentPhase := cpCodeGeneration;
     DoProgress(ASourceFile, LCurrentPhase, 'Emitting object file...');
@@ -283,6 +272,11 @@ begin
 
   if Assigned(LAST) then
     LAST.Free;
+
+  if Assigned(LIRGenerator) then
+    LIRGenerator.Free;
+  if Assigned(LSymbolTable) then
+    LSymbolTable.Free;
 
   DoShutdown();
 end;

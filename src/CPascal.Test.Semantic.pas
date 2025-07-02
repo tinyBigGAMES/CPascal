@@ -93,17 +93,19 @@ var
   LParser: TCPParser;
   LAST: TCPASTNode;
   LAnalyzer: TCPSemanticAnalyzer;
+  LSymbolTable: TCPSymbolTable;
 begin
-  // MODIFIED: Replaced 'Integer' with 'Int32' to match the updated type system.
   LLexer := TCPLexer.Create('program Test; var a: Int32; begin a := 10; end.');
   LParser := TCPParser.Create(LLexer);
   LAST := LParser.Parse();
-  LAnalyzer := TCPSemanticAnalyzer.Create();
+  LSymbolTable := TCPSymbolTable.Create();
+  LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
   try
     LAnalyzer.Check(LAST);
     Assert.Pass('Valid code analyzed without exceptions.');
   finally
     LAnalyzer.Free;
+    LSymbolTable.Free;
     LAST.Free;
     LParser.Free;
     LLexer.Free;
@@ -116,6 +118,7 @@ var
   LParser: TCPParser;
   LAST: TCPASTNode;
   LAnalyzer: TCPSemanticAnalyzer;
+  LSymbolTable: TCPSymbolTable;
 begin
   Assert.WillRaise(
     procedure
@@ -123,11 +126,13 @@ begin
       LLexer := TCPLexer.Create('program Test; begin a := 10; end.');
       LParser := TCPParser.Create(LLexer);
       LAST := LParser.Parse();
-      LAnalyzer := TCPSemanticAnalyzer.Create();
+      LSymbolTable := TCPSymbolTable.Create();
+      LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
       try
         LAnalyzer.Check(LAST);
       finally
         LAnalyzer.Free;
+        LSymbolTable.Free;
         LAST.Free;
         LParser.Free;
         LLexer.Free;
@@ -142,19 +147,21 @@ var
   LParser: TCPParser;
   LAST: TCPASTNode;
   LAnalyzer: TCPSemanticAnalyzer;
+  LSymbolTable: TCPSymbolTable;
 begin
   Assert.WillRaise(
     procedure
     begin
-      // MODIFIED: Replaced 'Integer' with 'Int32' and 'Real' with 'Double'.
       LLexer := TCPLexer.Create('program Test; var a: Int32; b: Double; begin a := b; end.');
       LParser := TCPParser.Create(LLexer);
       LAST := LParser.Parse();
-      LAnalyzer := TCPSemanticAnalyzer.Create();
+      LSymbolTable := TCPSymbolTable.Create();
+      LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
       try
         LAnalyzer.Check(LAST);
       finally
         LAnalyzer.Free;
+        LSymbolTable.Free;
         LAST.Free;
         LParser.Free;
         LLexer.Free;
@@ -169,25 +176,27 @@ var
   LParser: TCPParser;
   LAST: TCPASTNode;
   LAnalyzer: TCPSemanticAnalyzer;
+  LSymbolTable: TCPSymbolTable;
 begin
   Assert.WillRaise(
     procedure
     begin
-      // MODIFIED: Replaced 'Integer' with 'Int32' and 'Real' with 'Double'.
       LLexer := TCPLexer.Create('program Test; var a: Int32; a: Double; begin end.');
       LParser := TCPParser.Create(LLexer);
       LAST := LParser.Parse();
-      LAnalyzer := TCPSemanticAnalyzer.Create();
+      LSymbolTable := TCPSymbolTable.Create();
+      LAnalyzer := TCPSemanticAnalyzer.Create(LSymbolTable);
       try
         LAnalyzer.Check(LAST);
       finally
         LAnalyzer.Free;
+        LSymbolTable.Free;
         LAST.Free;
         LParser.Free;
         LLexer.Free;
       end;
     end,
-    ECPCompilerError, 'Duplicate identifier: a');
+    ECPCompilerError, 'Duplicate identifier in same scope: a');
 end;
 
 initialization

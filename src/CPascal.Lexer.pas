@@ -77,7 +77,7 @@ type
 
     // Identifiers and Literals
     tkIdentifier,
-    tkInteger, // This is for integer literals like '123'
+    tkInteger,
     tkReal,
     tkString,
     tkCharacter,
@@ -101,10 +101,6 @@ type
     tkPublic,
     tkCdecl, tkStdcall, tkFastcall, tkRegister,
 
-    // NEW: Standard Type Keywords from BNF
-    tkInt8, tkUInt8, tkInt16, tkUInt16, tkInt32, tkUInt32, tkInt64, tkUInt64,
-    tkSingle, tkDouble, tkBoolean, tkChar, tkPointer, tkNativeInt, tkNativeUInt, tkPChar,
-
     // Operators and Symbols
     tkPlus, tkMinus, tkAsterisk, tkSlash,
     tkAssign, tkPlusAssign, tkMinusAssign, tkMulAssign, tkDivAssign,
@@ -124,7 +120,7 @@ type
     tkTrue, tkFalse,
     tkSizeOf, tkTypeOf,
     tkBreak, tkContinue, tkExit,
-    tkConstRef, tkVarRef, tkOut,
+    tkOut,
     tkVolatile,
     tkResult
   );
@@ -186,6 +182,8 @@ begin
   // Standard Keywords
   FKeywords.Add('PROGRAM', tkProgram);
   FKeywords.Add('VAR', tkVar);
+  FKeywords.Add('CONST', tkConst);
+  FKeywords.Add('TYPE', tkType);
   FKeywords.Add('BEGIN', tkBegin);
   FKeywords.Add('END', tkEnd);
   FKeywords.Add('IF', tkIf);
@@ -199,23 +197,21 @@ begin
   FKeywords.Add('REPEAT', tkRepeat);
   FKeywords.Add('UNTIL', tkUntil);
   FKeywords.Add('AND', tkAnd);
+  FKeywords.Add('OR', tkOr);
   FKeywords.Add('TRUE', tkTrue);
   FKeywords.Add('FALSE', tkFalse);
-
-  // Type Keywords
-  FKeywords.Add('INT8', tkInt8);
-  FKeywords.Add('UINT8', tkUInt8);
-  FKeywords.Add('INT16', tkInt16);
-  FKeywords.Add('UINT16', tkUInt16);
-  FKeywords.Add('INT32', tkInt32);
-  FKeywords.Add('UINT32', tkUInt32);
-  FKeywords.Add('INT64', tkInt64);
-  FKeywords.Add('UINT64', tkUInt64);
-  FKeywords.Add('SINGLE', tkSingle);
-  FKeywords.Add('DOUBLE', tkDouble);
-  FKeywords.Add('BOOLEAN', tkBoolean);
-  FKeywords.Add('CHAR', tkChar);
-  FKeywords.Add('POINTER', tkPointer);
+  FKeywords.Add('BREAK', tkBreak);
+  FKeywords.Add('CONTINUE', tkContinue);
+  FKeywords.Add('FUNCTION', tkFunction);
+  FKeywords.Add('PROCEDURE', tkProcedure);
+  FKeywords.Add('EXIT', tkExit);
+  FKeywords.Add('RESULT', tkResult);
+  FKeywords.Add('OUT', tkOut);
+  FKeywords.Add('EXTERNAL', tkExternal);
+  FKeywords.Add('CDECL', tkCdecl);
+  FKeywords.Add('STDCALL', tkStdcall);
+  FKeywords.Add('FASTCALL', tkFastcall);   // MODIFIED
+  FKeywords.Add('REGISTER', tkRegister);   // MODIFIED
 
   if Length(FSource) > 0 then
     FCurrentChar := FSource[1]
@@ -442,7 +438,8 @@ begin
   begin
     SkipWhitespace();
 
-    if FCurrentChar = #0 then break;
+    if FCurrentChar = #0 then
+      break;
 
     if ((FCurrentChar = '/') and ((Peek() = '/') or (Peek() = '*'))) or (FCurrentChar = '{') then
     begin
@@ -450,33 +447,156 @@ begin
       Continue;
     end;
 
-    if CharInSet(FCurrentChar, ['a'..'z', 'A'..'Z', '_']) then Exit(ReadIdentifier());
-    if CharInSet(FCurrentChar, ['0'..'9']) then Exit(ReadNumber());
-    if FCurrentChar = '$' then Exit(ReadHexNumber());
-    if FCurrentChar = '"' then Exit(ReadString());
-    if FCurrentChar = '#' then Exit(ReadCharacter());
+    if CharInSet(FCurrentChar, ['a'..'z', 'A'..'Z', '_']) then
+      Exit(ReadIdentifier());
+    if CharInSet(FCurrentChar, ['0'..'9']) then
+      Exit(ReadNumber());
+    if FCurrentChar = '$' then
+      Exit(ReadHexNumber());
+    if FCurrentChar = '"' then
+      Exit(ReadString());
+    if FCurrentChar = '#' then
+      Exit(ReadCharacter());
 
     Result := CreateToken(tkUnknown, FCurrentChar);
     Result.Column := FColumn;
 
     case FCurrentChar of
-      '+': begin Advance(); Result.Value := '+'; Result.Kind := tkPlus; end;
-      '-': begin Advance(); Result.Value := '-'; Result.Kind := tkMinus; end;
-      '*': begin Advance(); Result.Value := '*'; Result.Kind := tkAsterisk; end;
-      '/': begin Advance(); Result.Value := '/'; Result.Kind := tkSlash; end;
-      ':': begin Advance(); if FCurrentChar = '=' then begin Advance(); Result.Value := ':='; Result.Kind := tkAssign; end else begin Result.Value := ':'; Result.Kind := tkColon; end; end;
-      '=': begin Advance(); Result.Value := '='; Result.Kind := tkEqual; end;
-      '<': begin Advance(); if FCurrentChar = '>' then begin Advance(); Result.Value := '<>'; Result.Kind := tkNotEqual; end else if FCurrentChar = '=' then begin Advance(); Result.Value := '<='; Result.Kind := tkLessEqual; end else begin Result.Value := '<'; Result.Kind := tkLessThan; end; end;
-      '>': begin Advance(); if FCurrentChar = '=' then begin Advance(); Result.Value := '>='; Result.Kind := tkGreaterEqual; end else begin Result.Value := '>'; Result.Kind := tkGreaterThan; end; end;
-      '(': begin Advance(); Result.Value := '('; Result.Kind := tkLParen; end;
-      ')': begin Advance(); Result.Value := ')'; Result.Kind := tkRParen; end;
-      '[': begin Advance(); Result.Value := '['; Result.Kind := tkLBracket; end;
-      ']': begin Advance(); Result.Value := ']'; Result.Kind := tkRBracket; end;
-      '.': begin Advance(); Result.Value := '.'; Result.Kind := tkDot; end;
-      ',': begin Advance(); Result.Value := ','; Result.Kind := tkComma; end;
-      ';': begin Advance(); Result.Value := ';'; Result.Kind := tkSemicolon; end;
-      '^': begin Advance(); Result.Value := '^'; Result.Kind := tkCaret; end;
-      '@': begin Advance(); Result.Value := '@'; Result.Kind := tkAt; end;
+      '+':
+        begin
+          Advance();
+          Result.Value := '+';
+          Result.Kind := tkPlus;
+        end;
+      '-':
+        begin
+          Advance();
+          Result.Value := '-';
+          Result.Kind := tkMinus;
+        end;
+      '*':
+        begin
+          Advance();
+          Result.Value := '*';
+          Result.Kind := tkAsterisk;
+        end;
+      '/':
+        begin
+          Advance();
+          Result.Value := '/';
+          Result.Kind := tkSlash;
+        end;
+      ':':
+        begin
+          Advance();
+          if FCurrentChar = '=' then
+          begin
+            Advance();
+            Result.Value := ':=';
+            Result.Kind := tkAssign;
+          end
+          else
+          begin
+            Result.Value := ':';
+            Result.Kind := tkColon;
+          end;
+        end;
+      '=':
+        begin
+          Advance();
+          Result.Value := '=';
+          Result.Kind := tkEqual;
+        end;
+      '<':
+        begin
+          Advance();
+          if FCurrentChar = '>' then
+          begin
+            Advance();
+            Result.Value := '<>';
+            Result.Kind := tkNotEqual;
+          end
+          else if FCurrentChar = '=' then
+          begin
+            Advance();
+            Result.Value := '<=';
+            Result.Kind := tkLessEqual;
+          end
+          else
+          begin
+            Result.Value := '<';
+            Result.Kind := tkLessThan;
+          end;
+        end;
+      '>':
+        begin
+          Advance();
+          if FCurrentChar = '=' then
+          begin
+            Advance();
+            Result.Value := '>=';
+            Result.Kind := tkGreaterEqual;
+          end
+          else
+          begin
+            Result.Value := '>';
+            Result.Kind := tkGreaterThan;
+          end;
+        end;
+      '(':
+        begin
+          Advance();
+          Result.Value := '(';
+          Result.Kind := tkLParen;
+        end;
+      ')':
+        begin
+          Advance();
+          Result.Value := ')';
+          Result.Kind := tkRParen;
+        end;
+      '[':
+        begin
+          Advance();
+          Result.Value := '[';
+          Result.Kind := tkLBracket;
+        end;
+      ']':
+        begin
+          Advance();
+          Result.Value := ']';
+          Result.Kind := tkRBracket;
+        end;
+      '.':
+        begin
+          Advance();
+          Result.Value := '.';
+          Result.Kind := tkDot;
+        end;
+      ',':
+        begin
+          Advance();
+          Result.Value := ',';
+          Result.Kind := tkComma;
+        end;
+      ';':
+        begin
+          Advance();
+          Result.Value := ';';
+          Result.Kind := tkSemicolon;
+        end;
+      '^':
+        begin
+          Advance();
+          Result.Value := '^';
+          Result.Kind := tkCaret;
+        end;
+      '@':
+        begin
+          Advance();
+          Result.Value := '@';
+          Result.Kind := tkAt;
+        end;
     else
       Advance();
     end;

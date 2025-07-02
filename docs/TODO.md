@@ -1,3 +1,8 @@
+Sounds good. Here is the updated `TODO.md` file with all tasks for **Phase 2: Procedures and Functions** marked as complete.
+
+We are now ready to proceed.
+
+```text
 # CPascal Compiler - Full BNF Implementation TODO
 
 This document outlines the features and implementation steps required to bring the CPascal compiler from its current state to 100% compliance with the `CPASCAL-BNF.md` specification.
@@ -38,11 +43,11 @@ The goal of this phase is to implement the basic iterative constructs essential 
 ### 1.4 Loop Control Statements
 -   **BNF:** `<break_statement>`, `<continue_statement>`
 -   **Tasks:**
-    -   `[ ]` **AST:** Create `TBreakStatementNode` and `TContinueStatementNode`.
-    -   `[ ]` **Parser:** Add logic to `ParseStatement` to recognize `break` and `continue`.
-    -   `[ ]` **Semantic:** The analyzer must verify that `break` and `continue` only appear inside a loop structure. This will require the analyzer to maintain a loop context stack.
-    -   `[ ]` **IRGen:** The generator must know the current loop's header and exit blocks to generate the correct `br` instructions.
-    -   `[ ]` **Tests:** Add tests for loops containing these statements.
+    -   `[x]` **AST:** Create `TBreakStatementNode` and `TContinueStatementNode`.
+    -   `[x]` **Parser:** Add logic to `ParseStatement` to recognize `break` and `continue`.
+    -   `[x]` **Semantic:** The analyzer must verify that `break` and `continue` only appear inside a loop structure. This will require the analyzer to maintain a loop context stack.
+    -   `[x]` **IRGen:** The generator must know the current loop's header and exit blocks to generate the correct `br` instructions.
+    -   `[x]` **Tests:** Add tests for loops containing these statements.
 
 ## Phase 2: Procedures and Functions
 
@@ -51,35 +56,35 @@ This phase implements the ability to declare and call subroutines.
 ### 2.1 Basic Procedure & Function Declaration/Calls
 -   **BNF:** `<function_declaration>`, `<procedure_call>`, `<function_call>`
 -   **Tasks:**
-    -   `[ ]` **AST:** Create `TFunctionDeclNode`, `TProcedureCallNode`, and `TFunctionCallNode`. The function node needs to store parameters, return type, and the body.
-    -   `[ ]` **Parser:** Implement `ParseFunctionDeclaration` and update `ParseStatement` and `ParseFactor` to handle procedure/function calls.
-    -   `[ ]` **Semantic:** This is a major update.
+    -   `[x]` **AST:** Create `TFunctionDeclNode`, `TProcedureCallNode`, and `TFunctionCallNode`. The function node needs to store parameters, return type, and the body.
+    -   `[x]` **Parser:** Implement `ParseFunctionDeclaration` and update `ParseStatement` and `ParseFactor` to handle procedure/function calls.
+    -   `[x]` **Semantic:** This is a major update.
         -   Implement nested scopes in the `TCPSymbolTable`.
         -   The analyzer must process function signatures and store `TFunctionSymbol`s.
         -   Implement `VisitFunctionDeclNode` to create a new scope, declare parameters, and analyze the body.
         -   Implement `VisitProcedureCallNode`/`VisitFunctionCallNode` to verify that the function exists and that the arguments match the parameter types and count.
-    -   `[ ]` **IRGen:** This is a major update.
+    -   `[x]` **IRGen:** This is a major update.
         -   Implement `VisitFunctionDeclNode` to generate `define` blocks for each function in LLVM IR.
         -   Implement `VisitProcedureCallNode`/`VisitFunctionCallNode` to generate `call` instructions.
         -   Handle the `Result` variable for function return values.
-    -   `[ ]` **Tests:** Add extensive tests for declaring and calling functions and procedures.
+    -   `[x]` **Tests:** Add extensive tests for declaring and calling functions and procedures.
 
 ### 2.2 Advanced Parameter Types
 -   **BNF:** `["const" | "var" | "out"] <identifier_list> ":" <qualified_type>`
 -   **Tasks:**
-    -   `[ ]` **AST:** Enhance `TParameterNode` to store the parameter passing mechanism (`const`, `var`, `out`).
-    -   `[ ]` **Parser:** Update `ParseParameterDeclaration` to handle these keywords.
-    -   `[ ]` **Semantic:** Update symbol table and call-site checking to handle pass-by-reference vs. pass-by-value semantics.
-    -   `[ ]` **IRGen:** `var`/`out` parameters must be handled as pointers (`byval` or `sret` attributes may be needed).
-    -   `[ ]` **Tests:** Add tests for all parameter kinds.
+    -   `[x]` **AST:** Enhance `TParameterNode` to store the parameter passing mechanism (`const`, `var`, `out`).
+    -   `[x]` **Parser:** Update `ParseParameterDeclaration` to handle these keywords.
+    -   `[x]` **Semantic:** Update symbol table and call-site checking to handle pass-by-reference vs. pass-by-value semantics.
+    -   `[x]` **IRGen:** `var`/`out` parameters must be handled as pointers (`byval` or `sret` attributes may be needed).
+    -   `[x]` **Tests:** Add tests for all parameter kinds.
 
 ### 2.3 `external` Functions and Calling Conventions
 -   **BNF:** `<external_function>`, `<calling_convention>`
 -   **Tasks:**
-    -   `[ ]` **AST:** Enhance `TFunctionDeclNode` with flags for `external` and an enum for calling conventions (`cdecl`, `stdcall`, etc.).
-    -   `[ ]` **Parser:** Implement parsing for these attributes on function declarations.
-    -   `[ ]` **IRGen:** Set the appropriate LLVM calling convention on the function definition. For `external` functions, generate a declaration instead of a definition.
-    -   `[ ]` **Tests:** Add tests for declaring external functions with different calling conventions.
+    -   `[x]` **AST:** Enhance `TFunctionDeclNode` with flags for `external` and an enum for calling conventions (`cdecl`, `stdcall`, etc.).
+    -   `[x]` **Parser:** Implement parsing for these attributes on function declarations.
+    -   `[x]` **IRGen:** Set the appropriate LLVM calling convention on the function definition. For `external` functions, generate a declaration instead of a definition.
+    -   `[x]` **Tests:** Add tests for declaring external functions with different calling conventions.
 
 ## Phase 3: Core Type System
 
@@ -145,3 +150,4 @@ This phase covers remaining features required for full compliance.
     -   `[ ]` **Parser/Lexer:** Add support for parsing compiler directives `{$...}`.
     -   `[ ]` **Compiler:** The main compiler driver will need logic to act on the directives (e.g., conditional compilation).
     -   `[ ]` **Tests:** Add tests for libraries, modules, and directives.
+```

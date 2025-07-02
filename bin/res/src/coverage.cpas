@@ -1,23 +1,94 @@
 program FullCoverageTest;
 
 var
-  // Declarations Test
-  i, j, k: Int32;       // Multiple identifiers, single line
-  sum: Int32;               // Separate line declaration
-  r1, r2: Single;    // Real type test
+  // Global Declarations
+  i, j, k: Int32;
+  sum: Int32;
+  r1, r2: Single;
   r3: Double;
+  exit_test_val: Int32;
+
+// --- Procedure and Function Declarations ---
+
+procedure ModifyGlobal();
+var
+  local_i: Int32;
+begin
+  local_i := 100;
+  i := i + local_i; // Modify global 'i'
+end;
+
+function GetValue(): Int32;
+var
+  multiplier: Int32;
+begin
+  multiplier := 10;
+  Result := j * multiplier; // Use global 'j' and assign to Result
+end;
+
+procedure TestExitProc();
+begin
+  exit_test_val := 1;
+  exit;
+  exit_test_val := -1; // This line should not be reached
+end;
+
+function TestExitFunc(): Int32;
+begin
+  Result := 99;
+  exit;
+  Result := -99; // This line should not be reached
+end;
+
+// --- Parameter Passing Tests ---
+
+function AddValues(a, b: Int32): Int32;
+begin
+  Result := a + b;
+end;
+
+procedure Swap(var x, y: Int32);
+var
+  temp: Int32;
+begin
+  temp := x;
+  x := y;
+  y := temp;
+end;
+
+procedure Calculate(a, b: Int32; var sum_res: Int32; const multiplier: Int32);
+begin
+  sum_res := (a + b) * multiplier;
+end;
+
+// --- External Function Declaration Tests ---
+
+// Test for cdecl (standard C calling convention)
+function abs(i: Int32): Int32; cdecl; external;
+
+// Test for stdcall (Windows API calling convention)
+function GetLastError(): UInt32; stdcall; external;
+
+// Test for fastcall
+procedure MyFastCallProc(i: Int32); fastcall; external;
+
+// Test for register (Note: Often architecture-specific, but should parse)
+procedure MyRegisterProc(i: Int32); register; external;
+
+
+// --- Main Program Block ---
 begin
   // Integer Expression and Assignment Test
   i := 10;
   j := 20;
-  k := i + j * 2;       // Precedence test: k = 10 + 40 = 50
-  sum := (i + j) * 2;   // Parentheses test: sum = (10 + 20) * 2 = 60
-  i := -k;              // Unary minus test: i = -50
+  k := i + j * 2;       // Precedence test: k should be 50
+  sum := (i + j) * 2;   // Parentheses test: sum should be 60
+  i := -k;              // Unary minus test: i should be -50
 
   // Real Expression and Assignment Test
-  r1 := 1.5;            // Real literal test
+  r1 := 1.5;
   r2 := 2.5;
-  r3 := r1 + r2 / 2.0;  // Precedence test: r3 = 1.5 + 1.25 = 2.75
+  r3 := r1 + r2 / 2.0;  // Precedence test: r3 should be 2.75
   r1 := -r3;            // Unary minus test
 
   // Statement Tests
@@ -33,22 +104,64 @@ begin
   else
     k := 200;
 
-  // Test previously added loops to ensure no regressions
-  // While Loop
+  // --- Base Loop Tests ---
   i := 0;
   while i < 5 do
   begin
     i := i + 1;
   end;
 
-  // Repeat-Until Loop
+  i := 5;
   repeat
     i := i - 1;
   until i = 0;
 
-  // For Loop
   sum := 0;
   for j := 1 to 10 do
     sum := sum + j;
+
+  // --- Loop Control Tests ---
+  sum := 0;
+  i := 0;
+  while i < 10 do
+  begin
+    sum := sum + i;
+    i := i + 1;
+    if i = 5 then
+      break;
+  end;
+
+  sum := 0;
+  for j := 1 to 5 do
+  begin
+    if j = 3 then
+      continue;
+    sum := sum + j;
+  end;
+
+  // --- Procedure and Function Call Tests ---
+  i := 10;
+  j := 20;
+  ModifyGlobal();       // Call procedure. 'i' should become 110.
+  k := GetValue();      // Call function. 'k' should become 200.
+
+  // --- Exit Statement Tests ---
+  exit_test_val := 0;
+  TestExitProc();       // exit_test_val should be 1, not -1
+  sum := TestExitFunc();  // sum should be 99, not -99
+
+  // --- Argument Passing Tests ---
+  sum := AddValues(k, i); // sum should be 200 + 110 = 310
+
+  i := 5;
+  j := 10;
+  Swap(i, j); // i should become 10, j should become 5
+
+  k := 0;
+  Calculate(i, j, k, 3); // k should become (10 + 5) * 3 = 45
+  
+  // --- External Function Call Test ---
+  sum := -123;
+  sum := abs(sum); // sum should become 123
 
 end.

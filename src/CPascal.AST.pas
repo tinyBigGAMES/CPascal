@@ -77,9 +77,15 @@ type
   TDeclarationNode = class;
   TTypeSpecifierNode = class;
   TIdentifierNode = class;
+  TCompoundStatementNode = class;
+  TParameterNode = class;
+  TStringLiteralNode = class;
 
-  { NEW: Enum for 'for' loop direction }
   TForDirection = (fdTo, fdDownTo);
+
+  TParamModifier = (pmValue, pmVar, pmConst, pmOut);
+
+  TCallingConvention = (ccDefault, ccCdecl, ccStdcall, ccFastcall, ccRegister); // MODIFIED
 
   { Base class for all AST nodes }
   TCPASTNode = class
@@ -180,6 +186,16 @@ type
     function ToString: string; override;
   end;
 
+  { Represents a procedure call statement }
+  TProcedureCallNode = class(TStatementNode)
+  public
+    ProcName: TIdentifierNode;
+    Arguments: TObjectList<TExpressionNode>;
+    constructor Create(const AToken: TCPToken; const AName: TIdentifierNode);
+    destructor Destroy; override;
+    function ToString: string; override;
+  end;
+
   { Represents an if-then-else statement }
   TIfStatementNode = class(TStatementNode)
   public
@@ -211,7 +227,7 @@ type
     function ToString: string; override;
   end;
 
-  { NEW: Represents a for loop statement }
+  { Represents a for loop statement }
   TForStatementNode = class(TStatementNode)
   public
     LoopVariable: TIdentifierNode;
@@ -221,6 +237,24 @@ type
     Body: TStatementNode;
     constructor Create(const AToken: TCPToken; const ALoopVar: TIdentifierNode; const AStart, AEnd: TExpressionNode; const ADir: TForDirection; const ABody: TStatementNode);
     destructor Destroy; override;
+    function ToString: string; override;
+  end;
+
+  { Represents a break statement }
+  TBreakStatementNode = class(TStatementNode)
+  public
+    function ToString: string; override;
+  end;
+
+  { Represents a continue statement }
+  TContinueStatementNode = class(TStatementNode)
+  public
+    function ToString: string; override;
+  end;
+
+  { Represents an exit statement }
+  TExitStatementNode = class(TStatementNode)
+  public
     function ToString: string; override;
   end;
 
@@ -243,6 +277,17 @@ type
     function ToString: string; override;
   end;
 
+  { Represents a single parameter declaration }
+  TParameterNode = class(TDeclarationNode)
+  public
+    Modifier: TParamModifier;
+    Identifiers: TObjectList<TIdentifierNode>;
+    TypeSpec: TTypeSpecifierNode;
+    constructor Create(const AToken: TCPToken);
+    destructor Destroy; override;
+    function ToString: string; override;
+  end;
+
   { Base for type specifiers }
   TTypeSpecifierNode = class(TCPASTNode)
   end;
@@ -252,6 +297,23 @@ type
   public
     Identifier: TIdentifierNode;
     constructor Create(const AToken: TCPToken; const AIdentifier: TIdentifierNode);
+    destructor Destroy; override;
+    function ToString: string; override;
+  end;
+
+  { Represents a function or procedure declaration }
+  TFunctionDeclNode = class(TDeclarationNode)
+  public
+    Name: TIdentifierNode;
+    Parameters: TObjectList<TParameterNode>;
+    ReturnType: TTypeSpecifierNode; // nil for procedures
+    IsProcedure: Boolean;
+    IsExternal: Boolean;
+    CallingConvention: TCallingConvention;
+    ExternalAlias: TStringLiteralNode;
+    Declarations: TObjectList<TDeclarationNode>;
+    Body: TCompoundStatementNode;
+    constructor Create(const AToken: TCPToken);
     destructor Destroy; override;
     function ToString: string; override;
   end;
@@ -412,6 +474,26 @@ begin
   Result := Format('TAssignmentNode(Var: %s, Expr: %s)', [Variable.ToString(), Expression.ToString()]);
 end;
 
+{ TProcedureCallNode }
+constructor TProcedureCallNode.Create(const AToken: TCPToken; const AName: TIdentifierNode);
+begin
+  inherited Create(AToken);
+  ProcName := AName;
+  Arguments := TObjectList<TExpressionNode>.Create(True);
+end;
+
+destructor TProcedureCallNode.Destroy;
+begin
+  ProcName.Free;
+  Arguments.Free;
+  inherited;
+end;
+
+function TProcedureCallNode.ToString: string;
+begin
+  Result := Format('TProcedureCallNode(Name: %s, Args: %d)', [ProcName.Name, Arguments.Count]);
+end;
+
 { TIfStatementNode }
 constructor TIfStatementNode.Create(const AToken: TCPToken; const ACondition: TExpressionNode; const AThenStmt, AElseStmt: TStatementNode);
 begin
@@ -514,6 +596,24 @@ begin
   Result := Format('TForStatementNode(Var: %s, Dir: %s)', [LoopVariable.Name, LDirStr]);
 end;
 
+{ TBreakStatementNode }
+function TBreakStatementNode.ToString: string;
+begin
+  Result := 'TBreakStatementNode';
+end;
+
+{ TContinueStatementNode }
+function TContinueStatementNode.ToString: string;
+begin
+  Result := 'TContinueStatementNode';
+end;
+
+{ TExitStatementNode }
+function TExitStatementNode.ToString: string;
+begin
+  Result := 'TExitStatementNode';
+end;
+
 { TVarDeclNode }
 constructor TVarDeclNode.Create(const AToken: TCPToken);
 begin
@@ -551,6 +651,28 @@ begin
   Result := Format('TVarSectionNode(Declarations: %d)', [Declarations.Count]);
 end;
 
+{ TParameterNode }
+constructor TParameterNode.Create(const AToken: TCPToken);
+begin
+  inherited Create(AToken);
+  Modifier := pmValue;
+  Identifiers := TObjectList<TIdentifierNode>.Create(True);
+  TypeSpec := nil;
+end;
+
+destructor TParameterNode.Destroy;
+begin
+  Identifiers.Free;
+  if Assigned(TypeSpec) then
+    TypeSpec.Free;
+  inherited;
+end;
+
+function TParameterNode.ToString: string;
+begin
+  Result := Format('TParameterNode(Modifier: %s, Count: %d)', [GetEnumName(TypeInfo(TParamModifier), Ord(Modifier)), Identifiers.Count]);
+end;
+
 { TTypeNameNode }
 constructor TTypeNameNode.Create(const AToken: TCPToken; const AIdentifier: TIdentifierNode);
 begin
@@ -567,6 +689,46 @@ end;
 function TTypeNameNode.ToString: string;
 begin
   Result := Format('TTypeNameNode(Name: %s)', [Identifier.Name]);
+end;
+
+{ TFunctionDeclNode }
+constructor TFunctionDeclNode.Create(const AToken: TCPToken);
+begin
+  inherited Create(AToken);
+  Name := nil;
+  Parameters := TObjectList<TParameterNode>.Create(True);
+  ReturnType := nil;
+  IsProcedure := False;
+  IsExternal := False;
+  CallingConvention := ccDefault;
+  ExternalAlias := nil;
+  Declarations := TObjectList<TDeclarationNode>.Create(True);
+  Body := nil;
+end;
+
+destructor TFunctionDeclNode.Destroy;
+begin
+  Name.Free;
+  Parameters.Free;
+  if Assigned(ReturnType) then
+    ReturnType.Free;
+  if Assigned(ExternalAlias) then
+    ExternalAlias.Free;
+  Declarations.Free;
+  if Assigned(Body) then
+    Body.Free;
+  inherited;
+end;
+
+function TFunctionDeclNode.ToString: string;
+var
+  LKind: string;
+begin
+  if IsProcedure then
+    LKind := 'Procedure'
+  else
+    LKind := 'Function';
+  Result := Format('TFunctionDeclNode(Kind: %s, Name: %s, Params: %d)', [LKind, Name.Name, Parameters.Count]);
 end;
 
 { TProgramNode }

@@ -83,15 +83,17 @@ type
 
     { Parsing methods corresponding to BNF rules }
     function ParseIdentifier(): TIdentifierNode;
-    {$HINTS OFF}
-    function ParseTypeName(): TTypeNameNode;
-    {$HINTS ON}
+    function ParseStringLiteral(): TStringLiteralNode;
     function ParseTypeSpecifier(): TTypeSpecifierNode;
     function ParseVariableDeclaration(): TVarDeclNode;
     function ParseVarSection(): TVarSectionNode;
+    function ParseParameterDeclaration(): TParameterNode;
+    function ParseParameterList(): TObjectList<TParameterNode>;
+    function ParseFunctionDeclaration(): TFunctionDeclNode;
     function ParseDeclarations(): TObjectList<TDeclarationNode>;
 
     function ParseExpression(): TExpressionNode;
+    function ParseArgumentList(): TObjectList<TExpressionNode>;
     function ParseLogicalAndExpression(): TExpressionNode;
     function ParseRelationalExpression(): TExpressionNode;
     function ParseAdditiveExpression(): TExpressionNode;
@@ -101,12 +103,17 @@ type
 
     function ParseStatement(): TStatementNode;
     function ParseStatementList(): TObjectList<TStatementNode>;
-    function ParseAssignmentStatement(): TStatementNode;
+    function ParseAssignmentOrProcedureCall(): TStatementNode;
+    function ParseProcedureCallStatement(const AIdentifier: TIdentifierNode): TStatementNode;
+    function ParseAssignmentStatement(const AIdentifier: TIdentifierNode): TStatementNode;
     function ParseCompoundStatement(): TCompoundStatementNode;
     function ParseIfStatement(): TIfStatementNode;
     function ParseWhileStatement(): TWhileStatementNode;
     function ParseRepeatStatement(): TRepeatStatementNode;
     function ParseForStatement(): TForStatementNode;
+    function ParseBreakStatement(): TStatementNode;
+    function ParseContinueStatement(): TStatementNode;
+    function ParseExitStatement(): TStatementNode;
 
     function ParseProgram(): TProgramNode;
     function ParseCompilationUnit(): TCPASTNode;
@@ -121,7 +128,7 @@ type
 implementation
 
 uses
-  CPascal.Common; // MODIFIED
+  CPascal.Common;
 
 { TCPParser }
 
@@ -147,7 +154,7 @@ begin
   if FCurrentToken.Kind = AKind then
     FCurrentToken := FLexer.NextToken()
   else
-    SyntaxError(Format('Expected %s but found %s', [GetEnumName(TypeInfo(TCPTokenKind), Ord(AKind)), GetEnumName(TypeInfo(TCPTokenKind), Ord(FCurrentToken.Kind))]));
+    SyntaxError(Format('Expected %s but found %s ("%s")', [GetEnumName(TypeInfo(TCPTokenKind), Ord(AKind)), GetEnumName(TypeInfo(TCPTokenKind), Ord(FCurrentToken.Kind)), FCurrentToken.Value]));
 end;
 
 function TCPParser.ParseIdentifier(): TIdentifierNode;
@@ -162,41 +169,24 @@ begin
   Consume(tkIdentifier);
 end;
 
-function TCPParser.ParseTypeName: TTypeNameNode;
+function TCPParser.ParseStringLiteral(): TStringLiteralNode;
+var
+  LToken: TCPToken;
+begin
+  LToken := FCurrentToken;
+  if LToken.Kind <> tkString then
+    SyntaxError('Expected a string literal.');
+  Result := TStringLiteralNode.Create(LToken);
+  Result.Value := LToken.Value;
+  Consume(tkString);
+end;
+
+function TCPParser.ParseTypeSpecifier: TTypeSpecifierNode;
 var
   LIdentifierNode: TIdentifierNode;
 begin
   LIdentifierNode := ParseIdentifier();
   Result := TTypeNameNode.Create(LIdentifierNode.Token, LIdentifierNode);
-end;
-
-function TCPParser.ParseTypeSpecifier: TTypeSpecifierNode;
-const
-  TypeTokens: set of TCPTokenKind = [
-    tkIdentifier, tkSingle, tkDouble, tkBoolean, tkChar, tkPointer,
-    tkInt8, tkUInt8, tkInt16, tkUInt16, tkInt32, tkUInt32, tkInt64, tkUInt64
-  ];
-var
-  LIdentifierNode: TIdentifierNode;
-  LToken: TCPToken;
-begin
-  LToken := FCurrentToken;
-  if LToken.Kind in TypeTokens then
-  begin
-    LIdentifierNode := TIdentifierNode.Create(LToken);
-    if LToken.Kind = tkIdentifier then
-      LIdentifierNode.Name := LToken.Value
-    else
-      LIdentifierNode.Name := GetEnumName(TypeInfo(TCPTokenKind), Ord(LToken.Kind)).Substring(2);
-
-    Result := TTypeNameNode.Create(LToken, LIdentifierNode);
-    Consume(LToken.Kind);
-  end
-  else
-  begin
-    SyntaxError('Expected a type identifier.');
-    Result := nil;
-  end;
 end;
 
 
@@ -235,18 +225,148 @@ begin
   Result := LResult;
 end;
 
+function TCPParser.ParseParameterDeclaration: TParameterNode;
+var
+  LNode: TParameterNode;
+begin
+  LNode := TParameterNode.Create(FCurrentToken);
+
+  case FCurrentToken.Kind of
+    tkVar:      begin LNode.Modifier := pmVar; Consume(tkVar); end;
+    tkConst:    begin LNode.Modifier := pmConst; Consume(tkConst); end;
+    tkOut:      begin LNode.Modifier := pmOut; Consume(tkOut); end;
+    else        LNode.Modifier := pmValue;
+  end;
+
+  LNode.Identifiers.Add(ParseIdentifier());
+  while FCurrentToken.Kind = tkComma do
+  begin
+    Consume(tkComma);
+    LNode.Identifiers.Add(ParseIdentifier());
+  end;
+
+  Consume(tkColon);
+  LNode.TypeSpec := ParseTypeSpecifier();
+  Result := LNode;
+end;
+
+function TCPParser.ParseParameterList: TObjectList<TParameterNode>;
+begin
+  Result := TObjectList<TParameterNode>.Create(True);
+  if FCurrentToken.Kind = tkRParen then
+    Exit;
+
+  Result.Add(ParseParameterDeclaration());
+  while FCurrentToken.Kind = tkSemicolon do
+  begin
+    Consume(tkSemicolon);
+    Result.Add(ParseParameterDeclaration());
+  end;
+end;
+
+function TCPParser.ParseFunctionDeclaration: TFunctionDeclNode;
+var
+  LNode: TFunctionDeclNode;
+begin
+  LNode := TFunctionDeclNode.Create(FCurrentToken);
+  if FCurrentToken.Kind = tkProcedure then
+  begin
+    LNode.IsProcedure := True;
+    Consume(tkProcedure);
+  end
+  else
+  begin
+    LNode.IsProcedure := False;
+    Consume(tkFunction);
+  end;
+
+  LNode.Name := ParseIdentifier();
+
+  Consume(tkLParen);
+  LNode.Parameters.AddRange(ParseParameterList());
+  Consume(tkRParen);
+
+  if not LNode.IsProcedure then
+  begin
+    Consume(tkColon);
+    LNode.ReturnType := ParseTypeSpecifier();
+  end;
+
+  Consume(tkSemicolon);
+
+  while FCurrentToken.Kind in [tkCdecl, tkStdcall, tkFastcall, tkRegister, tkExternal] do
+  begin
+    case FCurrentToken.Kind of
+      tkCdecl:
+        begin
+          LNode.CallingConvention := ccCdecl;
+          Consume(tkCdecl);
+        end;
+      tkStdcall:
+        begin
+          LNode.CallingConvention := ccStdcall;
+          Consume(tkStdcall);
+        end;
+       tkFastcall:
+        begin
+          LNode.CallingConvention := ccFastcall;
+          Consume(tkFastcall);
+        end;
+       tkRegister:
+        begin
+          LNode.CallingConvention := ccRegister;
+          Consume(tkRegister);
+        end;
+      tkExternal:
+        begin
+          LNode.IsExternal := True;
+          Consume(tkExternal);
+        end;
+    end;
+    if FCurrentToken.Kind = tkSemicolon then
+       Consume(tkSemicolon);
+  end;
+
+  if not LNode.IsExternal then
+  begin
+    LNode.Declarations.AddRange(ParseDeclarations());
+    LNode.Body := ParseCompoundStatement();
+    Consume(tkSemicolon);
+  end;
+
+  Result := LNode;
+end;
+
 function TCPParser.ParseDeclarations: TObjectList<TDeclarationNode>;
 begin
   Result := TObjectList<TDeclarationNode>.Create(True);
-  while FCurrentToken.Kind = tkVar do
+  while FCurrentToken.Kind in [tkVar, tkProcedure, tkFunction, tkConst, tkType] do
   begin
-    Result.Add(ParseVarSection());
+    case FCurrentToken.Kind of
+      tkVar: Result.Add(ParseVarSection());
+      tkProcedure, tkFunction: Result.Add(ParseFunctionDeclaration());
+    end;
+  end;
+end;
+
+function TCPParser.ParseArgumentList: TObjectList<TExpressionNode>;
+begin
+  Result := TObjectList<TExpressionNode>.Create(True);
+  if FCurrentToken.Kind = tkRParen then
+    Exit;
+
+  Result.Add(ParseExpression());
+  while FCurrentToken.Kind = tkComma do
+  begin
+    Consume(tkComma);
+    Result.Add(ParseExpression());
   end;
 end;
 
 function TCPParser.ParsePrimary: TExpressionNode;
 var
   LNode: TExpressionNode;
+  LIdent: TIdentifierNode;
 begin
   case FCurrentToken.Kind of
     tkInteger:
@@ -261,9 +381,24 @@ begin
         TRealLiteralNode(LNode).Value := StrToFloat(FCurrentToken.Value);
         Consume(tkReal);
       end;
+    tkString:
+      begin
+        LNode := ParseStringLiteral();
+      end;
     tkIdentifier:
       begin
-        LNode := ParseIdentifier();
+        LIdent := ParseIdentifier();
+        if FCurrentToken.Kind = tkLParen then
+        begin
+          Consume(tkLParen);
+          LNode := TFunctionCallNode.Create(LIdent.Token, LIdent);
+          TFunctionCallNode(LNode).Arguments.AddRange(ParseArgumentList());
+          Consume(tkRParen);
+        end
+        else
+        begin
+          LNode := LIdent;
+        end;
       end;
     tkLParen:
       begin
@@ -272,7 +407,7 @@ begin
         Consume(tkRParen);
       end;
   else
-    SyntaxError('Unexpected token in expression');
+    SyntaxError('Unexpected token in expression: ' + FCurrentToken.Value);
     LNode := nil;
   end;
   Result := LNode;
@@ -315,7 +450,7 @@ var
   LToken: TCPToken;
 begin
   LNode := ParseTerm();
-  while (FCurrentToken.Kind = tkPlus) or (FCurrentToken.Kind = tkMinus) do
+  while (FCurrentToken.Kind = tkPlus) or (FCurrentToken.Kind = tkMinus) or (FCurrentToken.Kind = tkOr) do
   begin
     LToken := FCurrentToken;
     Consume(LToken.Kind);
@@ -359,18 +494,55 @@ begin
   Result := ParseLogicalAndExpression();
 end;
 
-function TCPParser.ParseAssignmentStatement: TStatementNode;
+function TCPParser.ParseProcedureCallStatement(const AIdentifier: TIdentifierNode): TStatementNode;
 var
-  LVarNode: TExpressionNode;
+  LNode: TProcedureCallNode;
+begin
+  LNode := TProcedureCallNode.Create(AIdentifier.Token, AIdentifier);
+  Consume(tkLParen);
+  LNode.Arguments.AddRange(ParseArgumentList());
+  Consume(tkRParen);
+  Result := LNode;
+end;
+
+function TCPParser.ParseAssignmentStatement(const AIdentifier: TIdentifierNode): TStatementNode;
+var
   LExprNode: TExpressionNode;
   LToken: TCPToken;
+  LVarNode: TIdentifierNode;
 begin
-  LVarNode := ParseIdentifier();
+  if Assigned(AIdentifier) then
+    LVarNode := AIdentifier
+  else
+  begin
+    LToken := FCurrentToken;
+    LVarNode := TIdentifierNode.Create(LToken);
+    LVarNode.Name := LToken.Value;
+    Consume(tkResult);
+  end;
+
   LToken := FCurrentToken;
   Consume(tkAssign);
   LExprNode := ParseExpression();
   Result := TAssignmentNode.Create(LToken, LVarNode, LExprNode);
 end;
+
+function TCPParser.ParseAssignmentOrProcedureCall: TStatementNode;
+var
+  LIdentifier: TIdentifierNode;
+begin
+  LIdentifier := ParseIdentifier();
+  if FCurrentToken.Kind = tkLParen then
+    Result := ParseProcedureCallStatement(LIdentifier)
+  else if FCurrentToken.Kind = tkAssign then
+    Result := ParseAssignmentStatement(LIdentifier)
+  else
+  begin
+    SyntaxError('Expected assignment (:=) or procedure call ( ( ) after identifier.');
+    Result := nil;
+  end;
+end;
+
 
 function TCPParser.ParseIfStatement: TIfStatementNode;
 var
@@ -453,15 +625,46 @@ begin
   Result := TForStatementNode.Create(LToken, LLoopVar, LStart, LEnd, LDir, LBody);
 end;
 
+function TCPParser.ParseBreakStatement: TStatementNode;
+var
+  LToken: TCPToken;
+begin
+  LToken := FCurrentToken;
+  Consume(tkBreak);
+  Result := TBreakStatementNode.Create(LToken);
+end;
+
+function TCPParser.ParseContinueStatement: TStatementNode;
+var
+  LToken: TCPToken;
+begin
+  LToken := FCurrentToken;
+  Consume(tkContinue);
+  Result := TContinueStatementNode.Create(LToken);
+end;
+
+function TCPParser.ParseExitStatement: TStatementNode;
+var
+  LToken: TCPToken;
+begin
+  LToken := FCurrentToken;
+  Consume(tkExit);
+  Result := TExitStatementNode.Create(LToken);
+end;
+
 function TCPParser.ParseStatement: TStatementNode;
 begin
   case FCurrentToken.Kind of
     tkBegin: Result := ParseCompoundStatement();
-    tkIdentifier: Result := ParseAssignmentStatement();
+    tkIdentifier: Result := ParseAssignmentOrProcedureCall();
+    tkResult: Result := ParseAssignmentStatement(nil);
     tkIf: Result := ParseIfStatement();
     tkWhile: Result := ParseWhileStatement();
     tkRepeat: Result := ParseRepeatStatement();
     tkFor: Result := ParseForStatement();
+    tkBreak: Result := ParseBreakStatement();
+    tkContinue: Result := ParseContinueStatement();
+    tkExit: Result := ParseExitStatement();
   else
     Result := nil;
   end;
