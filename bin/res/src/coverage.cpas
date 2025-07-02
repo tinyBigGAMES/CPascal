@@ -1,0 +1,54 @@
+program FullCoverageTest;
+
+var
+  // Declarations Test
+  i, j, k: Int32;       // Multiple identifiers, single line
+  sum: Int32;               // Separate line declaration
+  r1, r2: Single;    // Real type test
+  r3: Double;
+begin
+  // Integer Expression and Assignment Test
+  i := 10;
+  j := 20;
+  k := i + j * 2;       // Precedence test: k = 10 + 40 = 50
+  sum := (i + j) * 2;   // Parentheses test: sum = (10 + 20) * 2 = 60
+  i := -k;              // Unary minus test: i = -50
+
+  // Real Expression and Assignment Test
+  r1 := 1.5;            // Real literal test
+  r2 := 2.5;
+  r3 := r1 + r2 / 2.0;  // Precedence test: r3 = 1.5 + 1.25 = 2.75
+  r1 := -r3;            // Unary minus test
+
+  // Statement Tests
+  ;; // Empty statements test
+
+  // If-Then with Integer relational op
+  if i < 0 then
+    j := 1;
+
+  // If-Then-Else with Real relational op
+  if r1 <= r2 then
+    k := 100
+  else
+    k := 200;
+
+  // Test previously added loops to ensure no regressions
+  // While Loop
+  i := 0;
+  while i < 5 do
+  begin
+    i := i + 1;
+  end;
+
+  // Repeat-Until Loop
+  repeat
+    i := i - 1;
+  until i = 0;
+
+  // For Loop
+  sum := 0;
+  for j := 1 to 10 do
+    sum := sum + j;
+
+end.

@@ -1,4 +1,5 @@
-![CPascal](media/cpascal.jpg)  
+
+![CPascal](media/cpascal.jpg)
 [![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Language](https://img.shields.io/badge/Language-CPascal-blue.svg)]()
 [![LLVM](https://img.shields.io/badge/Target-LLVM-orange.svg)]()
@@ -67,7 +68,7 @@ function printf(const AFormat: PChar, ...): Int32; external;
 begin
   printf("Hello, World!\n");
 end.
-```
+````
 
 ### Graphics Application
 
@@ -94,11 +95,11 @@ var
 begin
   if SDL_Init(SDL_INIT_VIDEO) <> 0 then
     exit;
-    
+
   Window := SDL_CreateWindow("CPascal Demo", 100, 100, 800, 600, SDL_WINDOW_OPENGL);
   if Window = nil then
     exit;
-  
+
   Running := true;
   while Running do
   begin
@@ -107,7 +108,7 @@ begin
     UpdateGame();
     RenderFrame();
   end;
-  
+
   SDL_DestroyWindow(Window);
   SDL_Quit();
 end.
@@ -131,13 +132,13 @@ var
 begin
   LSum := 0;
   LMax := 0;
-  
+
   for LIndex := 0 to ACount - 1 do
   begin
     LSum += AValues[LIndex];                    // Compound assignment
     LMax := (AValues[LIndex] > LMax) ? AValues[LIndex] : LMax;  // Ternary
   end;
-  
+
   Result := LSum;
 end;
 
@@ -148,7 +149,7 @@ begin
     "lock incl %1"
     "movl %1, %0"
     : "=r" (Result)        // Output: register
-    : "m" (APtr^)          // Input: memory location  
+    : "m" (APtr^)          // Input: memory location
     : "memory"             // Clobbered: memory
   end;
 end;
@@ -208,120 +209,39 @@ project/
 
 ## 🎯 Target Applications
 
-- **Systems Programming**: Device drivers, OS components
-- **Game Development**: High-performance game engines
-- **Embedded Systems**: Microcontroller programming
-- **Performance-Critical Applications**: Real-time systems
-- **C Codebase Modernization**: Gradual migration from C
-
-## 📖 Language Features
-
-### Module System
-
-```cpascal
-module Graphics;
-
-import Math, Utilities;
-{$LIBPATH /usr/local/lib}
-{$LINK SDL2}
-{$LINK OpenGL32}
-
-public function InitializeGraphics(): Boolean;
-private function InternalHelper(): Int32;
-```
-
-### Calling Conventions
-
-```cpascal
-function StandardFunc(const A: Int32): Int32;                    // Default (C)
-function CdeclFunc(const A: Int32): Int32; cdecl;              // C calling convention
-function StdcallFunc(const A: Int32): Int32; stdcall;          // Windows API
-function InlineFunc(const A: Int32): Int32; inline;            // Force inline
-function FastFunc(const A: Int32): Int32; fastcall; inline;    // Combined
-```
-
-### Memory Management
-
-```cpascal
-var
-  LBuffer: ^UInt8;
-  LSize: NativeUInt;
-  
-begin
-  LSize := 1024;
-  LBuffer := GetMem(LSize);      // Allocate
-  
-  if LBuffer <> nil then
-  begin
-    ProcessData(LBuffer, LSize);
-    FreeMem(LBuffer);            // Free
-  end;
-end;
-```
-
-### External Library Integration
-
-```cpascal
-// External functions
-function malloc(const ASize: NativeUInt): Pointer; external;
-function SDL_Init(const AFlags: UInt32): Int32; external "SDL2";
-function GetTickCount(): UInt32; stdcall; external "kernel32";
-
-// Variadic functions
-function printf(const AFormat: PChar, ...): Int32; external;
-```
-
-## 🔧 Compiler Features
-
-### Conditional Compilation
-
-```cpascal
-{$IFDEF DEBUG}
-{$DEFINE ENABLE_LOGGING}
-{$ENDIF}
-
-{$IFDEF WINDOWS}
-link user32, kernel32;
-{$ELSE}
-link X11, pthread;
-{$ENDIF}
-```
-
-### Build Configuration
-
-```cpascal
-{$LINK SDL2}
-{$LIBPATH /usr/local/lib}
-{$APPTYPE CONSOLE}
-{$EXEPATH bin/release}
-```
+  - **Systems Programming**: Device drivers, OS components
+  - **Game Development**: High-performance game engines
+  - **Embedded Systems**: Microcontroller programming
+  - **Performance-Critical Applications**: Real-time systems
+  - **C Codebase Modernization**: Gradual migration from C
 
 ## 📚 Documentation
 
-- **[Language Specification](docs/CPASCAL-SPECIFICATION.md)** - Complete language reference
-- **[BNF Grammar](docs/CPASCAL-BNF.md)** - Formal grammar specification  
-- **[Coverage Examples](docs/CPASCAL-COVERAGE.cpas)** - Comprehensive syntax examples
-- **[C Migration Guide](docs/C-MIGRATION.md)** - Migrating from C to CPascal
-- **[API Reference](docs/CPASCAL-APIREFERENCE.md)** - Standard library documentation
+  - **[Language Specification](https://www.google.com/search?q=docs/CPASCAL-SPECIFICATION.md)** - Complete language reference
+  - **[BNF Grammar](https://www.google.com/search?q=docs/CPASCAL-BNF.md)** - Formal grammar specification
+  - **[Test & Coverage Report](https://www.google.com/search?q=CPASCAL-TESTREPORT.md)** - View current test results and feature coverage.
+  - **[C Migration Guide](https://www.google.com/search?q=docs/C-MIGRATION.md)** - Migrating from C to CPascal
+  - **[API Reference](https://www.google.com/search?q=docs/CPASCAL-APIREFERENCE.md)** - Standard library documentation
 
 ### 📋 **Coding Standards**
-- **Naming**: `L` prefix for locals, `A` prefix for parameters
-- **Declarations**: Each variable on separate line, no inline `var`
-- **Parameters**: Always `const` unless `var`/`out` needed
-- **Testing**: Comprehensive tests for all new functionality
-- **Documentation**: Update relevant guides and inline docs
+
+  - **Naming**: `L` prefix for locals, `A` prefix for parameters
+  - **Declarations**: Each variable on separate line, no inline `var`
+  - **Parameters**: Always `const` unless `var`/`out` needed
+  - **Testing**: Comprehensive tests for all new functionality
+  - **Documentation**: Update relevant guides and inline docs
 
 ### 🏆 **Contributors**
 
-<a href="https://github.com/tinyBigGAMES/CPascal/graphs/contributors">
+<a href="https://github.com/tinyBigGAMES/JetVM/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=tinyBigGAMES/CPascal&max=500&columns=20&anon=1" />
 </a>
 
-*Join our growing community of developers building the future of Pascal development!*
+*Join our growing community of developers building the future of Pascal development\!*
 
 ## 📄 License
 
-This project is licensed under the **BSD 3-Clause License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **BSD 3-Clause License** - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
 
 ```
 BSD 3-Clause License
@@ -341,35 +261,29 @@ modification, are permitted provided that the following conditions are met:
 
 ## 📞 Support & Community
 
-### 📚 **Documentation & Resources**
-- 📖 **[DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)** - 12-section comprehensive development guide
-- 📊 **[TEST-REPORT.md](TEST-REPORT.md)** - Current test coverage & performance metrics
-- 🔧 **API Reference** - Inline documentation in `CPascal.pas`
-- 📋 **Examples** - Real-world usage patterns in test suites
-
 ### 💬 **Community Channels**
-- 🐛 **Issues**: [GitHub Issues](https://github.com/tinyBigGAMES/CPascal/issues) - Bug reports & feature requests
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/tinyBigGAMES/CPascal/discussions) - General questions & ideas
-- 💬 **Discord**: [Join our community](https://discord.gg/tPWjMwK) - Real-time chat & support
-- 🐦 **Bluesky**: [@tinybiggames.com](https://bsky.app/profile/tinybiggames.com) - Updates & announcements
+
+  - 🐛 **Issues**: [GitHub Issues](https://github.com/tinyBigGAMES/CPascal/issues) - Bug reports & feature requests
+  - 💬 **Discussions**: [GitHub Discussions](https://github.com/tinyBigGAMES/CPascal/discussions) - General questions & ideas
+  - 💬 **Discord**: [Join our community](https://discord.gg/tPWjMwK) - Real-time chat & support
+  - 🐦 **Bluesky**: [@tinybiggames.com](https://bsky.app/profile/tinybiggames.com) - Updates & announcements
 
 ## 🌟 Acknowledgments
 
-- 💖 **Built with love** for the Delphi community
-- 🎯 **Inspired by** Pascal's readable syntax and C's systems programming power
-- 🚀 **Focused on** practical, real-world usage scenarios
-- 🏆 **Committed to** enterprise-grade quality and performance
-- 🌍 **Supporting** the future of Pascal application development
+  - 💖 **Built with love** for the Delphi community
+  - 🎯 **Inspired by** Pascal's readable syntax and C's systems programming power
+  - 🚀 **Focused on** practical, real-world usage scenarios
+  - 🏆 **Committed to** enterprise-grade quality and performance
+  - 🌍 **Supporting** the future of Pascal application development
 
 ### 🎖️ **Special Thanks**
-- **Delphi Community** - For continued support and feedback
-- **Beta Testers** - Early adopters who helped shape CPascal
-- **Contributors** - Everyone who has submitted issues, PRs, and improvements
 
----
+  - **Delphi Community** - For continued support and feedback
+  - **Beta Testers** - Early adopters who helped shape CPascal
+  - **Contributors** - Everyone who has submitted issues, PRs, and improvements
+
+-----
 
 **Made with ❤️ by [tinyBigGAMES™](https://github.com/tinyBigGAMES)**
 
 **CPascal** - *Where Pascal meets C, systems programming becomes elegant.*
-
-

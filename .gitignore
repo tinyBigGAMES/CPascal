@@ -80,3 +80,13 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+/bin/res/output
+/src_prev
+bin/CPascalTests.xml
+src/tests/test.pas
+!bin/LLVM-C.dll
+!bin/lld-link.exe
+changes-diff.cmd
+changes.diff
+zip_latest_commit.cmd
+CPascal-main.zip

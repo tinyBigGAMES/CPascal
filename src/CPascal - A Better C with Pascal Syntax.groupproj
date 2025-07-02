@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{642E3145-A297-4130-A171-1450B401F7A6}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="tests\CPascalTests.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\examples\testbed\CPascalTestbed.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="CPascalTests">
+        <MSBuild Projects="tests\CPascalTests.dproj"/>
+    </Target>
+    <Target Name="CPascalTests:Clean">
+        <MSBuild Projects="tests\CPascalTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CPascalTests:Make">
+        <MSBuild Projects="tests\CPascalTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="CPascalTestbed">
+        <MSBuild Projects="..\examples\testbed\CPascalTestbed.dproj"/>
+    </Target>
+    <Target Name="CPascalTestbed:Clean">
+        <MSBuild Projects="..\examples\testbed\CPascalTestbed.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CPascalTestbed:Make">
+        <MSBuild Projects="..\examples\testbed\CPascalTestbed.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CPascalTests;CPascalTestbed"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CPascalTests:Clean;CPascalTestbed:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CPascalTests:Make;CPascalTestbed:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
