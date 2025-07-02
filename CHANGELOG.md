@@ -33,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Merge branch 'main' of https://github.com/tinyBigGAMES/CPascal** (2025-07-01 – jarroddavis68)
 
+- **Repo Update** (2025-07-01 – jarroddavis68)
+  - Updated README to display local badge images
+
+- **Merge branch 'main' of https://github.com/tinyBigGAMES/CPascal** (2025-07-01 – jarroddavis68)
+
 - **Update README.md** (2025-07-01 – jarroddavis68)
 
 - **Merge branch 'main' of https://github.com/tinyBigGAMES/CPascal** (2025-07-01 – jarroddavis68)
