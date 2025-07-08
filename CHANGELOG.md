@@ -7,7 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking Changes
+- **feat: implement robust error handling and IDE integration** (2025-07-08 – jarroddavis68)
+  Add comprehensive error management system with stop-on-error control
+  and enhanced semantic analysis capabilities.
+  - Implement error count synchronization across all compiler phases
+  - Add enhanced source location tracking with line content context
+  - Create warning categorization system with 8 distinct categories
+  - Add configurable error limits (MaxErrors, StopOnFirstError, StrictMode)
+  - Implement immediate error recovery preventing cascading failures
+  - Add sophisticated data flow analysis with variable usage tracking
+  - Implement uninitialized variable detection with assignment validation
+  - Add unused variable detection and performance analysis
+  - Create deprecated feature detection with actionable hints
+  - Expand callback system with OnAnalysis for real-time code insights
+  - Add OnStartup/OnShutdown lifecycle management
+  - Implement structured error reporting with source context
+  - Expand test suite from 22 to 33 comprehensive tests (50% increase)
+  - Add dedicated error handling and warning system validation
+  - Implement performance benchmarking and regression prevention
+  Advances implementation from basic foundation to 35/144 BNF rules
+  (24.3% complete). All 33 tests pass with 100% success rate.
+  Breaking changes: None
+
+
 ### Added
+- **feat(compiler): Implement Phase 2 Procedures, Functions & Loop Control** (2025-07-02 – jarroddavis68)
+  Completes all Phase 2 tasks by adding full support for subroutines and advanced loop control statements.
+  - Implements functions and procedures with support for value, `var`, and `const` parameters.
+  - Adds `external` function declarations and all BNF-specified calling conventions (`cdecl`, `stdcall`, `fastcall`, `register`) for C ABI interoperability.
+  - Adds support for `break` and `continue` statements with contextual validation.
+  - Fixes memory corruption and dangling pointer bugs by implementing correct ownership semantics for parameter symbols in the symbol table.
+  - Corrects parser logic for statement separator handling.
+  - Updates `coverage.pas` with comprehensive tests for all new capabilities.
+
 - **feat(compiler): Finalize core features and align test suites** (2025-07-01 – jarroddavis68)
   This major update implements foundational control flow structures, a comprehensive C-compatible type system, and a robust callback architecture. This commit also finalizes the implementation by correcting the lexer for full BNF conformance and aligning the entire test suite with the new type system.
   - Implemented if-then-else, while-do, repeat-until, and for-to/downto loops.
