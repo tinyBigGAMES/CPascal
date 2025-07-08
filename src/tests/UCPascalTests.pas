@@ -72,7 +72,7 @@ uses
   DUnitX.TestFramework,
   DUnitX.Loggers.Console,
   DUnitX.Loggers.XML.NUnit,
-  CPascal.Test.Logger;
+  CPascal.DUnitX.Logger;
 
 procedure Pause();
 begin

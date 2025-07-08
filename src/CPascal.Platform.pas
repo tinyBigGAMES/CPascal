@@ -65,7 +65,10 @@ unit CPascal.Platform;
 interface
 
 // Define common procedures/functions that all platforms must implement.
-procedure InitPlatform();
+var
+  Platform_InitConsole: procedure();
+  Platform_InitLLVMTarget: procedure();
+
 
 implementation
 
@@ -78,9 +81,12 @@ implementation
   // uses CPascal.Platform.MacOS; // Future implementation
 {$ENDIF}
 
-procedure InitPlatform();
+
+initialization
 begin
-  DoInitPlatfrom();
+  Platform_InitConsole := InitConsole;
+  Platform_InitLLVMTarget := InitLLVMTarget;
 end;
+
 
 end.

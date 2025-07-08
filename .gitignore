@@ -81,7 +81,7 @@ __recovery/
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
 /bin/res/output
-/src_prev
+/src - Copy
 bin/CPascalTests.xml
 src/tests/test.pas
 !bin/LLVM-C.dll
@@ -90,3 +90,5 @@ changes-diff.cmd
 changes.diff
 zip_latest_commit.cmd
 CPascal-main.zip
+/bin/output
+bin/view.txt

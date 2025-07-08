@@ -66,9 +66,11 @@ interface
 
 uses
   WinApi.Windows,
-  System.SysUtils;
+  System.SysUtils,
+  CPascal.LLVM;
 
-procedure DoInitPlatfrom();
+procedure InitConsole();
+procedure InitLLVMTarget();
 
 implementation
 
@@ -89,11 +91,22 @@ begin
   Result := True;
 end;
 
-procedure DoInitPlatfrom();
+procedure InitConsole();
 begin
   EnableVirtualTerminalProcessing();
   SetConsoleCP(CP_UTF8);
   SetConsoleOutputCP(CP_UTF8);
+end;
+
+procedure InitLLVMTarget();
+begin
+  // Initialize X86 target
+  LLVMInitializeX86TargetInfo();
+  LLVMInitializeX86Target();
+  LLVMInitializeX86TargetMC();
+  LLVMInitializeX86AsmPrinter();
+  LLVMInitializeX86AsmParser();
+  LLVMInitializeX86Disassembler();
 end;
 
 end.

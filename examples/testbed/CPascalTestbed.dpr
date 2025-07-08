@@ -67,14 +67,12 @@ program CPascalTestbed;
 uses
   System.SysUtils,
   UCPascalTestbed in 'UCPascalTestbed.pas',
-  CPascal.AST in '..\..\src\CPascal.AST.pas',
-  CPascal.Compiler in '..\..\src\CPascal.Compiler.pas',
-  CPascal.IRGen in '..\..\src\CPascal.IRGen.pas',
-  CPascal.Lexer in '..\..\src\CPascal.Lexer.pas',
-  CPascal.LLVM in '..\..\src\CPascal.LLVM.pas',
+  CPascal.CodeGen in '..\..\src\CPascal.CodeGen.pas',
+  CPascal.Common in '..\..\src\CPascal.Common.pas',
   CPascal.Parser in '..\..\src\CPascal.Parser.pas',
-  CPascal.Semantic in '..\..\src\CPascal.Semantic.pas',
-  CPascal.Common in '..\..\src\CPascal.Common.pas';
+  CPascal.LLVM in '..\..\src\CPascal.LLVM.pas',
+  CPascal.Platform in '..\..\src\CPascal.Platform.pas',
+  CPascal.Platform.Win32 in '..\..\src\CPascal.Platform.Win32.pas';
 
 begin
   RunCPascalTestbed();

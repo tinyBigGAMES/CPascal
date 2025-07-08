@@ -118,22 +118,9 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UCPascalTests.pas"/>
-        <DCCReference Include="..\CPascal.AST.pas"/>
-        <DCCReference Include="..\CPascal.Lexer.pas"/>
-        <DCCReference Include="..\CPascal.Parser.pas"/>
-        <DCCReference Include="..\CPascal.Semantic.pas"/>
-        <DCCReference Include="..\CPascal.IRGen.pas"/>
-        <DCCReference Include="..\CPascal.LLVM.pas"/>
-        <DCCReference Include="..\CPascal.Compiler.pas"/>
-        <DCCReference Include="..\CPascal.Test.Compiler.pas"/>
-        <DCCReference Include="..\CPascal.Test.IRGen.pas"/>
-        <DCCReference Include="..\CPascal.Test.Lexer.pas"/>
-        <DCCReference Include="..\CPascal.Test.Logger.pas"/>
-        <DCCReference Include="..\CPascal.Test.Parser.pas"/>
-        <DCCReference Include="..\CPascal.Test.Semantic.pas"/>
         <DCCReference Include="..\CPascal.Common.pas"/>
-        <DCCReference Include="..\CPascal.Platform.Win32.pas"/>
-        <DCCReference Include="..\CPascal.Platform.pas"/>
+        <DCCReference Include="CPascal.DUnitX.Logger.pas"/>
+        <DCCReference Include="..\CPascal.Tests.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

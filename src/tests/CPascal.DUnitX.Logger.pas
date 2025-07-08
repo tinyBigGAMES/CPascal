@@ -58,7 +58,7 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ===============================================================================}
 
-unit CPascal.Test.Logger;
+unit CPascal.DUnitX.Logger;
 
 {$I CPascal.Defines.inc}
 

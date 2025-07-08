@@ -4,7 +4,7 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">CPascalTestbed</ProjectName>
         <TargetedPlatforms>2</TargetedPlatforms>
@@ -118,14 +118,12 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UCPascalTestbed.pas"/>
-        <DCCReference Include="..\..\src\CPascal.AST.pas"/>
-        <DCCReference Include="..\..\src\CPascal.Compiler.pas"/>
-        <DCCReference Include="..\..\src\CPascal.IRGen.pas"/>
-        <DCCReference Include="..\..\src\CPascal.Lexer.pas"/>
-        <DCCReference Include="..\..\src\CPascal.LLVM.pas"/>
-        <DCCReference Include="..\..\src\CPascal.Parser.pas"/>
-        <DCCReference Include="..\..\src\CPascal.Semantic.pas"/>
+        <DCCReference Include="..\..\src\CPascal.CodeGen.pas"/>
         <DCCReference Include="..\..\src\CPascal.Common.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Parser.pas"/>
+        <DCCReference Include="..\..\src\CPascal.LLVM.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Platform.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Platform.Win32.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
