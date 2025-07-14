@@ -240,7 +240,7 @@ project/
 
 ## 📄 License
 
-This project is licensed under the **BSD 3-Clause License** - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+This project is licensed under the **BSD 3-Clause License** - see the [LICENSE](https://github.com/tinyBigGAMES/CPascal?tab=readme-ov-file#BSD-3-Clause-1-ov-file) file for details.
 
 ```
 BSD 3-Clause License
@@ -262,6 +262,7 @@ modification, are permitted provided that the following conditions are met:
 
 ### 💬 **Community Channels**
 
+  - 🏠 **Homepage**: [CPascal Homepage](https://cpascal.org) – Official website, documentation, and news  
   - 🐛 **Issues**: [GitHub Issues](https://github.com/tinyBigGAMES/CPascal/issues) - Bug reports & feature requests
   - 💬 **Discussions**: [GitHub Discussions](https://github.com/tinyBigGAMES/CPascal/discussions) - General questions & ideas
   - 💬 **Discord**: [Join our community](https://discord.gg/tPWjMwK) - Real-time chat & support
