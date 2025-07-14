@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Added
+- **Update README.md** (2025-07-14 – jarroddavis68)
+  - Fixed LICENCE link
+  - Added CPascal homepage link
+
 - **feat(compiler): Implement Phase 2 Procedures, Functions & Loop Control** (2025-07-02 – jarroddavis68)
   Completes all Phase 2 tasks by adding full support for subroutines and advanced loop control statements.
   - Implements functions and procedures with support for value, `var`, and `const` parameters.
