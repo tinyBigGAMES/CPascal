@@ -216,11 +216,11 @@ project/
 
 ## 📚 Documentation
 
-  - **[Language Specification](https://www.google.com/search?q=docs/CPASCAL-SPECIFICATION.md)** - Complete language reference
-  - **[BNF Grammar](https://www.google.com/search?q=docs/CPASCAL-BNF.md)** - Formal grammar specification
-  - **[Test & Coverage Report](https://www.google.com/search?q=CPASCAL-TESTREPORT.md)** - View current test results and feature coverage.
-  - **[C Migration Guide](https://www.google.com/search?q=docs/C-MIGRATION.md)** - Migrating from C to CPascal
-  - **[API Reference](https://www.google.com/search?q=docs/CPASCAL-APIREFERENCE.md)** - Standard library documentation
+  - **[Language Specification](docs/CPASCAL-SPECIFICATION.md)** - Complete language reference
+  - **[BNF Grammar](docs/CPASCAL-BNF.md)** - Formal grammar specification
+  - **[Test & Coverage Report](docs/CPASCAL-TESTREPORT.md)** - View current test results and feature coverage.
+  - **[C Migration Guide](docs/C-MIGRATION.md)** - Migrating from C to CPascal
+  - **[API Reference](docs/CPASCAL-APIREFERENCE.md)** - Standard library documentation
 
 ### 📋 **Coding Standards**
 
