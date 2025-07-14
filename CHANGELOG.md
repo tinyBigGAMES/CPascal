@@ -81,3 +81,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Initial commit** (2025-06-29 – Jarrod Davis)
 
+
+### Fixed
+- **Merge pull request #5 from norayr/main** (2025-07-14 – Jarrod Davis)
+  fixed links.
+
+- **fixed links.** (2025-07-15 – Norayr Chilingarian)
+
