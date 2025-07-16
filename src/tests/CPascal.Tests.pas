@@ -28,7 +28,7 @@
  Copyright © 2025-present tinyBigGAMES™ LLC
  All Rights Reserved.
 
- https://github.com/tinyBigGAMES/CPascal
+ https://cpascal.org
 
  BSD 3-Clause License
 
@@ -58,55 +58,114 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ===============================================================================}
 
-unit CPascal.Platform.Win32;
+unit CPascal.Tests;
 
 {$I CPascal.Defines.inc}
 
 interface
 
 uses
-  WinApi.Windows,
   System.SysUtils,
-  CPascal.LLVM;
+  System.StrUtils,
+  CPascal,
+  CPascal.Tests.Infrastructure,
+  CPascal.Tests.Declarations,
+  CPascal.Tests.Structure,
+  CPascal.Tests.ControlFlow,
+  CPascal.Tests.CompilerDirectives,
+  CPascal.Tests.Modules,
+  CPascal.Tests.Expressions,
+  CPascal.Tests.Types,
+  CPascal.Tests.Functions;
 
-procedure InitConsole();
-procedure InitLLVMTarget();
+procedure TestFullSuite(const ANumber: Integer = 0);
 
 implementation
 
-function EnableVirtualTerminalProcessing(): Boolean;
-var
-  HOut: THandle;
-  LMode: DWORD;
+procedure TestFullSuite(const ANumber: Integer);
 begin
-  Result := False;
-
-  HOut := GetStdHandle(STD_OUTPUT_HANDLE);
-  if HOut = INVALID_HANDLE_VALUE then Exit;
-  if not GetConsoleMode(HOut, LMode) then Exit;
-
-  LMode := LMode or ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-  if not SetConsoleMode(HOut, LMode) then Exit;
-
-  Result := True;
+  case ANumber of
+    // Infrastructure Tests
+    01: TestBuilderFoundation();
+    
+    // Core Language Features
+    02: TestCoreDeclarationMethods();
+    03: TestAdvancedDeclarationMethods();
+    04: TestBasicProgramStructure();
+    05: TestUtilityStructureMethods();
+    06: TestAdvancedControlFlow();
+    07: TestAdvancedStatementMethods();
+    
+    // Advanced Language Features
+    08: TestCompilerDirectives();
+    09: TestModules();
+    10: TestExpressions();
+    
+    // Additional Tests
+    11: TestConstantsAndTypeSystem();
+    12: TestAdvancedStatementsAndFunctionSystem();
+  else
+    begin
+      WriteLn('🚀 Running Complete CPascal Test Suite...');
+      WriteLn('');
+      
+      // Run ALL tests sequentially
+      WriteLn('📋 === RUNNING ALL TESTS ===');
+      WriteLn('');
+      
+      WriteLn('01 - Infrastructure Tests');
+      TestBuilderFoundation();
+      WriteLn('');
+      
+      WriteLn('02 - Core Declaration Methods');
+      TestCoreDeclarationMethods();
+      WriteLn('');
+      
+      WriteLn('03 - Advanced Declaration Methods');
+      TestAdvancedDeclarationMethods();
+      WriteLn('');
+      
+      WriteLn('04 - Basic Program Structure');
+      TestBasicProgramStructure();
+      WriteLn('');
+      
+      WriteLn('05 - Utility Structure Methods');
+      TestUtilityStructureMethods();
+      WriteLn('');
+      
+      WriteLn('06 - Advanced Control Flow');
+      TestAdvancedControlFlow();
+      WriteLn('');
+      
+      WriteLn('07 - Advanced Statement Methods');
+      TestAdvancedStatementMethods();
+      WriteLn('');
+      
+      WriteLn('08 - Compiler Directives');
+      TestCompilerDirectives();
+      WriteLn('');
+      
+      WriteLn('09 - Modules');
+      TestModules();
+      WriteLn('');
+      
+      WriteLn('10 - Expressions');
+      TestExpressions();
+      WriteLn('');
+      
+      WriteLn('11 - Constants and Type System');
+      TestConstantsAndTypeSystem();
+      WriteLn('');
+      
+      WriteLn('12 - Advanced Statements and Function System');
+      TestAdvancedStatementsAndFunctionSystem();
+      WriteLn('');
+      
+      WriteLn('✅ Complete CPascal Test Suite Finished!');
+      WriteLn('📊 Total Tests Run: 12 test procedures from 9 test units');
+    end;
+  end;
 end;
 
-procedure InitConsole();
-begin
-  EnableVirtualTerminalProcessing();
-  SetConsoleCP(CP_UTF8);
-  SetConsoleOutputCP(CP_UTF8);
-end;
-
-procedure InitLLVMTarget();
-begin
-  // Initialize X86 target
-  LLVMInitializeX86TargetInfo();
-  LLVMInitializeX86Target();
-  LLVMInitializeX86TargetMC();
-  LLVMInitializeX86AsmPrinter();
-  LLVMInitializeX86AsmParser();
-  LLVMInitializeX86Disassembler();
-end;
 
 end.

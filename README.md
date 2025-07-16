@@ -232,8 +232,8 @@ project/
 
 ### 🏆 **Contributors**
 
-<a href="https://github.com/tinyBigGAMES/JetVM/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=tinyBigGAMES/CPascal&max=500&columns=20&anon=1" />
+<a href="https://github.com/tinyBigGAMES/CPascal/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=tinyBigGAMES/CPascal&max=100&columns=12&anon=0" />
 </a>
 
 *Join our growing community of developers building the future of Pascal development\!*

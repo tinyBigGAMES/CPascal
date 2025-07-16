@@ -118,12 +118,25 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UCPascalTestbed.pas"/>
-        <DCCReference Include="..\..\src\CPascal.CodeGen.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Builder.pas"/>
         <DCCReference Include="..\..\src\CPascal.Common.pas"/>
-        <DCCReference Include="..\..\src\CPascal.Parser.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Expressions.pas"/>
         <DCCReference Include="..\..\src\CPascal.LLVM.pas"/>
+        <DCCReference Include="..\..\src\CPascal.pas"/>
         <DCCReference Include="..\..\src\CPascal.Platform.pas"/>
-        <DCCReference Include="..\..\src\CPascal.Platform.Win32.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Builder.Interfaces.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Builder.Source.pas"/>
+        <DCCReference Include="..\..\src\CPascal.Builder.IR.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.CompilerDirectives.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.ControlFlow.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Declarations.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Expressions.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Functions.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Infrastructure.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Modules.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Structure.pas"/>
+        <DCCReference Include="..\..\src\tests\CPascal.Tests.Types.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

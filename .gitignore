@@ -92,3 +92,9 @@ zip_latest_commit.cmd
 CPascal-main.zip
 /bin/output
 bin/view.txt
+src/TODO.md
+src/SESSION.md
+src/NOTES.md
+src/LOAD.md
+/bin/temp
+src/CPASCAL-BNF.md

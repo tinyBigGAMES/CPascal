@@ -20,13 +20,17 @@
 
 <module_header> ::= "module" <identifier> ";"
 
-<import_clause> ::= "import" <identifier_list> ";"
+<import_clause> ::= "import" <qualified_identifier_list> ";"
+
+<qualified_identifier_list> ::= <qualified_identifier> ("," <qualified_identifier>)*
+
+<qualified_identifier> ::= <identifier> ("." <identifier>)*
 
 <identifier_list> ::= <identifier> ("," <identifier>)*
 
 <exports_clause> ::= "exports" <export_list> ";"
 
-<export_list> ::= <identifier> ("," <identifier>)*
+<export_list> ::= <qualified_identifier> ("," <qualified_identifier>)*
 ```
 
 ## Compiler Directives
@@ -113,6 +117,7 @@
                          | "public"? <external_function>
                          | "public"? <inline_function>
                          | "public"? <varargs_function>
+                         | "public"? <external_varargs_function>
 
 <function_header> ::= "function" <identifier> "(" <parameter_list>? ")" ":" <type_definition>
                     | "procedure" <identifier> "(" <parameter_list>? ")"
@@ -135,6 +140,11 @@
 
 <varargs_function> ::= "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> <calling_convention>? ";"
                      | "procedure" <identifier> "(" <parameter_list> "," "..." ")" <calling_convention>? ";"
+
+<external_varargs_function> ::= "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> <calling_convention>? "external" <string>? ";"
+                              | "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> "external" <string>? <calling_convention>? ";"
+                              | "procedure" <identifier> "(" <parameter_list> "," "..." ")" <calling_convention>? "external" <string>? ";"
+                              | "procedure" <identifier> "(" <parameter_list> "," "..." ")" "external" <string>? <calling_convention>? ";"
 ```
 
 ## Statements
@@ -385,3 +395,20 @@ Records map to C structs with identical layout and alignment.
 Arrays map to C arrays with identical memory layout.
 Function pointers use C calling conventions by default.
 ```
+
+## 🆕 External VarArgs Functions (Added for Phase 1A)
+
+The `<external_varargs_function>` rule enables essential C library integration by combining external function declarations with variadic arguments. This allows direct integration with functions like `printf`, `scanf`, and other C runtime functions that require variable argument lists.
+
+**Examples:**
+```pascal
+// Standard C runtime functions
+function printf(format: PChar, ...): Int32 cdecl external 'msvcrt.dll';
+procedure fprintf(stream: Pointer; format: PChar, ...): cdecl external 'msvcrt.dll';  
+function scanf(format: PChar, ...): Int32 cdecl external 'msvcrt.dll';
+
+// Custom varargs functions from external libraries
+function MyLogger(level: Int32; format: PChar, ...): Boolean stdcall external 'mylib.dll';
+```
+
+This addition maintains full BNF compliance while enabling the essential external function capabilities required for real-world C library integration.

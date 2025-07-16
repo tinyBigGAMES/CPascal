@@ -28,7 +28,7 @@
  Copyright © 2025-present tinyBigGAMES™ LLC
  All Rights Reserved.
 
- https://github.com/tinyBigGAMES/CPascal
+ https://cpascal.org
 
  BSD 3-Clause License
 
@@ -67,12 +67,25 @@ program CPascalTestbed;
 uses
   System.SysUtils,
   UCPascalTestbed in 'UCPascalTestbed.pas',
-  CPascal.CodeGen in '..\..\src\CPascal.CodeGen.pas',
+  CPascal.Builder in '..\..\src\CPascal.Builder.pas',
   CPascal.Common in '..\..\src\CPascal.Common.pas',
-  CPascal.Parser in '..\..\src\CPascal.Parser.pas',
+  CPascal.Expressions in '..\..\src\CPascal.Expressions.pas',
   CPascal.LLVM in '..\..\src\CPascal.LLVM.pas',
+  CPascal in '..\..\src\CPascal.pas',
   CPascal.Platform in '..\..\src\CPascal.Platform.pas',
-  CPascal.Platform.Win32 in '..\..\src\CPascal.Platform.Win32.pas';
+  CPascal.Builder.Interfaces in '..\..\src\CPascal.Builder.Interfaces.pas',
+  CPascal.Builder.Source in '..\..\src\CPascal.Builder.Source.pas',
+  CPascal.Builder.IR in '..\..\src\CPascal.Builder.IR.pas',
+  CPascal.Tests.CompilerDirectives in '..\..\src\tests\CPascal.Tests.CompilerDirectives.pas',
+  CPascal.Tests.ControlFlow in '..\..\src\tests\CPascal.Tests.ControlFlow.pas',
+  CPascal.Tests.Declarations in '..\..\src\tests\CPascal.Tests.Declarations.pas',
+  CPascal.Tests.Expressions in '..\..\src\tests\CPascal.Tests.Expressions.pas',
+  CPascal.Tests.Functions in '..\..\src\tests\CPascal.Tests.Functions.pas',
+  CPascal.Tests.Infrastructure in '..\..\src\tests\CPascal.Tests.Infrastructure.pas',
+  CPascal.Tests.Modules in '..\..\src\tests\CPascal.Tests.Modules.pas',
+  CPascal.Tests in '..\..\src\tests\CPascal.Tests.pas',
+  CPascal.Tests.Structure in '..\..\src\tests\CPascal.Tests.Structure.pas',
+  CPascal.Tests.Types in '..\..\src\tests\CPascal.Tests.Types.pas';
 
 begin
   RunCPascalTestbed();

@@ -28,7 +28,7 @@
  Copyright © 2025-present tinyBigGAMES™ LLC
  All Rights Reserved.
 
- https://github.com/tinyBigGAMES/CPascal
+ https://cpascal.org
 
  BSD 3-Clause License
 
@@ -81,35 +81,6 @@ const
 {$ENDIF}
 
 const
-  LLVM_ATTRIBUTE_DEPRECATED = 1;
-
-  LLVM_ENABLE_THREADS = 1;
-  LLVM_HAS_ATOMICS = 1;
-
-  LLVM_DEFAULT_TARGET_TRIPLE = 'x86_64-pc-windows-msvc';
-  LLVM_HOST_TRIPLE = 'x86_64-pc-windows-msvc';
-
-  LLVM_USE_INTEL_JITEVENTS = 0;
-  LLVM_USE_OPROFILE = 0;
-  LLVM_USE_PERF = 0;
-
-  LLVM_VERSION_MAJOR = 21;
-  LLVM_VERSION_MINOR = 0;
-  LLVM_VERSION_PATCH = 0;
-  LLVM_VERSION_STRING = '21.0.0git';
-
-  LLVM_FORCE_ENABLE_STATS = 0;
-  LLVM_UNREACHABLE_OPTIMIZE = 1;
-
-  LLVM_ENABLE_ZLIB = 0;
-  LLVM_ENABLE_ZSTD = 0;
-  LLVM_ENABLE_DIA_SDK = 0;
-  LLVM_ENABLE_TELEMETRY = 1;
-  LLVM_ENABLE_DEBUGLOC_TRACKING_COVERAGE = 0;
-  LLVM_ENABLE_DEBUGLOC_TRACKING_ORIGIN = 0;
-
-  LLVMErrorSuccess = 0;
-
   LLVMDisassembler_VariantKind_None = 0;
   LLVMDisassembler_VariantKind_ARM_HI16 = 1;
   LLVMDisassembler_VariantKind_ARM_LO16 = 2;
@@ -119,7 +90,6 @@ const
   LLVMDisassembler_VariantKind_ARM64_GOTPAGEOFF = 4;
   LLVMDisassembler_VariantKind_ARM64_TLVP = 5;
   LLVMDisassembler_VariantKind_ARM64_TLVOFF = 6;
-
   LLVMDisassembler_ReferenceType_InOut_None = 0;
   LLVMDisassembler_ReferenceType_In_Branch = 1;
   LLVMDisassembler_ReferenceType_In_PCrel_Load = 2;
@@ -137,15 +107,1044 @@ const
   LLVMDisassembler_ReferenceType_Out_Objc_Selector_Ref = 7;
   LLVMDisassembler_ReferenceType_Out_Objc_Class_Ref = 8;
   LLVMDisassembler_ReferenceType_DeMangled_Name = 9;
-
   LLVMDisassembler_Option_UseMarkup = 1;
   LLVMDisassembler_Option_PrintImmHex = 2;
   LLVMDisassembler_Option_AsmPrinterVariant = 4;
   LLVMDisassembler_Option_SetInstrComments = 8;
   LLVMDisassembler_Option_PrintLatency = 16;
   LLVMDisassembler_Option_Color = 32;
-
+  LLVMErrorSuccess = 0;
+  LLVM_DEFAULT_TARGET_TRIPLE = 'x86_64-pc-windows-msvc';
+  LLVM_ENABLE_THREADS = 1;
+  LLVM_HAS_ATOMICS = 1;
+  LLVM_HOST_TRIPLE = 'x86_64-pc-windows-msvc';
+  LLVM_HAS_AARCH64_TARGET = 1;
+  LLVM_HAS_AMDGPU_TARGET = 0;
+  LLVM_HAS_ARC_TARGET = 0;
+  LLVM_HAS_ARM_TARGET = 1;
+  LLVM_HAS_AVR_TARGET = 0;
+  LLVM_HAS_BPF_TARGET = 1;
+  LLVM_HAS_CSKY_TARGET = 0;
+  LLVM_HAS_DIRECTX_TARGET = 0;
+  LLVM_HAS_HEXAGON_TARGET = 0;
+  LLVM_HAS_LANAI_TARGET = 0;
+  LLVM_HAS_LOONGARCH_TARGET = 0;
+  LLVM_HAS_M68K_TARGET = 0;
+  LLVM_HAS_MIPS_TARGET = 0;
+  LLVM_HAS_MSP430_TARGET = 0;
+  LLVM_HAS_NVPTX_TARGET = 1;
+  LLVM_HAS_POWERPC_TARGET = 0;
+  LLVM_HAS_RISCV_TARGET = 1;
+  LLVM_HAS_SPARC_TARGET = 0;
+  LLVM_HAS_SPIRV_TARGET = 0;
+  LLVM_HAS_SYSTEMZ_TARGET = 0;
+  LLVM_HAS_VE_TARGET = 0;
+  LLVM_HAS_WEBASSEMBLY_TARGET = 1;
+  LLVM_HAS_X86_TARGET = 1;
+  LLVM_HAS_XCORE_TARGET = 0;
+  LLVM_HAS_XTENSA_TARGET = 0;
+  LLVM_USE_INTEL_JITEVENTS = 0;
+  LLVM_USE_OPROFILE = 0;
+  LLVM_USE_PERF = 0;
+  LLVM_VERSION_MAJOR = 20;
+  LLVM_VERSION_MINOR = 1;
+  LLVM_VERSION_PATCH = 7;
+  LLVM_VERSION_STRING = '20.1.7';
+  LLVM_FORCE_ENABLE_STATS = 0;
+  LLVM_ENABLE_ZLIB = 0;
+  LLVM_ENABLE_ZSTD = 0;
+  LLVM_UNREACHABLE_OPTIMIZE = 1;
+  LLVM_ENABLE_DIA_SDK = 1;
   REMARKS_API_VERSION = 1;
+
+type
+  (**
+   * @defgroup LLVMCAnalysis Analysis
+   * @ingroup LLVMC
+   *
+   * @{
+   *)
+  LLVMVerifierFailureAction = Integer;
+  PLLVMVerifierFailureAction = ^LLVMVerifierFailureAction;
+
+const
+  LLVMAbortProcessAction = 0;
+  LLVMPrintMessageAction = 1;
+  LLVMReturnStatusAction = 2;
+
+(**
+ * @defgroup LLVMCCoreComdat Comdats
+ * @ingroup LLVMCCore
+ *
+ * @{
+ *)
+type
+  LLVMComdatSelectionKind = Integer;
+  PLLVMComdatSelectionKind = ^LLVMComdatSelectionKind;
+
+const
+  /// The linker may choose any COMDAT.
+  LLVMAnyComdatSelectionKind = 0;
+  /// The data referenced by the COMDAT must
+                                       ///< be the same.
+  LLVMExactMatchComdatSelectionKind = 1;
+  /// The linker will choose the largest
+                                       ///< COMDAT.
+  LLVMLargestComdatSelectionKind = 2;
+  /// No deduplication is performed.
+  LLVMNoDeduplicateComdatSelectionKind = 3;
+  /// The data referenced by the COMDAT must be
+                                    ///< the same size.
+  LLVMSameSizeComdatSelectionKind = 4;
+
+/// External users depend on the following values being stable. It is not safe
+/// to reorder them.
+type
+  LLVMOpcode = Integer;
+  PLLVMOpcode = ^LLVMOpcode;
+
+const
+  LLVMRet = 1;
+  LLVMBr = 2;
+  LLVMSwitch = 3;
+  LLVMIndirectBr = 4;
+  LLVMInvoke = 5;
+  LLVMUnreachable = 7;
+  LLVMCallBr = 67;
+  LLVMFNeg = 66;
+  LLVMAdd = 8;
+  LLVMFAdd = 9;
+  LLVMSub = 10;
+  LLVMFSub = 11;
+  LLVMMul = 12;
+  LLVMFMul = 13;
+  LLVMUDiv = 14;
+  LLVMSDiv = 15;
+  LLVMFDiv = 16;
+  LLVMURem = 17;
+  LLVMSRem = 18;
+  LLVMFRem = 19;
+  LLVMShl = 20;
+  LLVMLShr = 21;
+  LLVMAShr = 22;
+  LLVMAnd = 23;
+  LLVMOr = 24;
+  LLVMXor = 25;
+  LLVMAlloca = 26;
+  LLVMLoad = 27;
+  LLVMStore = 28;
+  LLVMGetElementPtr = 29;
+  LLVMTrunc = 30;
+  LLVMZExt = 31;
+  LLVMSExt = 32;
+  LLVMFPToUI = 33;
+  LLVMFPToSI = 34;
+  LLVMUIToFP = 35;
+  LLVMSIToFP = 36;
+  LLVMFPTrunc = 37;
+  LLVMFPExt = 38;
+  LLVMPtrToInt = 39;
+  LLVMIntToPtr = 40;
+  LLVMBitCast = 41;
+  LLVMAddrSpaceCast = 60;
+  LLVMICmp = 42;
+  LLVMFCmp = 43;
+  LLVMPHI = 44;
+  LLVMCall = 45;
+  LLVMSelect = 46;
+  LLVMUserOp1 = 47;
+  LLVMUserOp2 = 48;
+  LLVMVAArg = 49;
+  LLVMExtractElement = 50;
+  LLVMInsertElement = 51;
+  LLVMShuffleVector = 52;
+  LLVMExtractValue = 53;
+  LLVMInsertValue = 54;
+  LLVMFreeze = 68;
+  LLVMFence = 55;
+  LLVMAtomicCmpXchg = 56;
+  LLVMAtomicRMW = 57;
+  LLVMResume = 58;
+  LLVMLandingPad = 59;
+  LLVMCleanupRet = 61;
+  LLVMCatchRet = 62;
+  LLVMCatchPad = 63;
+  LLVMCleanupPad = 64;
+  LLVMCatchSwitch = 65;
+
+type
+  LLVMTypeKind = Integer;
+  PLLVMTypeKind = ^LLVMTypeKind;
+
+const
+  (** type with no size *)
+  LLVMVoidTypeKind = 0;
+  (** 16 bit floating point type *)
+  LLVMHalfTypeKind = 1;
+  (** 32 bit floating point type *)
+  LLVMFloatTypeKind = 2;
+  (** 64 bit floating point type *)
+  LLVMDoubleTypeKind = 3;
+  (** 80 bit floating point type (X87) *)
+  LLVMX86_FP80TypeKind = 4;
+  (** 128 bit floating point type (112-bit mantissa)*)
+  LLVMFP128TypeKind = 5;
+  (** 128 bit floating point type (two 64-bits) *)
+  LLVMPPC_FP128TypeKind = 6;
+  (** Labels *)
+  LLVMLabelTypeKind = 7;
+  (** Arbitrary bit width integers *)
+  LLVMIntegerTypeKind = 8;
+  (** Functions *)
+  LLVMFunctionTypeKind = 9;
+  (** Structures *)
+  LLVMStructTypeKind = 10;
+  (** Arrays *)
+  LLVMArrayTypeKind = 11;
+  (** Pointers *)
+  LLVMPointerTypeKind = 12;
+  (** Fixed width SIMD vector type *)
+  LLVMVectorTypeKind = 13;
+  (** Metadata *)
+  LLVMMetadataTypeKind = 14;
+  (** Tokens *)
+  LLVMTokenTypeKind = 16;
+  (** Scalable SIMD vector type *)
+  LLVMScalableVectorTypeKind = 17;
+  (** 16 bit brain floating point type *)
+  LLVMBFloatTypeKind = 18;
+  (** X86 AMX *)
+  LLVMX86_AMXTypeKind = 19;
+  (** Target extension type *)
+  LLVMTargetExtTypeKind = 20;
+
+type
+  LLVMLinkage = Integer;
+  PLLVMLinkage = ^LLVMLinkage;
+
+const
+  (** Externally visible function *)
+  LLVMExternalLinkage = 0;
+  LLVMAvailableExternallyLinkage = 1;
+  (** Keep one copy of function when linking (inline)*)
+  LLVMLinkOnceAnyLinkage = 2;
+  (** Same, but only replaced by something
+                              equivalent. *)
+  LLVMLinkOnceODRLinkage = 3;
+  (** Obsolete *)
+  LLVMLinkOnceODRAutoHideLinkage = 4;
+  (** Keep one copy of function when linking (weak) *)
+  LLVMWeakAnyLinkage = 5;
+  (** Same, but only replaced by something
+                              equivalent. *)
+  LLVMWeakODRLinkage = 6;
+  (** Special purpose, only applies to global arrays *)
+  LLVMAppendingLinkage = 7;
+  (** Rename collisions when linking (static
+                                 functions) *)
+  LLVMInternalLinkage = 8;
+  (** Like Internal, but omit from symbol table *)
+  LLVMPrivateLinkage = 9;
+  (** Obsolete *)
+  LLVMDLLImportLinkage = 10;
+  (** Obsolete *)
+  LLVMDLLExportLinkage = 11;
+  (** ExternalWeak linkage description *)
+  LLVMExternalWeakLinkage = 12;
+  (** Obsolete *)
+  LLVMGhostLinkage = 13;
+  (** Tentative definitions *)
+  LLVMCommonLinkage = 14;
+  (** Like Private, but linker removes. *)
+  LLVMLinkerPrivateLinkage = 15;
+  (** Like LinkerPrivate, but is weak. *)
+  LLVMLinkerPrivateWeakLinkage = 16;
+
+type
+  LLVMVisibility = Integer;
+  PLLVMVisibility = ^LLVMVisibility;
+
+const
+  (** The GV is visible *)
+  LLVMDefaultVisibility = 0;
+  (** The GV is hidden *)
+  LLVMHiddenVisibility = 1;
+  (** The GV is protected *)
+  LLVMProtectedVisibility = 2;
+
+type
+  LLVMUnnamedAddr = Integer;
+  PLLVMUnnamedAddr = ^LLVMUnnamedAddr;
+
+const
+  (** Address of the GV is significant. *)
+  LLVMNoUnnamedAddr = 0;
+  (** Address of the GV is locally insignificant. *)
+  LLVMLocalUnnamedAddr = 1;
+  (** Address of the GV is globally insignificant. *)
+  LLVMGlobalUnnamedAddr = 2;
+
+type
+  LLVMDLLStorageClass = Integer;
+  PLLVMDLLStorageClass = ^LLVMDLLStorageClass;
+
+const
+  LLVMDefaultStorageClass = 0;
+  (** Function to be imported from DLL. *)
+  LLVMDLLImportStorageClass = 1;
+  (** Function to be accessible from DLL. *)
+  LLVMDLLExportStorageClass = 2;
+
+type
+  LLVMCallConv = Integer;
+  PLLVMCallConv = ^LLVMCallConv;
+
+const
+  LLVMCCallConv = 0;
+  LLVMFastCallConv = 8;
+  LLVMColdCallConv = 9;
+  LLVMGHCCallConv = 10;
+  LLVMHiPECallConv = 11;
+  LLVMAnyRegCallConv = 13;
+  LLVMPreserveMostCallConv = 14;
+  LLVMPreserveAllCallConv = 15;
+  LLVMSwiftCallConv = 16;
+  LLVMCXXFASTTLSCallConv = 17;
+  LLVMX86StdcallCallConv = 64;
+  LLVMX86FastcallCallConv = 65;
+  LLVMARMAPCSCallConv = 66;
+  LLVMARMAAPCSCallConv = 67;
+  LLVMARMAAPCSVFPCallConv = 68;
+  LLVMMSP430INTRCallConv = 69;
+  LLVMX86ThisCallCallConv = 70;
+  LLVMPTXKernelCallConv = 71;
+  LLVMPTXDeviceCallConv = 72;
+  LLVMSPIRFUNCCallConv = 75;
+  LLVMSPIRKERNELCallConv = 76;
+  LLVMIntelOCLBICallConv = 77;
+  LLVMX8664SysVCallConv = 78;
+  LLVMWin64CallConv = 79;
+  LLVMX86VectorCallCallConv = 80;
+  LLVMHHVMCallConv = 81;
+  LLVMHHVMCCallConv = 82;
+  LLVMX86INTRCallConv = 83;
+  LLVMAVRINTRCallConv = 84;
+  LLVMAVRSIGNALCallConv = 85;
+  LLVMAVRBUILTINCallConv = 86;
+  LLVMAMDGPUVSCallConv = 87;
+  LLVMAMDGPUGSCallConv = 88;
+  LLVMAMDGPUPSCallConv = 89;
+  LLVMAMDGPUCSCallConv = 90;
+  LLVMAMDGPUKERNELCallConv = 91;
+  LLVMX86RegCallCallConv = 92;
+  LLVMAMDGPUHSCallConv = 93;
+  LLVMMSP430BUILTINCallConv = 94;
+  LLVMAMDGPULSCallConv = 95;
+  LLVMAMDGPUESCallConv = 96;
+
+type
+  LLVMValueKind = Integer;
+  PLLVMValueKind = ^LLVMValueKind;
+
+const
+  LLVMArgumentValueKind = 0;
+  LLVMBasicBlockValueKind = 1;
+  LLVMMemoryUseValueKind = 2;
+  LLVMMemoryDefValueKind = 3;
+  LLVMMemoryPhiValueKind = 4;
+  LLVMFunctionValueKind = 5;
+  LLVMGlobalAliasValueKind = 6;
+  LLVMGlobalIFuncValueKind = 7;
+  LLVMGlobalVariableValueKind = 8;
+  LLVMBlockAddressValueKind = 9;
+  LLVMConstantExprValueKind = 10;
+  LLVMConstantArrayValueKind = 11;
+  LLVMConstantStructValueKind = 12;
+  LLVMConstantVectorValueKind = 13;
+  LLVMUndefValueValueKind = 14;
+  LLVMConstantAggregateZeroValueKind = 15;
+  LLVMConstantDataArrayValueKind = 16;
+  LLVMConstantDataVectorValueKind = 17;
+  LLVMConstantIntValueKind = 18;
+  LLVMConstantFPValueKind = 19;
+  LLVMConstantPointerNullValueKind = 20;
+  LLVMConstantTokenNoneValueKind = 21;
+  LLVMMetadataAsValueValueKind = 22;
+  LLVMInlineAsmValueKind = 23;
+  LLVMInstructionValueKind = 24;
+  LLVMPoisonValueValueKind = 25;
+  LLVMConstantTargetNoneValueKind = 26;
+  LLVMConstantPtrAuthValueKind = 27;
+
+type
+  LLVMIntPredicate = Integer;
+  PLLVMIntPredicate = ^LLVMIntPredicate;
+
+const
+  (** equal *)
+  LLVMIntEQ = 32;
+  (** not equal *)
+  LLVMIntNE = 33;
+  (** unsigned greater than *)
+  LLVMIntUGT = 34;
+  (** unsigned greater or equal *)
+  LLVMIntUGE = 35;
+  (** unsigned less than *)
+  LLVMIntULT = 36;
+  (** unsigned less or equal *)
+  LLVMIntULE = 37;
+  (** signed greater than *)
+  LLVMIntSGT = 38;
+  (** signed greater or equal *)
+  LLVMIntSGE = 39;
+  (** signed less than *)
+  LLVMIntSLT = 40;
+  (** signed less or equal *)
+  LLVMIntSLE = 41;
+
+type
+  LLVMRealPredicate = Integer;
+  PLLVMRealPredicate = ^LLVMRealPredicate;
+
+const
+  (** Always false (always folded) *)
+  LLVMRealPredicateFalse = 0;
+  (** True if ordered and equal *)
+  LLVMRealOEQ = 1;
+  (** True if ordered and greater than *)
+  LLVMRealOGT = 2;
+  (** True if ordered and greater than or equal *)
+  LLVMRealOGE = 3;
+  (** True if ordered and less than *)
+  LLVMRealOLT = 4;
+  (** True if ordered and less than or equal *)
+  LLVMRealOLE = 5;
+  (** True if ordered and operands are unequal *)
+  LLVMRealONE = 6;
+  (** True if ordered (no nans) *)
+  LLVMRealORD = 7;
+  (** True if unordered: isnan(X) | isnan(Y) *)
+  LLVMRealUNO = 8;
+  (** True if unordered or equal *)
+  LLVMRealUEQ = 9;
+  (** True if unordered or greater than *)
+  LLVMRealUGT = 10;
+  (** True if unordered, greater than, or equal *)
+  LLVMRealUGE = 11;
+  (** True if unordered or less than *)
+  LLVMRealULT = 12;
+  (** True if unordered, less than, or equal *)
+  LLVMRealULE = 13;
+  (** True if unordered or not equal *)
+  LLVMRealUNE = 14;
+  (** Always true (always folded) *)
+  LLVMRealPredicateTrue = 15;
+
+type
+  LLVMLandingPadClauseTy = Integer;
+  PLLVMLandingPadClauseTy = ^LLVMLandingPadClauseTy;
+
+const
+  (** A catch clause   *)
+  LLVMLandingPadCatch = 0;
+  (** A filter clause  *)
+  LLVMLandingPadFilter = 1;
+
+type
+  LLVMThreadLocalMode = Integer;
+  PLLVMThreadLocalMode = ^LLVMThreadLocalMode;
+
+const
+  LLVMNotThreadLocal = 0;
+  LLVMGeneralDynamicTLSModel = 1;
+  LLVMLocalDynamicTLSModel = 2;
+  LLVMInitialExecTLSModel = 3;
+  LLVMLocalExecTLSModel = 4;
+
+type
+  LLVMAtomicOrdering = Integer;
+  PLLVMAtomicOrdering = ^LLVMAtomicOrdering;
+
+const
+  (** A load or store which is not atomic *)
+  LLVMAtomicOrderingNotAtomic = 0;
+  (** Lowest level of atomicity, guarantees
+                                       somewhat sane results, lock free. *)
+  LLVMAtomicOrderingUnordered = 1;
+  (** guarantees that if you take all the
+                                       operations affecting a specific address,
+                                       a consistent ordering exists *)
+  LLVMAtomicOrderingMonotonic = 2;
+  (** Acquire provides a barrier of the sort
+                                     necessary to acquire a lock to access other
+                                     memory with normal loads and stores. *)
+  LLVMAtomicOrderingAcquire = 4;
+  (** Release is similar to Acquire, but with
+                                     a barrier of the sort necessary to release
+                                     a lock. *)
+  LLVMAtomicOrderingRelease = 5;
+  (** provides both an Acquire and a
+                                            Release barrier (for fences and
+                                            operations which both read and write
+                                             memory). *)
+  LLVMAtomicOrderingAcquireRelease = 6;
+  (** provides Acquire semantics
+                                                   for loads and Release
+                                                   semantics for stores.
+                                                   Additionally, it guarantees
+                                                   that a total ordering exists
+                                                   between all
+                                                   SequentiallyConsistent
+                                                   operations. *)
+  LLVMAtomicOrderingSequentiallyConsistent = 7;
+
+type
+  LLVMAtomicRMWBinOp = Integer;
+  PLLVMAtomicRMWBinOp = ^LLVMAtomicRMWBinOp;
+
+const
+  (** Set the new value and return the one old *)
+  LLVMAtomicRMWBinOpXchg = 0;
+  (** Add a value and return the old one *)
+  LLVMAtomicRMWBinOpAdd = 1;
+  (** Subtract a value and return the old one *)
+  LLVMAtomicRMWBinOpSub = 2;
+  (** And a value and return the old one *)
+  LLVMAtomicRMWBinOpAnd = 3;
+  (** Not-And a value and return the old one *)
+  LLVMAtomicRMWBinOpNand = 4;
+  (** OR a value and return the old one *)
+  LLVMAtomicRMWBinOpOr = 5;
+  (** Xor a value and return the old one *)
+  LLVMAtomicRMWBinOpXor = 6;
+  (** Sets the value if it's greater than the
+                              original using a signed comparison and return
+                              the old one *)
+  LLVMAtomicRMWBinOpMax = 7;
+  (** Sets the value if it's Smaller than the
+                              original using a signed comparison and return
+                              the old one *)
+  LLVMAtomicRMWBinOpMin = 8;
+  (** Sets the value if it's greater than the
+                             original using an unsigned comparison and return
+                             the old one *)
+  LLVMAtomicRMWBinOpUMax = 9;
+  (** Sets the value if it's greater than the
+                              original using an unsigned comparison and return
+                              the old one *)
+  LLVMAtomicRMWBinOpUMin = 10;
+  (** Add a floating point value and return the
+                              old one *)
+  LLVMAtomicRMWBinOpFAdd = 11;
+  (** Subtract a floating point value and return the
+                            old one *)
+  LLVMAtomicRMWBinOpFSub = 12;
+  (** Sets the value if it's greater than the
+                             original using an floating point comparison and
+                             return the old one *)
+  LLVMAtomicRMWBinOpFMax = 13;
+  (** Sets the value if it's smaller than the
+                             original using an floating point comparison and
+                             return the old one *)
+  LLVMAtomicRMWBinOpFMin = 14;
+  (** Increments the value, wrapping back to zero
+                                 when incremented above input value *)
+  LLVMAtomicRMWBinOpUIncWrap = 15;
+  (** Decrements the value, wrapping back to
+                                 the input value when decremented below zero *)
+  LLVMAtomicRMWBinOpUDecWrap = 16;
+  (**Subtracts the value only if no unsigned
+                                   overflow *)
+  LLVMAtomicRMWBinOpUSubCond = 17;
+  (**Subtracts the value, clamping to zero *)
+  LLVMAtomicRMWBinOpUSubSat = 18;
+
+type
+  LLVMDiagnosticSeverity = Integer;
+  PLLVMDiagnosticSeverity = ^LLVMDiagnosticSeverity;
+
+const
+  LLVMDSError = 0;
+  LLVMDSWarning = 1;
+  LLVMDSRemark = 2;
+  LLVMDSNote = 3;
+
+type
+  LLVMInlineAsmDialect = Integer;
+  PLLVMInlineAsmDialect = ^LLVMInlineAsmDialect;
+
+const
+  LLVMInlineAsmDialectATT = 0;
+  LLVMInlineAsmDialectIntel = 1;
+
+type
+  LLVMModuleFlagBehavior = Integer;
+  PLLVMModuleFlagBehavior = ^LLVMModuleFlagBehavior;
+
+const
+  (**
+   * Emits an error if two values disagree, otherwise the resulting value is
+   * that of the operands.
+   *
+   * @see Module::ModFlagBehavior::Error
+   *)
+  LLVMModuleFlagBehaviorError = 0;
+  (**
+   * Emits a warning if two values disagree. The result value will be the
+   * operand for the flag from the first module being linked.
+   *
+   * @see Module::ModFlagBehavior::Warning
+   *)
+  LLVMModuleFlagBehaviorWarning = 1;
+  (**
+   * Adds a requirement that another module flag be present and have a
+   * specified value after linking is performed. The value must be a metadata
+   * pair, where the first element of the pair is the ID of the module flag
+   * to be restricted, and the second element of the pair is the value the
+   * module flag should be restricted to. This behavior can be used to
+   * restrict the allowable results (via triggering of an error) of linking
+   * IDs with the **Override** behavior.
+   *
+   * @see Module::ModFlagBehavior::Require
+   *)
+  LLVMModuleFlagBehaviorRequire = 2;
+  (**
+   * Uses the specified value, regardless of the behavior or value of the
+   * other module. If both modules specify **Override**, but the values
+   * differ, an error will be emitted.
+   *
+   * @see Module::ModFlagBehavior::Override
+   *)
+  LLVMModuleFlagBehaviorOverride = 3;
+  (**
+   * Appends the two values, which are required to be metadata nodes.
+   *
+   * @see Module::ModFlagBehavior::Append
+   *)
+  LLVMModuleFlagBehaviorAppend = 4;
+  (**
+   * Appends the two values, which are required to be metadata
+   * nodes. However, duplicate entries in the second list are dropped
+   * during the append operation.
+   *
+   * @see Module::ModFlagBehavior::AppendUnique
+   *)
+  LLVMModuleFlagBehaviorAppendUnique = 5;
+
+(**
+ * Attribute index are either LLVMAttributeReturnIndex,
+ * LLVMAttributeFunctionIndex or a parameter number from 1 to N.
+ *)
+const
+  LLVMAttributeReturnIndex = 0;
+  LLVMAttributeFunctionIndex = -1;
+
+(**
+ * Tail call kind for LLVMSetTailCallKind and LLVMGetTailCallKind.
+ *
+ * Note that 'musttail' implies 'tail'.
+ *
+ * @see CallInst::TailCallKind
+ *)
+type
+  LLVMTailCallKind = Integer;
+  PLLVMTailCallKind = ^LLVMTailCallKind;
+
+const
+  LLVMTailCallKindNone = 0;
+  LLVMTailCallKindTail = 1;
+  LLVMTailCallKindMustTail = 2;
+  LLVMTailCallKindNoTail = 3;
+
+const
+  LLVMFastMathAllowReassoc = 1;
+  LLVMFastMathNoNaNs = 2;
+  LLVMFastMathNoInfs = 4;
+  LLVMFastMathNoSignedZeros = 8;
+  LLVMFastMathAllowReciprocal = 16;
+  LLVMFastMathAllowContract = 32;
+  LLVMFastMathApproxFunc = 64;
+  LLVMFastMathNone = 0;
+  LLVMFastMathAll = 127;
+
+const
+  LLVMGEPFlagInBounds = 1;
+  LLVMGEPFlagNUSW = 2;
+  LLVMGEPFlagNUW = 4;
+
+(**
+ * Debug info flags.
+ *)
+type
+  LLVMDIFlags = Integer;
+  PLLVMDIFlags = ^LLVMDIFlags;
+
+const
+  LLVMDIFlagZero = 0;
+  LLVMDIFlagPrivate = 1;
+  LLVMDIFlagProtected = 2;
+  LLVMDIFlagPublic = 3;
+  LLVMDIFlagFwdDecl = 4;
+  LLVMDIFlagAppleBlock = 8;
+  LLVMDIFlagReservedBit4 = 16;
+  LLVMDIFlagVirtual = 32;
+  LLVMDIFlagArtificial = 64;
+  LLVMDIFlagExplicit = 128;
+  LLVMDIFlagPrototyped = 256;
+  LLVMDIFlagObjcClassComplete = 512;
+  LLVMDIFlagObjectPointer = 1024;
+  LLVMDIFlagVector = 2048;
+  LLVMDIFlagStaticMember = 4096;
+  LLVMDIFlagLValueReference = 8192;
+  LLVMDIFlagRValueReference = 16384;
+  LLVMDIFlagReserved = 32768;
+  LLVMDIFlagSingleInheritance = 65536;
+  LLVMDIFlagMultipleInheritance = 131072;
+  LLVMDIFlagVirtualInheritance = 196608;
+  LLVMDIFlagIntroducedVirtual = 262144;
+  LLVMDIFlagBitField = 524288;
+  LLVMDIFlagNoReturn = 1048576;
+  LLVMDIFlagTypePassByValue = 4194304;
+  LLVMDIFlagTypePassByReference = 8388608;
+  LLVMDIFlagEnumClass = 16777216;
+  LLVMDIFlagFixedEnum = 16777216;
+  LLVMDIFlagThunk = 33554432;
+  LLVMDIFlagNonTrivial = 67108864;
+  LLVMDIFlagBigEndian = 134217728;
+  LLVMDIFlagLittleEndian = 268435456;
+  LLVMDIFlagIndirectVirtualBase = 36;
+  LLVMDIFlagAccessibility = 3;
+  LLVMDIFlagPtrToMemberRep = 196608;
+
+(**
+ * Source languages known by DWARF.
+ *)
+type
+  LLVMDWARFSourceLanguage = Integer;
+  PLLVMDWARFSourceLanguage = ^LLVMDWARFSourceLanguage;
+
+const
+  LLVMDWARFSourceLanguageC89 = 0;
+  LLVMDWARFSourceLanguageC = 1;
+  LLVMDWARFSourceLanguageAda83 = 2;
+  LLVMDWARFSourceLanguageC_plus_plus = 3;
+  LLVMDWARFSourceLanguageCobol74 = 4;
+  LLVMDWARFSourceLanguageCobol85 = 5;
+  LLVMDWARFSourceLanguageFortran77 = 6;
+  LLVMDWARFSourceLanguageFortran90 = 7;
+  LLVMDWARFSourceLanguagePascal83 = 8;
+  LLVMDWARFSourceLanguageModula2 = 9;
+  LLVMDWARFSourceLanguageJava = 10;
+  LLVMDWARFSourceLanguageC99 = 11;
+  LLVMDWARFSourceLanguageAda95 = 12;
+  LLVMDWARFSourceLanguageFortran95 = 13;
+  LLVMDWARFSourceLanguagePLI = 14;
+  LLVMDWARFSourceLanguageObjC = 15;
+  LLVMDWARFSourceLanguageObjC_plus_plus = 16;
+  LLVMDWARFSourceLanguageUPC = 17;
+  LLVMDWARFSourceLanguageD = 18;
+  LLVMDWARFSourceLanguagePython = 19;
+  LLVMDWARFSourceLanguageOpenCL = 20;
+  LLVMDWARFSourceLanguageGo = 21;
+  LLVMDWARFSourceLanguageModula3 = 22;
+  LLVMDWARFSourceLanguageHaskell = 23;
+  LLVMDWARFSourceLanguageC_plus_plus_03 = 24;
+  LLVMDWARFSourceLanguageC_plus_plus_11 = 25;
+  LLVMDWARFSourceLanguageOCaml = 26;
+  LLVMDWARFSourceLanguageRust = 27;
+  LLVMDWARFSourceLanguageC11 = 28;
+  LLVMDWARFSourceLanguageSwift = 29;
+  LLVMDWARFSourceLanguageJulia = 30;
+  LLVMDWARFSourceLanguageDylan = 31;
+  LLVMDWARFSourceLanguageC_plus_plus_14 = 32;
+  LLVMDWARFSourceLanguageFortran03 = 33;
+  LLVMDWARFSourceLanguageFortran08 = 34;
+  LLVMDWARFSourceLanguageRenderScript = 35;
+  LLVMDWARFSourceLanguageBLISS = 36;
+  LLVMDWARFSourceLanguageKotlin = 37;
+  LLVMDWARFSourceLanguageZig = 38;
+  LLVMDWARFSourceLanguageCrystal = 39;
+  LLVMDWARFSourceLanguageC_plus_plus_17 = 40;
+  LLVMDWARFSourceLanguageC_plus_plus_20 = 41;
+  LLVMDWARFSourceLanguageC17 = 42;
+  LLVMDWARFSourceLanguageFortran18 = 43;
+  LLVMDWARFSourceLanguageAda2005 = 44;
+  LLVMDWARFSourceLanguageAda2012 = 45;
+  LLVMDWARFSourceLanguageHIP = 46;
+  LLVMDWARFSourceLanguageAssembly = 47;
+  LLVMDWARFSourceLanguageC_sharp = 48;
+  LLVMDWARFSourceLanguageMojo = 49;
+  LLVMDWARFSourceLanguageGLSL = 50;
+  LLVMDWARFSourceLanguageGLSL_ES = 51;
+  LLVMDWARFSourceLanguageHLSL = 52;
+  LLVMDWARFSourceLanguageOpenCL_CPP = 53;
+  LLVMDWARFSourceLanguageCPP_for_OpenCL = 54;
+  LLVMDWARFSourceLanguageSYCL = 55;
+  LLVMDWARFSourceLanguageRuby = 56;
+  LLVMDWARFSourceLanguageMove = 57;
+  LLVMDWARFSourceLanguageHylo = 58;
+  LLVMDWARFSourceLanguageMetal = 59;
+  LLVMDWARFSourceLanguageMips_Assembler = 60;
+  LLVMDWARFSourceLanguageGOOGLE_RenderScript = 61;
+  LLVMDWARFSourceLanguageBORLAND_Delphi = 62;
+
+(**
+ * The amount of debug information to emit.
+ *)
+type
+  LLVMDWARFEmissionKind = Integer;
+  PLLVMDWARFEmissionKind = ^LLVMDWARFEmissionKind;
+
+const
+  LLVMDWARFEmissionNone = 0;
+  LLVMDWARFEmissionFull = 1;
+  LLVMDWARFEmissionLineTablesOnly = 2;
+
+(**
+ * The kind of metadata nodes.
+ *)
+const
+  LLVMMDStringMetadataKind = 0;
+  LLVMConstantAsMetadataMetadataKind = 1;
+  LLVMLocalAsMetadataMetadataKind = 2;
+  LLVMDistinctMDOperandPlaceholderMetadataKind = 3;
+  LLVMMDTupleMetadataKind = 4;
+  LLVMDILocationMetadataKind = 5;
+  LLVMDIExpressionMetadataKind = 6;
+  LLVMDIGlobalVariableExpressionMetadataKind = 7;
+  LLVMGenericDINodeMetadataKind = 8;
+  LLVMDISubrangeMetadataKind = 9;
+  LLVMDIEnumeratorMetadataKind = 10;
+  LLVMDIBasicTypeMetadataKind = 11;
+  LLVMDIDerivedTypeMetadataKind = 12;
+  LLVMDICompositeTypeMetadataKind = 13;
+  LLVMDISubroutineTypeMetadataKind = 14;
+  LLVMDIFileMetadataKind = 15;
+  LLVMDICompileUnitMetadataKind = 16;
+  LLVMDISubprogramMetadataKind = 17;
+  LLVMDILexicalBlockMetadataKind = 18;
+  LLVMDILexicalBlockFileMetadataKind = 19;
+  LLVMDINamespaceMetadataKind = 20;
+  LLVMDIModuleMetadataKind = 21;
+  LLVMDITemplateTypeParameterMetadataKind = 22;
+  LLVMDITemplateValueParameterMetadataKind = 23;
+  LLVMDIGlobalVariableMetadataKind = 24;
+  LLVMDILocalVariableMetadataKind = 25;
+  LLVMDILabelMetadataKind = 26;
+  LLVMDIObjCPropertyMetadataKind = 27;
+  LLVMDIImportedEntityMetadataKind = 28;
+  LLVMDIMacroMetadataKind = 29;
+  LLVMDIMacroFileMetadataKind = 30;
+  LLVMDICommonBlockMetadataKind = 31;
+  LLVMDIStringTypeMetadataKind = 32;
+  LLVMDIGenericSubrangeMetadataKind = 33;
+  LLVMDIArgListMetadataKind = 34;
+  LLVMDIAssignIDMetadataKind = 35;
+
+(**
+ * Describes the kind of macro declaration used for LLVMDIBuilderCreateMacro.
+ * @see llvm::dwarf::MacinfoRecordType
+ * @note Values are from DW_MACINFO_* constants in the DWARF specification.
+ *)
+type
+  LLVMDWARFMacinfoRecordType = Integer;
+  PLLVMDWARFMacinfoRecordType = ^LLVMDWARFMacinfoRecordType;
+
+const
+  LLVMDWARFMacinfoRecordTypeDefine = 1;
+  LLVMDWARFMacinfoRecordTypeMacro = 2;
+  LLVMDWARFMacinfoRecordTypeStartFile = 3;
+  LLVMDWARFMacinfoRecordTypeEndFile = 4;
+  LLVMDWARFMacinfoRecordTypeVendorExt = 255;
+
+(**
+ * @defgroup LLVMCTarget Target information
+ * @ingroup LLVMC
+ *
+ * @{
+ *)
+type
+  LLVMByteOrdering = Integer;
+  PLLVMByteOrdering = ^LLVMByteOrdering;
+
+const
+  LLVMBigEndian = 0;
+  LLVMLittleEndian = 1;
+
+type
+  LLVMCodeGenOptLevel = Integer;
+  PLLVMCodeGenOptLevel = ^LLVMCodeGenOptLevel;
+
+const
+  LLVMCodeGenLevelNone = 0;
+  LLVMCodeGenLevelLess = 1;
+  LLVMCodeGenLevelDefault = 2;
+  LLVMCodeGenLevelAggressive = 3;
+
+type
+  LLVMRelocMode = Integer;
+  PLLVMRelocMode = ^LLVMRelocMode;
+
+const
+  LLVMRelocDefault = 0;
+  LLVMRelocStatic = 1;
+  LLVMRelocPIC = 2;
+  LLVMRelocDynamicNoPic = 3;
+  LLVMRelocROPI = 4;
+  LLVMRelocRWPI = 5;
+  LLVMRelocROPI_RWPI = 6;
+
+type
+  LLVMCodeModel = Integer;
+  PLLVMCodeModel = ^LLVMCodeModel;
+
+const
+  LLVMCodeModelDefault = 0;
+  LLVMCodeModelJITDefault = 1;
+  LLVMCodeModelTiny = 2;
+  LLVMCodeModelSmall = 3;
+  LLVMCodeModelKernel = 4;
+  LLVMCodeModelMedium = 5;
+  LLVMCodeModelLarge = 6;
+
+type
+  LLVMCodeGenFileType = Integer;
+  PLLVMCodeGenFileType = ^LLVMCodeGenFileType;
+
+const
+  LLVMAssemblyFile = 0;
+  LLVMObjectFile = 1;
+
+type
+  LLVMGlobalISelAbortMode = Integer;
+  PLLVMGlobalISelAbortMode = ^LLVMGlobalISelAbortMode;
+
+const
+  LLVMGlobalISelAbortEnable = 0;
+  LLVMGlobalISelAbortDisable = 1;
+  LLVMGlobalISelAbortDisableWithDiag = 2;
+
+(**
+ * @defgroup LLVMCCoreLinker Linker
+ * @ingroup LLVMCCore
+ *
+ * @{
+ *)
+type
+  LLVMLinkerMode = Integer;
+  PLLVMLinkerMode = ^LLVMLinkerMode;
+
+const
+  LLVMLinkerDestroySource = 0;
+  LLVMLinkerPreserveSource_Removed = 1;
+
+(**
+ * Represents generic linkage flags for a symbol definition.
+ *)
+type
+  LLVMJITSymbolGenericFlags = Integer;
+  PLLVMJITSymbolGenericFlags = ^LLVMJITSymbolGenericFlags;
+
+const
+  LLVMJITSymbolGenericFlagsNone = 0;
+  LLVMJITSymbolGenericFlagsExported = 1;
+  LLVMJITSymbolGenericFlagsWeak = 2;
+  LLVMJITSymbolGenericFlagsCallable = 4;
+  LLVMJITSymbolGenericFlagsMaterializationSideEffectsOnly = 8;
+
+(**
+ * Lookup kind. This can be used by definition generators when deciding whether
+ * to produce a definition for a requested symbol.
+ *
+ * This enum should be kept in sync with llvm::orc::LookupKind.
+ *)
+type
+  LLVMOrcLookupKind = Integer;
+  PLLVMOrcLookupKind = ^LLVMOrcLookupKind;
+
+const
+  LLVMOrcLookupKindStatic = 0;
+  LLVMOrcLookupKindDLSym = 1;
+
+(**
+ * JITDylib lookup flags. This can be used by definition generators when
+ * deciding whether to produce a definition for a requested symbol.
+ *
+ * This enum should be kept in sync with llvm::orc::JITDylibLookupFlags.
+ *)
+type
+  LLVMOrcJITDylibLookupFlags = Integer;
+  PLLVMOrcJITDylibLookupFlags = ^LLVMOrcJITDylibLookupFlags;
+
+const
+  LLVMOrcJITDylibLookupFlagsMatchExportedSymbolsOnly = 0;
+  LLVMOrcJITDylibLookupFlagsMatchAllSymbols = 1;
+
+(**
+ * Symbol lookup flags for lookup sets. This should be kept in sync with
+ * llvm::orc::SymbolLookupFlags.
+ *)
+type
+  LLVMOrcSymbolLookupFlags = Integer;
+  PLLVMOrcSymbolLookupFlags = ^LLVMOrcSymbolLookupFlags;
+
+const
+  LLVMOrcSymbolLookupFlagsRequiredSymbol = 0;
+  LLVMOrcSymbolLookupFlagsWeaklyReferencedSymbol = 1;
+
+type
+  LLVMBinaryType = Integer;
+  PLLVMBinaryType = ^LLVMBinaryType;
+
+const
+  (** Archive file. *)
+  LLVMBinaryTypeArchive = 0;
+  (** Mach-O Universal Binary file. *)
+  LLVMBinaryTypeMachOUniversalBinary = 1;
+  (** COFF Import file. *)
+  LLVMBinaryTypeCOFFImportFile = 2;
+  (** LLVM IR. *)
+  LLVMBinaryTypeIR = 3;
+  (** Windows resource (.res) file. *)
+  LLVMBinaryTypeWinRes = 4;
+  (** COFF Object file. *)
+  LLVMBinaryTypeCOFF = 5;
+  (** ELF 32-bit, little endian. *)
+  LLVMBinaryTypeELF32L = 6;
+  (** ELF 32-bit, big endian. *)
+  LLVMBinaryTypeELF32B = 7;
+  (** ELF 64-bit, little endian. *)
+  LLVMBinaryTypeELF64L = 8;
+  (** ELF 64-bit, big endian. *)
+  LLVMBinaryTypeELF64B = 9;
+  (** MachO 32-bit, little endian. *)
+  LLVMBinaryTypeMachO32L = 10;
+  (** MachO 32-bit, big endian. *)
+  LLVMBinaryTypeMachO32B = 11;
+  (** MachO 64-bit, little endian. *)
+  LLVMBinaryTypeMachO64L = 12;
+  (** MachO 64-bit, big endian. *)
+  LLVMBinaryTypeMachO64B = 13;
+  (** Web Assembly. *)
+  LLVMBinaryTypeWasm = 14;
+  (** Offloading fatbinary. *)
+  LLVMBinaryTypeOffload = 15;
+
+(**
+ * The type of the emitted remark.
+ *)
+type
+  LLVMRemarkType = Integer;
+  PLLVMRemarkType = ^LLVMRemarkType;
+
+const
+  LLVMRemarkTypeUnknown = 0;
+  LLVMRemarkTypePassed = 1;
+  LLVMRemarkTypeMissed = 2;
+  LLVMRemarkTypeAnalysis = 3;
+  LLVMRemarkTypeAnalysisFPCommute = 4;
+  LLVMRemarkTypeAnalysisAliasing = 5;
+  LLVMRemarkTypeFailure = 6;
 
 type
   // Forward declarations
@@ -209,8 +1208,6 @@ type
   PPLLVMOpaqueTargetMachine = ^PLLVMOpaqueTargetMachine;
   PLLVMTarget = Pointer;
   PPLLVMTarget = ^PLLVMTarget;
-  PLLVMOpaquePassBuilderOptions = Pointer;
-  PPLLVMOpaquePassBuilderOptions = ^PLLVMOpaquePassBuilderOptions;
   PLLVMOpaqueGenericValue = Pointer;
   PPLLVMOpaqueGenericValue = ^PLLVMOpaqueGenericValue;
   PLLVMOpaqueExecutionEngine = Pointer;
@@ -277,6 +1274,8 @@ type
   PPLLVMRemarkOpaqueEntry = ^PLLVMRemarkOpaqueEntry;
   PLLVMRemarkOpaqueParser = Pointer;
   PPLLVMRemarkOpaqueParser = ^PLLVMRemarkOpaqueParser;
+  PLLVMOpaquePassBuilderOptions = Pointer;
+  PPLLVMOpaquePassBuilderOptions = ^PLLVMOpaquePassBuilderOptions;
   PLLVMOpInfoSymbol1 = ^LLVMOpInfoSymbol1;
   PLLVMOpInfo1 = ^LLVMOpInfo1;
   PLLVMMCJITCompilerOptions = ^LLVMMCJITCompilerOptions;
@@ -344,107 +1343,6 @@ type
   PLLVMBinaryRef = ^LLVMBinaryRef;
   LLVMDbgRecordRef = Pointer;
   PLLVMDbgRecordRef = ^LLVMDbgRecordRef;
-  LLVMErrorRef = Pointer;
-  PLLVMErrorRef = ^LLVMErrorRef;
-  (**
-   * Error type identifier.
-   *)
-  LLVMErrorTypeId = Pointer;
-
-  (**
-   * @defgroup LLVMCTarget Target information
-   * @ingroup LLVMC
-   *
-   * @{
-   *)
-  LLVMByteOrdering = (
-    LLVMBigEndian = 0,
-    LLVMLittleEndian = 1);
-  PLLVMByteOrdering = ^LLVMByteOrdering;
-  LLVMTargetDataRef = Pointer;
-  PLLVMTargetDataRef = ^LLVMTargetDataRef;
-  LLVMTargetLibraryInfoRef = Pointer;
-  PLLVMTargetLibraryInfoRef = ^LLVMTargetLibraryInfoRef;
-  LLVMTargetMachineOptionsRef = Pointer;
-  PLLVMTargetMachineOptionsRef = ^LLVMTargetMachineOptionsRef;
-  LLVMTargetMachineRef = Pointer;
-  PLLVMTargetMachineRef = ^LLVMTargetMachineRef;
-  LLVMTargetRef = Pointer;
-  PLLVMTargetRef = ^LLVMTargetRef;
-
-  LLVMCodeGenOptLevel = (
-    LLVMCodeGenLevelNone = 0,
-    LLVMCodeGenLevelLess = 1,
-    LLVMCodeGenLevelDefault = 2,
-    LLVMCodeGenLevelAggressive = 3);
-  PLLVMCodeGenOptLevel = ^LLVMCodeGenOptLevel;
-
-  LLVMRelocMode = (
-    LLVMRelocDefault = 0,
-    LLVMRelocStatic = 1,
-    LLVMRelocPIC = 2,
-    LLVMRelocDynamicNoPic = 3,
-    LLVMRelocROPI = 4,
-    LLVMRelocRWPI = 5,
-    LLVMRelocROPI_RWPI = 6);
-  PLLVMRelocMode = ^LLVMRelocMode;
-
-  LLVMCodeModel = (
-    LLVMCodeModelDefault = 0,
-    LLVMCodeModelJITDefault = 1,
-    LLVMCodeModelTiny = 2,
-    LLVMCodeModelSmall = 3,
-    LLVMCodeModelKernel = 4,
-    LLVMCodeModelMedium = 5,
-    LLVMCodeModelLarge = 6);
-  PLLVMCodeModel = ^LLVMCodeModel;
-
-  LLVMCodeGenFileType = (
-    LLVMAssemblyFile = 0,
-    LLVMObjectFile = 1);
-  PLLVMCodeGenFileType = ^LLVMCodeGenFileType;
-
-  LLVMGlobalISelAbortMode = (
-    LLVMGlobalISelAbortEnable = 0,
-    LLVMGlobalISelAbortDisable = 1,
-    LLVMGlobalISelAbortDisableWithDiag = 2);
-  PLLVMGlobalISelAbortMode = ^LLVMGlobalISelAbortMode;
-  LLVMPassBuilderOptionsRef = Pointer;
-  PLLVMPassBuilderOptionsRef = ^LLVMPassBuilderOptionsRef;
-
-  (**
-   * @defgroup LLVMCAnalysis Analysis
-   * @ingroup LLVMC
-   *
-   * @{
-   *)
-  LLVMVerifierFailureAction = (
-    LLVMAbortProcessAction = 0,
-    LLVMPrintMessageAction = 1,
-    LLVMReturnStatusAction = 2);
-  PLLVMVerifierFailureAction = ^LLVMVerifierFailureAction;
-
-  (**
-   * @defgroup LLVMCCoreComdat Comdats
-   * @ingroup LLVMCCore
-   *
-   * @{
-   *)
-  LLVMComdatSelectionKind = (
-    /// The linker may choose any COMDAT.
-    LLVMAnyComdatSelectionKind = 0,
-    /// The data referenced by the COMDAT must
-                                         ///< be the same.
-    LLVMExactMatchComdatSelectionKind = 1,
-    /// The linker will choose the largest
-                                         ///< COMDAT.
-    LLVMLargestComdatSelectionKind = 2,
-    /// No deduplication is performed.
-    LLVMNoDeduplicateComdatSelectionKind = 3,
-    /// The data referenced by the COMDAT must be
-                                      ///< the same size.
-    LLVMSameSizeComdatSelectionKind = 4);
-  PLLVMComdatSelectionKind = ^LLVMComdatSelectionKind;
 
   (**
    * @addtogroup LLVMCError
@@ -452,526 +1350,7 @@ type
    * @{
    *)
   LLVMFatalErrorHandler = procedure(const Reason: PUTF8Char); cdecl;
-
-  /// External users depend on the following values being stable. It is not safe
-  /// to reorder them.
-  LLVMOpcode = (
-    LLVMRet = 1,
-    LLVMBr = 2,
-    LLVMSwitch = 3,
-    LLVMIndirectBr = 4,
-    LLVMInvoke = 5,
-    LLVMUnreachable = 7,
-    LLVMCallBr = 67,
-    LLVMFNeg = 66,
-    LLVMAdd = 8,
-    LLVMFAdd = 9,
-    LLVMSub = 10,
-    LLVMFSub = 11,
-    LLVMMul = 12,
-    LLVMFMul = 13,
-    LLVMUDiv = 14,
-    LLVMSDiv = 15,
-    LLVMFDiv = 16,
-    LLVMURem = 17,
-    LLVMSRem = 18,
-    LLVMFRem = 19,
-    LLVMShl = 20,
-    LLVMLShr = 21,
-    LLVMAShr = 22,
-    LLVMAnd = 23,
-    LLVMOr = 24,
-    LLVMXor = 25,
-    LLVMAlloca = 26,
-    LLVMLoad = 27,
-    LLVMStore = 28,
-    LLVMGetElementPtr = 29,
-    LLVMTrunc = 30,
-    LLVMZExt = 31,
-    LLVMSExt = 32,
-    LLVMFPToUI = 33,
-    LLVMFPToSI = 34,
-    LLVMUIToFP = 35,
-    LLVMSIToFP = 36,
-    LLVMFPTrunc = 37,
-    LLVMFPExt = 38,
-    LLVMPtrToInt = 39,
-    LLVMIntToPtr = 40,
-    LLVMBitCast = 41,
-    LLVMAddrSpaceCast = 60,
-    LLVMICmp = 42,
-    LLVMFCmp = 43,
-    LLVMPHI = 44,
-    LLVMCall = 45,
-    LLVMSelect = 46,
-    LLVMUserOp1 = 47,
-    LLVMUserOp2 = 48,
-    LLVMVAArg = 49,
-    LLVMExtractElement = 50,
-    LLVMInsertElement = 51,
-    LLVMShuffleVector = 52,
-    LLVMExtractValue = 53,
-    LLVMInsertValue = 54,
-    LLVMFreeze = 68,
-    LLVMFence = 55,
-    LLVMAtomicCmpXchg = 56,
-    LLVMAtomicRMW = 57,
-    LLVMResume = 58,
-    LLVMLandingPad = 59,
-    LLVMCleanupRet = 61,
-    LLVMCatchRet = 62,
-    LLVMCatchPad = 63,
-    LLVMCleanupPad = 64,
-    LLVMCatchSwitch = 65);
-  PLLVMOpcode = ^LLVMOpcode;
-
-  LLVMTypeKind = (
-    (** type with no size *)
-    LLVMVoidTypeKind = 0,
-    (** 16 bit floating point type *)
-    LLVMHalfTypeKind = 1,
-    (** 32 bit floating point type *)
-    LLVMFloatTypeKind = 2,
-    (** 64 bit floating point type *)
-    LLVMDoubleTypeKind = 3,
-    (** 80 bit floating point type (X87) *)
-    LLVMX86_FP80TypeKind = 4,
-    (** 128 bit floating point type (112-bit mantissa)*)
-    LLVMFP128TypeKind = 5,
-    (** 128 bit floating point type (two 64-bits) *)
-    LLVMPPC_FP128TypeKind = 6,
-    (** Labels *)
-    LLVMLabelTypeKind = 7,
-    (** Arbitrary bit width integers *)
-    LLVMIntegerTypeKind = 8,
-    (** Functions *)
-    LLVMFunctionTypeKind = 9,
-    (** Structures *)
-    LLVMStructTypeKind = 10,
-    (** Arrays *)
-    LLVMArrayTypeKind = 11,
-    (** Pointers *)
-    LLVMPointerTypeKind = 12,
-    (** Fixed width SIMD vector type *)
-    LLVMVectorTypeKind = 13,
-    (** Metadata *)
-    LLVMMetadataTypeKind = 14,
-    (** Tokens *)
-    LLVMTokenTypeKind = 16,
-    (** Scalable SIMD vector type *)
-    LLVMScalableVectorTypeKind = 17,
-    (** 16 bit brain floating point type *)
-    LLVMBFloatTypeKind = 18,
-    (** X86 AMX *)
-    LLVMX86_AMXTypeKind = 19,
-    (** Target extension type *)
-    LLVMTargetExtTypeKind = 20);
-  PLLVMTypeKind = ^LLVMTypeKind;
-
-  LLVMLinkage = (
-    (** Externally visible function *)
-    LLVMExternalLinkage = 0,
-    LLVMAvailableExternallyLinkage = 1,
-    (** Keep one copy of function when linking (inline)*)
-    LLVMLinkOnceAnyLinkage = 2,
-    (** Same, but only replaced by something
-                                equivalent. *)
-    LLVMLinkOnceODRLinkage = 3,
-    (** Obsolete *)
-    LLVMLinkOnceODRAutoHideLinkage = 4,
-    (** Keep one copy of function when linking (weak) *)
-    LLVMWeakAnyLinkage = 5,
-    (** Same, but only replaced by something
-                                equivalent. *)
-    LLVMWeakODRLinkage = 6,
-    (** Special purpose, only applies to global arrays *)
-    LLVMAppendingLinkage = 7,
-    (** Rename collisions when linking (static
-                                   functions) *)
-    LLVMInternalLinkage = 8,
-    (** Like Internal, but omit from symbol table *)
-    LLVMPrivateLinkage = 9,
-    (** Obsolete *)
-    LLVMDLLImportLinkage = 10,
-    (** Obsolete *)
-    LLVMDLLExportLinkage = 11,
-    (** ExternalWeak linkage description *)
-    LLVMExternalWeakLinkage = 12,
-    (** Obsolete *)
-    LLVMGhostLinkage = 13,
-    (** Tentative definitions *)
-    LLVMCommonLinkage = 14,
-    (** Like Private, but linker removes. *)
-    LLVMLinkerPrivateLinkage = 15,
-    (** Like LinkerPrivate, but is weak. *)
-    LLVMLinkerPrivateWeakLinkage = 16);
-  PLLVMLinkage = ^LLVMLinkage;
-
-  LLVMVisibility = (
-    (** The GV is visible *)
-    LLVMDefaultVisibility = 0,
-    (** The GV is hidden *)
-    LLVMHiddenVisibility = 1,
-    (** The GV is protected *)
-    LLVMProtectedVisibility = 2);
-  PLLVMVisibility = ^LLVMVisibility;
-
-  LLVMUnnamedAddr = (
-    (** Address of the GV is significant. *)
-    LLVMNoUnnamedAddr = 0,
-    (** Address of the GV is locally insignificant. *)
-    LLVMLocalUnnamedAddr = 1,
-    (** Address of the GV is globally insignificant. *)
-    LLVMGlobalUnnamedAddr = 2);
-  PLLVMUnnamedAddr = ^LLVMUnnamedAddr;
-
-  LLVMDLLStorageClass = (
-    LLVMDefaultStorageClass = 0,
-    (** Function to be imported from DLL. *)
-    LLVMDLLImportStorageClass = 1,
-    (** Function to be accessible from DLL. *)
-    LLVMDLLExportStorageClass = 2);
-  PLLVMDLLStorageClass = ^LLVMDLLStorageClass;
-
-  LLVMCallConv = (
-    LLVMCCallConv = 0,
-    LLVMFastCallConv = 8,
-    LLVMColdCallConv = 9,
-    LLVMGHCCallConv = 10,
-    LLVMHiPECallConv = 11,
-    LLVMAnyRegCallConv = 13,
-    LLVMPreserveMostCallConv = 14,
-    LLVMPreserveAllCallConv = 15,
-    LLVMSwiftCallConv = 16,
-    LLVMCXXFASTTLSCallConv = 17,
-    LLVMX86StdcallCallConv = 64,
-    LLVMX86FastcallCallConv = 65,
-    LLVMARMAPCSCallConv = 66,
-    LLVMARMAAPCSCallConv = 67,
-    LLVMARMAAPCSVFPCallConv = 68,
-    LLVMMSP430INTRCallConv = 69,
-    LLVMX86ThisCallCallConv = 70,
-    LLVMPTXKernelCallConv = 71,
-    LLVMPTXDeviceCallConv = 72,
-    LLVMSPIRFUNCCallConv = 75,
-    LLVMSPIRKERNELCallConv = 76,
-    LLVMIntelOCLBICallConv = 77,
-    LLVMX8664SysVCallConv = 78,
-    LLVMWin64CallConv = 79,
-    LLVMX86VectorCallCallConv = 80,
-    LLVMHHVMCallConv = 81,
-    LLVMHHVMCCallConv = 82,
-    LLVMX86INTRCallConv = 83,
-    LLVMAVRINTRCallConv = 84,
-    LLVMAVRSIGNALCallConv = 85,
-    LLVMAVRBUILTINCallConv = 86,
-    LLVMAMDGPUVSCallConv = 87,
-    LLVMAMDGPUGSCallConv = 88,
-    LLVMAMDGPUPSCallConv = 89,
-    LLVMAMDGPUCSCallConv = 90,
-    LLVMAMDGPUKERNELCallConv = 91,
-    LLVMX86RegCallCallConv = 92,
-    LLVMAMDGPUHSCallConv = 93,
-    LLVMMSP430BUILTINCallConv = 94,
-    LLVMAMDGPULSCallConv = 95,
-    LLVMAMDGPUESCallConv = 96);
-  PLLVMCallConv = ^LLVMCallConv;
-
-  LLVMValueKind = (
-    LLVMArgumentValueKind = 0,
-    LLVMBasicBlockValueKind = 1,
-    LLVMMemoryUseValueKind = 2,
-    LLVMMemoryDefValueKind = 3,
-    LLVMMemoryPhiValueKind = 4,
-    LLVMFunctionValueKind = 5,
-    LLVMGlobalAliasValueKind = 6,
-    LLVMGlobalIFuncValueKind = 7,
-    LLVMGlobalVariableValueKind = 8,
-    LLVMBlockAddressValueKind = 9,
-    LLVMConstantExprValueKind = 10,
-    LLVMConstantArrayValueKind = 11,
-    LLVMConstantStructValueKind = 12,
-    LLVMConstantVectorValueKind = 13,
-    LLVMUndefValueValueKind = 14,
-    LLVMConstantAggregateZeroValueKind = 15,
-    LLVMConstantDataArrayValueKind = 16,
-    LLVMConstantDataVectorValueKind = 17,
-    LLVMConstantIntValueKind = 18,
-    LLVMConstantFPValueKind = 19,
-    LLVMConstantPointerNullValueKind = 20,
-    LLVMConstantTokenNoneValueKind = 21,
-    LLVMMetadataAsValueValueKind = 22,
-    LLVMInlineAsmValueKind = 23,
-    LLVMInstructionValueKind = 24,
-    LLVMPoisonValueValueKind = 25,
-    LLVMConstantTargetNoneValueKind = 26,
-    LLVMConstantPtrAuthValueKind = 27);
-  PLLVMValueKind = ^LLVMValueKind;
-
-  LLVMIntPredicate = (
-    (** equal *)
-    LLVMIntEQ = 32,
-    (** not equal *)
-    LLVMIntNE = 33,
-    (** unsigned greater than *)
-    LLVMIntUGT = 34,
-    (** unsigned greater or equal *)
-    LLVMIntUGE = 35,
-    (** unsigned less than *)
-    LLVMIntULT = 36,
-    (** unsigned less or equal *)
-    LLVMIntULE = 37,
-    (** signed greater than *)
-    LLVMIntSGT = 38,
-    (** signed greater or equal *)
-    LLVMIntSGE = 39,
-    (** signed less than *)
-    LLVMIntSLT = 40,
-    (** signed less or equal *)
-    LLVMIntSLE = 41);
-  PLLVMIntPredicate = ^LLVMIntPredicate;
-
-  LLVMRealPredicate = (
-    (** Always false (always folded) *)
-    LLVMRealPredicateFalse = 0,
-    (** True if ordered and equal *)
-    LLVMRealOEQ = 1,
-    (** True if ordered and greater than *)
-    LLVMRealOGT = 2,
-    (** True if ordered and greater than or equal *)
-    LLVMRealOGE = 3,
-    (** True if ordered and less than *)
-    LLVMRealOLT = 4,
-    (** True if ordered and less than or equal *)
-    LLVMRealOLE = 5,
-    (** True if ordered and operands are unequal *)
-    LLVMRealONE = 6,
-    (** True if ordered (no nans) *)
-    LLVMRealORD = 7,
-    (** True if unordered: isnan(X) | isnan(Y) *)
-    LLVMRealUNO = 8,
-    (** True if unordered or equal *)
-    LLVMRealUEQ = 9,
-    (** True if unordered or greater than *)
-    LLVMRealUGT = 10,
-    (** True if unordered, greater than, or equal *)
-    LLVMRealUGE = 11,
-    (** True if unordered or less than *)
-    LLVMRealULT = 12,
-    (** True if unordered, less than, or equal *)
-    LLVMRealULE = 13,
-    (** True if unordered or not equal *)
-    LLVMRealUNE = 14,
-    (** Always true (always folded) *)
-    LLVMRealPredicateTrue = 15);
-  PLLVMRealPredicate = ^LLVMRealPredicate;
-
-  LLVMThreadLocalMode = (
-    LLVMNotThreadLocal = 0,
-    LLVMGeneralDynamicTLSModel = 1,
-    LLVMLocalDynamicTLSModel = 2,
-    LLVMInitialExecTLSModel = 3,
-    LLVMLocalExecTLSModel = 4);
-  PLLVMThreadLocalMode = ^LLVMThreadLocalMode;
-
-  LLVMAtomicOrdering = (
-    (** A load or store which is not atomic *)
-    LLVMAtomicOrderingNotAtomic = 0,
-    (** Lowest level of atomicity, guarantees
-                                         somewhat sane results, lock free. *)
-    LLVMAtomicOrderingUnordered = 1,
-    (** guarantees that if you take all the
-                                         operations affecting a specific address,
-                                         a consistent ordering exists *)
-    LLVMAtomicOrderingMonotonic = 2,
-    (** Acquire provides a barrier of the sort
-                                       necessary to acquire a lock to access other
-                                       memory with normal loads and stores. *)
-    LLVMAtomicOrderingAcquire = 4,
-    (** Release is similar to Acquire, but with
-                                       a barrier of the sort necessary to release
-                                       a lock. *)
-    LLVMAtomicOrderingRelease = 5,
-    (** provides both an Acquire and a
-                                              Release barrier (for fences and
-                                              operations which both read and write
-                                               memory). *)
-    LLVMAtomicOrderingAcquireRelease = 6,
-    (** provides Acquire semantics
-                                                     for loads and Release
-                                                     semantics for stores.
-                                                     Additionally, it guarantees
-                                                     that a total ordering exists
-                                                     between all
-                                                     SequentiallyConsistent
-                                                     operations. *)
-    LLVMAtomicOrderingSequentiallyConsistent = 7);
-  PLLVMAtomicOrdering = ^LLVMAtomicOrdering;
-
-  LLVMAtomicRMWBinOp = (
-    (** Set the new value and return the one old *)
-    LLVMAtomicRMWBinOpXchg = 0,
-    (** Add a value and return the old one *)
-    LLVMAtomicRMWBinOpAdd = 1,
-    (** Subtract a value and return the old one *)
-    LLVMAtomicRMWBinOpSub = 2,
-    (** And a value and return the old one *)
-    LLVMAtomicRMWBinOpAnd = 3,
-    (** Not-And a value and return the old one *)
-    LLVMAtomicRMWBinOpNand = 4,
-    (** OR a value and return the old one *)
-    LLVMAtomicRMWBinOpOr = 5,
-    (** Xor a value and return the old one *)
-    LLVMAtomicRMWBinOpXor = 6,
-    (** Sets the value if it's greater than the
-                                original using a signed comparison and return
-                                the old one *)
-    LLVMAtomicRMWBinOpMax = 7,
-    (** Sets the value if it's Smaller than the
-                                original using a signed comparison and return
-                                the old one *)
-    LLVMAtomicRMWBinOpMin = 8,
-    (** Sets the value if it's greater than the
-                               original using an unsigned comparison and return
-                               the old one *)
-    LLVMAtomicRMWBinOpUMax = 9,
-    (** Sets the value if it's greater than the
-                                original using an unsigned comparison and return
-                                the old one *)
-    LLVMAtomicRMWBinOpUMin = 10,
-    (** Add a floating point value and return the
-                                old one *)
-    LLVMAtomicRMWBinOpFAdd = 11,
-    (** Subtract a floating point value and return the
-                              old one *)
-    LLVMAtomicRMWBinOpFSub = 12,
-    (** Sets the value if it's greater than the
-                               original using an floating point comparison and
-                               return the old one *)
-    LLVMAtomicRMWBinOpFMax = 13,
-    (** Sets the value if it's smaller than the
-                               original using an floating point comparison and
-                               return the old one *)
-    LLVMAtomicRMWBinOpFMin = 14,
-    (** Increments the value, wrapping back to zero
-                                   when incremented above input value *)
-    LLVMAtomicRMWBinOpUIncWrap = 15,
-    (** Decrements the value, wrapping back to
-                                   the input value when decremented below zero *)
-    LLVMAtomicRMWBinOpUDecWrap = 16,
-    (**Subtracts the value only if no unsigned
-                                     overflow *)
-    LLVMAtomicRMWBinOpUSubCond = 17,
-    (**Subtracts the value, clamping to zero *)
-    LLVMAtomicRMWBinOpUSubSat = 18,
-    (** Sets the value if it's greater than the
-                               original using an floating point comparison and
-                               return the old one *)
-    LLVMAtomicRMWBinOpFMaximum = 19,
-    (** Sets the value if it's smaller than the
-                               original using an floating point comparison and
-                               return the old one *)
-    LLVMAtomicRMWBinOpFMinimum = 20);
-  PLLVMAtomicRMWBinOp = ^LLVMAtomicRMWBinOp;
-
-  LLVMDiagnosticSeverity = (
-    LLVMDSError = 0,
-    LLVMDSWarning = 1,
-    LLVMDSRemark = 2,
-    LLVMDSNote = 3);
-  PLLVMDiagnosticSeverity = ^LLVMDiagnosticSeverity;
-
-  LLVMInlineAsmDialect = (
-    LLVMInlineAsmDialectATT = 0,
-    LLVMInlineAsmDialectIntel = 1);
-  PLLVMInlineAsmDialect = ^LLVMInlineAsmDialect;
-
-  LLVMModuleFlagBehavior = (
-    (**
-     * Emits an error if two values disagree, otherwise the resulting value is
-     * that of the operands.
-     *
-     * @see Module::ModFlagBehavior::Error
-     *)
-    LLVMModuleFlagBehaviorError = 0,
-    (**
-     * Emits a warning if two values disagree. The result value will be the
-     * operand for the flag from the first module being linked.
-     *
-     * @see Module::ModFlagBehavior::Warning
-     *)
-    LLVMModuleFlagBehaviorWarning = 1,
-    (**
-     * Adds a requirement that another module flag be present and have a
-     * specified value after linking is performed. The value must be a metadata
-     * pair, where the first element of the pair is the ID of the module flag
-     * to be restricted, and the second element of the pair is the value the
-     * module flag should be restricted to. This behavior can be used to
-     * restrict the allowable results (via triggering of an error) of linking
-     * IDs with the **Override** behavior.
-     *
-     * @see Module::ModFlagBehavior::Require
-     *)
-    LLVMModuleFlagBehaviorRequire = 2,
-    (**
-     * Uses the specified value, regardless of the behavior or value of the
-     * other module. If both modules specify **Override**, but the values
-     * differ, an error will be emitted.
-     *
-     * @see Module::ModFlagBehavior::Override
-     *)
-    LLVMModuleFlagBehaviorOverride = 3,
-    (**
-     * Appends the two values, which are required to be metadata nodes.
-     *
-     * @see Module::ModFlagBehavior::Append
-     *)
-    LLVMModuleFlagBehaviorAppend = 4,
-    (**
-     * Appends the two values, which are required to be metadata
-     * nodes. However, duplicate entries in the second list are dropped
-     * during the append operation.
-     *
-     * @see Module::ModFlagBehavior::AppendUnique
-     *)
-    LLVMModuleFlagBehaviorAppendUnique = 5);
-  PLLVMModuleFlagBehavior = ^LLVMModuleFlagBehavior;
-
-  (**
-   * Attribute index are either LLVMAttributeReturnIndex,
-   * LLVMAttributeFunctionIndex or a parameter number from 1 to N.
-   *)
-  _anonymous_type_1 = (
-    LLVMAttributeReturnIndex = 0,
-    LLVMAttributeFunctionIndex = -1);
-  P_anonymous_type_1 = ^_anonymous_type_1;
   LLVMAttributeIndex = Cardinal;
-
-  (**
-   * Tail call kind for LLVMSetTailCallKind and LLVMGetTailCallKind.
-   *
-   * Note that 'musttail' implies 'tail'.
-   *
-   * @see CallInst::TailCallKind
-   *)
-  LLVMTailCallKind = (
-    LLVMTailCallKindNone = 0,
-    LLVMTailCallKindTail = 1,
-    LLVMTailCallKindMustTail = 2,
-    LLVMTailCallKindNoTail = 3);
-  PLLVMTailCallKind = ^LLVMTailCallKind;
-
-  _anonymous_type_2 = (
-    LLVMFastMathAllowReassoc = 1,
-    LLVMFastMathNoNaNs = 2,
-    LLVMFastMathNoInfs = 4,
-    LLVMFastMathNoSignedZeros = 8,
-    LLVMFastMathAllowReciprocal = 16,
-    LLVMFastMathAllowContract = 32,
-    LLVMFastMathApproxFunc = 64,
-    LLVMFastMathNone = 0,
-    LLVMFastMathAll = 127);
-  P_anonymous_type_2 = ^_anonymous_type_2;
   (**
    * Flags to indicate what fast-math-style optimizations are allowed
    * on operations.
@@ -979,12 +1358,6 @@ type
    * See https://llvm.org/docs/LangRef.html#fast-math-flags
    *)
   LLVMFastMathFlags = Cardinal;
-
-  _anonymous_type_3 = (
-    LLVMGEPFlagInBounds = 1,
-    LLVMGEPFlagNUSW = 2,
-    LLVMGEPFlagNUW = 4);
-  P_anonymous_type_3 = ^_anonymous_type_3;
   (**
    * Flags that constrain the allowed wrap semantics of a getelementptr
    * instruction.
@@ -1007,187 +1380,11 @@ type
   LLVMDiagnosticHandler = procedure(p1: LLVMDiagnosticInfoRef; p2: Pointer); cdecl;
 
   LLVMYieldCallback = procedure(p1: LLVMContextRef; p2: Pointer); cdecl;
-
-  (**
-   * Debug info flags.
-   *)
-  LLVMDIFlags = (
-    LLVMDIFlagZero = 0,
-    LLVMDIFlagPrivate = 1,
-    LLVMDIFlagProtected = 2,
-    LLVMDIFlagPublic = 3,
-    LLVMDIFlagFwdDecl = 4,
-    LLVMDIFlagAppleBlock = 8,
-    LLVMDIFlagReservedBit4 = 16,
-    LLVMDIFlagVirtual = 32,
-    LLVMDIFlagArtificial = 64,
-    LLVMDIFlagExplicit = 128,
-    LLVMDIFlagPrototyped = 256,
-    LLVMDIFlagObjcClassComplete = 512,
-    LLVMDIFlagObjectPointer = 1024,
-    LLVMDIFlagVector = 2048,
-    LLVMDIFlagStaticMember = 4096,
-    LLVMDIFlagLValueReference = 8192,
-    LLVMDIFlagRValueReference = 16384,
-    LLVMDIFlagReserved = 32768,
-    LLVMDIFlagSingleInheritance = 65536,
-    LLVMDIFlagMultipleInheritance = 131072,
-    LLVMDIFlagVirtualInheritance = 196608,
-    LLVMDIFlagIntroducedVirtual = 262144,
-    LLVMDIFlagBitField = 524288,
-    LLVMDIFlagNoReturn = 1048576,
-    LLVMDIFlagTypePassByValue = 4194304,
-    LLVMDIFlagTypePassByReference = 8388608,
-    LLVMDIFlagEnumClass = 16777216,
-    LLVMDIFlagFixedEnum = 16777216,
-    LLVMDIFlagThunk = 33554432,
-    LLVMDIFlagNonTrivial = 67108864,
-    LLVMDIFlagBigEndian = 134217728,
-    LLVMDIFlagLittleEndian = 268435456,
-    LLVMDIFlagIndirectVirtualBase = 36,
-    LLVMDIFlagAccessibility = 3,
-    LLVMDIFlagPtrToMemberRep = 196608);
-  PLLVMDIFlags = ^LLVMDIFlags;
-
-  (**
-   * Source languages known by DWARF.
-   *)
-  LLVMDWARFSourceLanguage = (
-    LLVMDWARFSourceLanguageC89 = 0,
-    LLVMDWARFSourceLanguageC = 1,
-    LLVMDWARFSourceLanguageAda83 = 2,
-    LLVMDWARFSourceLanguageC_plus_plus = 3,
-    LLVMDWARFSourceLanguageCobol74 = 4,
-    LLVMDWARFSourceLanguageCobol85 = 5,
-    LLVMDWARFSourceLanguageFortran77 = 6,
-    LLVMDWARFSourceLanguageFortran90 = 7,
-    LLVMDWARFSourceLanguagePascal83 = 8,
-    LLVMDWARFSourceLanguageModula2 = 9,
-    LLVMDWARFSourceLanguageJava = 10,
-    LLVMDWARFSourceLanguageC99 = 11,
-    LLVMDWARFSourceLanguageAda95 = 12,
-    LLVMDWARFSourceLanguageFortran95 = 13,
-    LLVMDWARFSourceLanguagePLI = 14,
-    LLVMDWARFSourceLanguageObjC = 15,
-    LLVMDWARFSourceLanguageObjC_plus_plus = 16,
-    LLVMDWARFSourceLanguageUPC = 17,
-    LLVMDWARFSourceLanguageD = 18,
-    LLVMDWARFSourceLanguagePython = 19,
-    LLVMDWARFSourceLanguageOpenCL = 20,
-    LLVMDWARFSourceLanguageGo = 21,
-    LLVMDWARFSourceLanguageModula3 = 22,
-    LLVMDWARFSourceLanguageHaskell = 23,
-    LLVMDWARFSourceLanguageC_plus_plus_03 = 24,
-    LLVMDWARFSourceLanguageC_plus_plus_11 = 25,
-    LLVMDWARFSourceLanguageOCaml = 26,
-    LLVMDWARFSourceLanguageRust = 27,
-    LLVMDWARFSourceLanguageC11 = 28,
-    LLVMDWARFSourceLanguageSwift = 29,
-    LLVMDWARFSourceLanguageJulia = 30,
-    LLVMDWARFSourceLanguageDylan = 31,
-    LLVMDWARFSourceLanguageC_plus_plus_14 = 32,
-    LLVMDWARFSourceLanguageFortran03 = 33,
-    LLVMDWARFSourceLanguageFortran08 = 34,
-    LLVMDWARFSourceLanguageRenderScript = 35,
-    LLVMDWARFSourceLanguageBLISS = 36,
-    LLVMDWARFSourceLanguageKotlin = 37,
-    LLVMDWARFSourceLanguageZig = 38,
-    LLVMDWARFSourceLanguageCrystal = 39,
-    LLVMDWARFSourceLanguageC_plus_plus_17 = 40,
-    LLVMDWARFSourceLanguageC_plus_plus_20 = 41,
-    LLVMDWARFSourceLanguageC17 = 42,
-    LLVMDWARFSourceLanguageFortran18 = 43,
-    LLVMDWARFSourceLanguageAda2005 = 44,
-    LLVMDWARFSourceLanguageAda2012 = 45,
-    LLVMDWARFSourceLanguageHIP = 46,
-    LLVMDWARFSourceLanguageAssembly = 47,
-    LLVMDWARFSourceLanguageC_sharp = 48,
-    LLVMDWARFSourceLanguageMojo = 49,
-    LLVMDWARFSourceLanguageGLSL = 50,
-    LLVMDWARFSourceLanguageGLSL_ES = 51,
-    LLVMDWARFSourceLanguageHLSL = 52,
-    LLVMDWARFSourceLanguageOpenCL_CPP = 53,
-    LLVMDWARFSourceLanguageCPP_for_OpenCL = 54,
-    LLVMDWARFSourceLanguageSYCL = 55,
-    LLVMDWARFSourceLanguageRuby = 56,
-    LLVMDWARFSourceLanguageMove = 57,
-    LLVMDWARFSourceLanguageHylo = 58,
-    LLVMDWARFSourceLanguageMetal = 59,
-    LLVMDWARFSourceLanguageMips_Assembler = 60,
-    LLVMDWARFSourceLanguageGOOGLE_RenderScript = 61,
-    LLVMDWARFSourceLanguageBORLAND_Delphi = 62);
-  PLLVMDWARFSourceLanguage = ^LLVMDWARFSourceLanguage;
-
-  (**
-   * The amount of debug information to emit.
-   *)
-  LLVMDWARFEmissionKind = (
-    LLVMDWARFEmissionNone = 0,
-    LLVMDWARFEmissionFull = 1,
-    LLVMDWARFEmissionLineTablesOnly = 2);
-  PLLVMDWARFEmissionKind = ^LLVMDWARFEmissionKind;
-
-  (**
-   * The kind of metadata nodes.
-   *)
-  _anonymous_type_4 = (
-    LLVMMDStringMetadataKind = 0,
-    LLVMConstantAsMetadataMetadataKind = 1,
-    LLVMLocalAsMetadataMetadataKind = 2,
-    LLVMDistinctMDOperandPlaceholderMetadataKind = 3,
-    LLVMMDTupleMetadataKind = 4,
-    LLVMDILocationMetadataKind = 5,
-    LLVMDIExpressionMetadataKind = 6,
-    LLVMDIGlobalVariableExpressionMetadataKind = 7,
-    LLVMGenericDINodeMetadataKind = 8,
-    LLVMDISubrangeMetadataKind = 9,
-    LLVMDIEnumeratorMetadataKind = 10,
-    LLVMDIBasicTypeMetadataKind = 11,
-    LLVMDIDerivedTypeMetadataKind = 12,
-    LLVMDICompositeTypeMetadataKind = 13,
-    LLVMDISubroutineTypeMetadataKind = 14,
-    LLVMDIFileMetadataKind = 15,
-    LLVMDICompileUnitMetadataKind = 16,
-    LLVMDISubprogramMetadataKind = 17,
-    LLVMDILexicalBlockMetadataKind = 18,
-    LLVMDILexicalBlockFileMetadataKind = 19,
-    LLVMDINamespaceMetadataKind = 20,
-    LLVMDIModuleMetadataKind = 21,
-    LLVMDITemplateTypeParameterMetadataKind = 22,
-    LLVMDITemplateValueParameterMetadataKind = 23,
-    LLVMDIGlobalVariableMetadataKind = 24,
-    LLVMDILocalVariableMetadataKind = 25,
-    LLVMDILabelMetadataKind = 26,
-    LLVMDIObjCPropertyMetadataKind = 27,
-    LLVMDIImportedEntityMetadataKind = 28,
-    LLVMDIMacroMetadataKind = 29,
-    LLVMDIMacroFileMetadataKind = 30,
-    LLVMDICommonBlockMetadataKind = 31,
-    LLVMDIStringTypeMetadataKind = 32,
-    LLVMDIGenericSubrangeMetadataKind = 33,
-    LLVMDIArgListMetadataKind = 34,
-    LLVMDIAssignIDMetadataKind = 35,
-    LLVMDISubrangeTypeMetadataKind = 36,
-    LLVMDIFixedPointTypeMetadataKind = 37);
-  P_anonymous_type_4 = ^_anonymous_type_4;
   LLVMMetadataKind = Cardinal;
   (**
    * An LLVM DWARF type encoding.
    *)
   LLVMDWARFTypeEncoding = Cardinal;
-
-  (**
-   * Describes the kind of macro declaration used for LLVMDIBuilderCreateMacro.
-   * @see llvm::dwarf::MacinfoRecordType
-   * @note Values are from DW_MACINFO_* constants in the DWARF specification.
-   *)
-  LLVMDWARFMacinfoRecordType = (
-    LLVMDWARFMacinfoRecordTypeDefine = 1,
-    LLVMDWARFMacinfoRecordTypeMacro = 2,
-    LLVMDWARFMacinfoRecordTypeStartFile = 3,
-    LLVMDWARFMacinfoRecordTypeEndFile = 4,
-    LLVMDWARFMacinfoRecordTypeVendorExt = 255);
-  PLLVMDWARFMacinfoRecordType = ^LLVMDWARFMacinfoRecordType;
   (**
    * An opaque reference to a disassembler context.
    *)
@@ -1258,6 +1455,22 @@ type
    * to NULL.
    *)
   LLVMSymbolLookupCallback = function(DisInfo: Pointer; ReferenceValue: UInt64; ReferenceType: PUInt64; ReferencePC: UInt64; ReferenceName: PPUTF8Char): PUTF8Char; cdecl;
+  LLVMErrorRef = Pointer;
+  PLLVMErrorRef = ^LLVMErrorRef;
+  (**
+   * Error type identifier.
+   *)
+  LLVMErrorTypeId = Pointer;
+  LLVMTargetDataRef = Pointer;
+  PLLVMTargetDataRef = ^LLVMTargetDataRef;
+  LLVMTargetLibraryInfoRef = Pointer;
+  PLLVMTargetLibraryInfoRef = ^LLVMTargetLibraryInfoRef;
+  LLVMTargetMachineOptionsRef = Pointer;
+  PLLVMTargetMachineOptionsRef = ^LLVMTargetMachineOptionsRef;
+  LLVMTargetMachineRef = Pointer;
+  PLLVMTargetMachineRef = ^LLVMTargetMachineRef;
+  LLVMTargetRef = Pointer;
+  PLLVMTargetRef = ^LLVMTargetRef;
   LLVMGenericValueRef = Pointer;
   PLLVMGenericValueRef = ^LLVMGenericValueRef;
   LLVMExecutionEngineRef = Pointer;
@@ -1280,17 +1493,6 @@ type
   LLVMMemoryManagerFinalizeMemoryCallback = function(Opaque: Pointer; ErrMsg: PPUTF8Char): LLVMBool; cdecl;
 
   LLVMMemoryManagerDestroyCallback = procedure(Opaque: Pointer); cdecl;
-
-  (**
-   * @defgroup LLVMCCoreLinker Linker
-   * @ingroup LLVMCCore
-   *
-   * @{
-   *)
-  LLVMLinkerMode = (
-    LLVMLinkerDestroySource = 0,
-    LLVMLinkerPreserveSource_Removed = 1);
-  PLLVMLinkerMode = ^LLVMLinkerMode;
   (**
    * Represents an address in the executor process.
    *)
@@ -1300,17 +1502,6 @@ type
    *)
   LLVMOrcExecutorAddress = UInt64;
   PLLVMOrcExecutorAddress = ^LLVMOrcExecutorAddress;
-
-  (**
-   * Represents generic linkage flags for a symbol definition.
-   *)
-  LLVMJITSymbolGenericFlags = (
-    LLVMJITSymbolGenericFlagsNone = 0,
-    LLVMJITSymbolGenericFlagsExported = 1,
-    LLVMJITSymbolGenericFlagsWeak = 2,
-    LLVMJITSymbolGenericFlagsCallable = 4,
-    LLVMJITSymbolGenericFlagsMaterializationSideEffectsOnly = 8);
-  PLLVMJITSymbolGenericFlags = ^LLVMJITSymbolGenericFlags;
   (**
    * Represents target specific flags for a symbol definition.
    *)
@@ -1429,28 +1620,6 @@ type
   end;
 
   (**
-   * Lookup kind. This can be used by definition generators when deciding whether
-   * to produce a definition for a requested symbol.
-   *
-   * This enum should be kept in sync with llvm::orc::LookupKind.
-   *)
-  LLVMOrcLookupKind = (
-    LLVMOrcLookupKindStatic = 0,
-    LLVMOrcLookupKindDLSym = 1);
-  PLLVMOrcLookupKind = ^LLVMOrcLookupKind;
-
-  (**
-   * JITDylib lookup flags. This can be used by definition generators when
-   * deciding whether to produce a definition for a requested symbol.
-   *
-   * This enum should be kept in sync with llvm::orc::JITDylibLookupFlags.
-   *)
-  LLVMOrcJITDylibLookupFlags = (
-    LLVMOrcJITDylibLookupFlagsMatchExportedSymbolsOnly = 0,
-    LLVMOrcJITDylibLookupFlagsMatchAllSymbols = 1);
-  PLLVMOrcJITDylibLookupFlags = ^LLVMOrcJITDylibLookupFlags;
-
-  (**
    * An element type for a JITDylib search order.
    *)
   LLVMOrcCJITDylibSearchOrderElement = record
@@ -1465,15 +1634,6 @@ type
    * field.
    *)
   LLVMOrcCJITDylibSearchOrder = PLLVMOrcCJITDylibSearchOrderElement;
-
-  (**
-   * Symbol lookup flags for lookup sets. This should be kept in sync with
-   * llvm::orc::SymbolLookupFlags.
-   *)
-  LLVMOrcSymbolLookupFlags = (
-    LLVMOrcSymbolLookupFlagsRequiredSymbol = 0,
-    LLVMOrcSymbolLookupFlagsWeaklyReferencedSymbol = 1);
-  PLLVMOrcSymbolLookupFlags = ^LLVMOrcSymbolLookupFlags;
 
   (**
    * An element type for a symbol lookup set.
@@ -1681,60 +1841,12 @@ type
   PLLVMSymbolIteratorRef = ^LLVMSymbolIteratorRef;
   LLVMRelocationIteratorRef = Pointer;
   PLLVMRelocationIteratorRef = ^LLVMRelocationIteratorRef;
-
-  LLVMBinaryType = (
-    (** Archive file. *)
-    LLVMBinaryTypeArchive = 0,
-    (** Mach-O Universal Binary file. *)
-    LLVMBinaryTypeMachOUniversalBinary = 1,
-    (** COFF Import file. *)
-    LLVMBinaryTypeCOFFImportFile = 2,
-    (** LLVM IR. *)
-    LLVMBinaryTypeIR = 3,
-    (** Windows resource (.res) file. *)
-    LLVMBinaryTypeWinRes = 4,
-    (** COFF Object file. *)
-    LLVMBinaryTypeCOFF = 5,
-    (** ELF 32-bit, little endian. *)
-    LLVMBinaryTypeELF32L = 6,
-    (** ELF 32-bit, big endian. *)
-    LLVMBinaryTypeELF32B = 7,
-    (** ELF 64-bit, little endian. *)
-    LLVMBinaryTypeELF64L = 8,
-    (** ELF 64-bit, big endian. *)
-    LLVMBinaryTypeELF64B = 9,
-    (** MachO 32-bit, little endian. *)
-    LLVMBinaryTypeMachO32L = 10,
-    (** MachO 32-bit, big endian. *)
-    LLVMBinaryTypeMachO32B = 11,
-    (** MachO 64-bit, little endian. *)
-    LLVMBinaryTypeMachO64L = 12,
-    (** MachO 64-bit, big endian. *)
-    LLVMBinaryTypeMachO64B = 13,
-    (** Web Assembly. *)
-    LLVMBinaryTypeWasm = 14,
-    (** Offloading fatbinary. *)
-    LLVMBinaryTypeOffload = 15);
-  PLLVMBinaryType = ^LLVMBinaryType;
   LLVMObjectFileRef = Pointer;
   PLLVMObjectFileRef = ^LLVMObjectFileRef;
 
   LLVMMemoryManagerCreateContextCallback = function(CtxCtx: Pointer): Pointer; cdecl;
 
   LLVMMemoryManagerNotifyTerminatingCallback = procedure(CtxCtx: Pointer); cdecl;
-
-  (**
-   * The type of the emitted remark.
-   *)
-  LLVMRemarkType = (
-    LLVMRemarkTypeUnknown = 0,
-    LLVMRemarkTypePassed = 1,
-    LLVMRemarkTypeMissed = 2,
-    LLVMRemarkTypeAnalysis = 3,
-    LLVMRemarkTypeAnalysisFPCommute = 4,
-    LLVMRemarkTypeAnalysisAliasing = 5,
-    LLVMRemarkTypeFailure = 6);
-  PLLVMRemarkType = ^LLVMRemarkType;
   LLVMRemarkStringRef = Pointer;
   PLLVMRemarkStringRef = ^LLVMRemarkStringRef;
   LLVMRemarkDebugLocRef = Pointer;
@@ -1745,465 +1857,8 @@ type
   PLLVMRemarkEntryRef = ^LLVMRemarkEntryRef;
   LLVMRemarkParserRef = Pointer;
   PLLVMRemarkParserRef = ^LLVMRemarkParserRef;
-
-(**
- * Returns the type id for the given error instance, which must be a failure
- * value (i.e. non-null).
- *)
-function LLVMGetErrorTypeId(Err: LLVMErrorRef): LLVMErrorTypeId; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetErrorTypeId';
-
-(**
- * Dispose of the given error without handling it. This operation consumes the
- * error, and the given LLVMErrorRef value is not usable once this call returns.
- * Note: This method *only* needs to be called if the error is not being passed
- * to some other consuming operation, e.g. LLVMGetErrorMessage.
- *)
-procedure LLVMConsumeError(Err: LLVMErrorRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMConsumeError';
-
-(**
- * Report a fatal error if Err is a failure value.
- *
- * This function can be used to wrap calls to fallible functions ONLY when it is
- * known that the Error will always be a success value.
- *)
-procedure LLVMCantFail(Err: LLVMErrorRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMCantFail';
-
-(**
- * Returns the given string's error message. This operation consumes the error,
- * and the given LLVMErrorRef value is not usable once this call returns.
- * The caller is responsible for disposing of the string by calling
- * LLVMDisposeErrorMessage.
- *)
-function LLVMGetErrorMessage(Err: LLVMErrorRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetErrorMessage';
-
-(**
- * Dispose of the given error message.
- *)
-procedure LLVMDisposeErrorMessage(ErrMsg: PUTF8Char); cdecl;
-  external LLVM_DLL name _PU + 'LLVMDisposeErrorMessage';
-
-(**
- * Returns the type id for llvm StringError.
- *)
-function LLVMGetStringErrorTypeId(): LLVMErrorTypeId; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetStringErrorTypeId';
-
-(**
- * Create a StringError.
- *)
-function LLVMCreateStringError(const ErrMsg: PUTF8Char): LLVMErrorRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreateStringError';
-
-procedure LLVMInitializeX86TargetInfo(); cdecl;
-  external LLVM_DLL name _PU + 'LLVMInitializeX86TargetInfo';
-
-procedure LLVMInitializeX86Target(); cdecl;
-  external LLVM_DLL name _PU + 'LLVMInitializeX86Target';
-
-procedure LLVMInitializeX86TargetMC(); cdecl;
-  external LLVM_DLL name _PU + 'LLVMInitializeX86TargetMC';
-
-procedure LLVMInitializeX86AsmPrinter(); cdecl;
-  external LLVM_DLL name _PU + 'LLVMInitializeX86AsmPrinter';
-
-procedure LLVMInitializeX86AsmParser(); cdecl;
-  external LLVM_DLL name _PU + 'LLVMInitializeX86AsmParser';
-
-procedure LLVMInitializeX86Disassembler(); cdecl;
-  external LLVM_DLL name _PU + 'LLVMInitializeX86Disassembler';
-
-(**
- * Obtain the data layout for a module.
- *
- * @see Module::getDataLayout()
- *)
-function LLVMGetModuleDataLayout(M: LLVMModuleRef): LLVMTargetDataRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetModuleDataLayout';
-
-(**
- * Set the data layout for a module.
- *
- * @see Module::setDataLayout()
- *)
-procedure LLVMSetModuleDataLayout(M: LLVMModuleRef; DL: LLVMTargetDataRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetModuleDataLayout';
-
-(** Creates target data from a target layout string.
-    See the constructor llvm::DataLayout::DataLayout. *)
-function LLVMCreateTargetData(const StringRep: PUTF8Char): LLVMTargetDataRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreateTargetData';
-
-(** Deallocates a TargetData.
-    See the destructor llvm::DataLayout::~DataLayout. *)
-procedure LLVMDisposeTargetData(TD: LLVMTargetDataRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMDisposeTargetData';
-
-(** Adds target library information to a pass manager. This does not take
-    ownership of the target library info.
-    See the method llvm::PassManagerBase::add. *)
-procedure LLVMAddTargetLibraryInfo(TLI: LLVMTargetLibraryInfoRef; PM: LLVMPassManagerRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMAddTargetLibraryInfo';
-
-(** Converts target data to a target layout string. The string must be disposed
-    with LLVMDisposeMessage.
-    See the constructor llvm::DataLayout::DataLayout. *)
-function LLVMCopyStringRepOfTargetData(TD: LLVMTargetDataRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCopyStringRepOfTargetData';
-
-(** Returns the byte order of a target, either LLVMBigEndian or
-    LLVMLittleEndian.
-    See the method llvm::DataLayout::isLittleEndian. *)
-function LLVMByteOrder(TD: LLVMTargetDataRef): LLVMByteOrdering; cdecl;
-  external LLVM_DLL name _PU + 'LLVMByteOrder';
-
-(** Returns the pointer size in bytes for a target.
-    See the method llvm::DataLayout::getPointerSize. *)
-function LLVMPointerSize(TD: LLVMTargetDataRef): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMPointerSize';
-
-(** Returns the pointer size in bytes for a target for a specified
-    address space.
-    See the method llvm::DataLayout::getPointerSize. *)
-function LLVMPointerSizeForAS(TD: LLVMTargetDataRef; AS_: Cardinal): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMPointerSizeForAS';
-
-(** Returns the integer type that is the same size as a pointer on a target.
-    See the method llvm::DataLayout::getIntPtrType. *)
-function LLVMIntPtrType(TD: LLVMTargetDataRef): LLVMTypeRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMIntPtrType';
-
-(** Returns the integer type that is the same size as a pointer on a target.
-    This version allows the address space to be specified.
-    See the method llvm::DataLayout::getIntPtrType. *)
-function LLVMIntPtrTypeForAS(TD: LLVMTargetDataRef; AS_: Cardinal): LLVMTypeRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMIntPtrTypeForAS';
-
-(** Returns the integer type that is the same size as a pointer on a target.
-    See the method llvm::DataLayout::getIntPtrType. *)
-function LLVMIntPtrTypeInContext(C: LLVMContextRef; TD: LLVMTargetDataRef): LLVMTypeRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMIntPtrTypeInContext';
-
-(** Returns the integer type that is the same size as a pointer on a target.
-    This version allows the address space to be specified.
-    See the method llvm::DataLayout::getIntPtrType. *)
-function LLVMIntPtrTypeForASInContext(C: LLVMContextRef; TD: LLVMTargetDataRef; AS_: Cardinal): LLVMTypeRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMIntPtrTypeForASInContext';
-
-(** Computes the size of a type in bits for a target.
-    See the method llvm::DataLayout::getTypeSizeInBits. *)
-function LLVMSizeOfTypeInBits(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): UInt64; cdecl;
-  external LLVM_DLL name _PU + 'LLVMSizeOfTypeInBits';
-
-(** Computes the storage size of a type in bytes for a target.
-    See the method llvm::DataLayout::getTypeStoreSize. *)
-function LLVMStoreSizeOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): UInt64; cdecl;
-  external LLVM_DLL name _PU + 'LLVMStoreSizeOfType';
-
-(** Computes the ABI size of a type in bytes for a target.
-    See the method llvm::DataLayout::getTypeAllocSize. *)
-function LLVMABISizeOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): UInt64; cdecl;
-  external LLVM_DLL name _PU + 'LLVMABISizeOfType';
-
-(** Computes the ABI alignment of a type in bytes for a target.
-    See the method llvm::DataLayout::getTypeABISize. *)
-function LLVMABIAlignmentOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMABIAlignmentOfType';
-
-(** Computes the call frame alignment of a type in bytes for a target.
-    See the method llvm::DataLayout::getTypeABISize. *)
-function LLVMCallFrameAlignmentOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCallFrameAlignmentOfType';
-
-(** Computes the preferred alignment of a type in bytes for a target.
-    See the method llvm::DataLayout::getTypeABISize. *)
-function LLVMPreferredAlignmentOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMPreferredAlignmentOfType';
-
-(** Computes the preferred alignment of a global variable in bytes for a target.
-    See the method llvm::DataLayout::getPreferredAlignment. *)
-function LLVMPreferredAlignmentOfGlobal(TD: LLVMTargetDataRef; GlobalVar: LLVMValueRef): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMPreferredAlignmentOfGlobal';
-
-(** Computes the structure element that contains the byte offset for a target.
-    See the method llvm::StructLayout::getElementContainingOffset. *)
-function LLVMElementAtOffset(TD: LLVMTargetDataRef; StructTy: LLVMTypeRef; Offset: UInt64): Cardinal; cdecl;
-  external LLVM_DLL name _PU + 'LLVMElementAtOffset';
-
-(** Computes the byte offset of the indexed struct element for a target.
-    See the method llvm::StructLayout::getElementContainingOffset. *)
-function LLVMOffsetOfElement(TD: LLVMTargetDataRef; StructTy: LLVMTypeRef; Element: Cardinal): UInt64; cdecl;
-  external LLVM_DLL name _PU + 'LLVMOffsetOfElement';
-
-(** Returns the first llvm::Target in the registered targets list. *)
-function LLVMGetFirstTarget(): LLVMTargetRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetFirstTarget';
-
-(** Returns the next llvm::Target given a previous one (or null if there's none) *)
-function LLVMGetNextTarget(T: LLVMTargetRef): LLVMTargetRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetNextTarget';
-
-(** Finds the target corresponding to the given name and stores it in \p T.
-  Returns 0 on success. *)
-function LLVMGetTargetFromName(const Name: PUTF8Char): LLVMTargetRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetFromName';
-
-(** Finds the target corresponding to the given triple and stores it in \p T.
-  Returns 0 on success. Optionally returns any error in ErrorMessage.
-  Use LLVMDisposeMessage to dispose the message. *)
-function LLVMGetTargetFromTriple(const Triple: PUTF8Char; T: PLLVMTargetRef; ErrorMessage: PPUTF8Char): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetFromTriple';
-
-(** Returns the name of a target. See llvm::Target::getName *)
-function LLVMGetTargetName(T: LLVMTargetRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetName';
-
-(** Returns the description  of a target. See llvm::Target::getDescription *)
-function LLVMGetTargetDescription(T: LLVMTargetRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetDescription';
-
-(** Returns if the target has a JIT *)
-function LLVMTargetHasJIT(T: LLVMTargetRef): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetHasJIT';
-
-(** Returns if the target has a TargetMachine associated *)
-function LLVMTargetHasTargetMachine(T: LLVMTargetRef): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetHasTargetMachine';
-
-(** Returns if the target as an ASM backend (required for emitting output) *)
-function LLVMTargetHasAsmBackend(T: LLVMTargetRef): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetHasAsmBackend';
-
-(**
- * Create a new set of options for an llvm::TargetMachine.
- *
- * The returned option structure must be released with
- * LLVMDisposeTargetMachineOptions() after the call to
- * LLVMCreateTargetMachineWithOptions().
- *)
-function LLVMCreateTargetMachineOptions(): LLVMTargetMachineOptionsRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreateTargetMachineOptions';
-
-(**
- * Dispose of an LLVMTargetMachineOptionsRef instance.
- *)
-procedure LLVMDisposeTargetMachineOptions(Options: LLVMTargetMachineOptionsRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMDisposeTargetMachineOptions';
-
-procedure LLVMTargetMachineOptionsSetCPU(Options: LLVMTargetMachineOptionsRef; const CPU: PUTF8Char); cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetCPU';
-
-(**
- * Set the list of features for the target machine.
- *
- * \param Features a comma-separated list of features.
- *)
-procedure LLVMTargetMachineOptionsSetFeatures(Options: LLVMTargetMachineOptionsRef; const Features: PUTF8Char); cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetFeatures';
-
-procedure LLVMTargetMachineOptionsSetABI(Options: LLVMTargetMachineOptionsRef; const ABI: PUTF8Char); cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetABI';
-
-procedure LLVMTargetMachineOptionsSetCodeGenOptLevel(Options: LLVMTargetMachineOptionsRef; Level: LLVMCodeGenOptLevel); cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetCodeGenOptLevel';
-
-procedure LLVMTargetMachineOptionsSetRelocMode(Options: LLVMTargetMachineOptionsRef; Reloc: LLVMRelocMode); cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetRelocMode';
-
-procedure LLVMTargetMachineOptionsSetCodeModel(Options: LLVMTargetMachineOptionsRef; CodeModel: LLVMCodeModel); cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetCodeModel';
-
-(**
- * Create a new llvm::TargetMachine.
- *
- * \param T the target to create a machine for.
- * \param Triple a triple describing the target machine.
- * \param Options additional configuration (see
- *                LLVMCreateTargetMachineOptions()).
- *)
-function LLVMCreateTargetMachineWithOptions(T: LLVMTargetRef; const Triple: PUTF8Char; Options: LLVMTargetMachineOptionsRef): LLVMTargetMachineRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreateTargetMachineWithOptions';
-
-(** Creates a new llvm::TargetMachine. See llvm::Target::createTargetMachine *)
-function LLVMCreateTargetMachine(T: LLVMTargetRef; const Triple: PUTF8Char; const CPU: PUTF8Char; const Features: PUTF8Char; Level: LLVMCodeGenOptLevel; Reloc: LLVMRelocMode; CodeModel: LLVMCodeModel): LLVMTargetMachineRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreateTargetMachine';
-
-(** Dispose the LLVMTargetMachineRef instance generated by
-  LLVMCreateTargetMachine. *)
-procedure LLVMDisposeTargetMachine(T: LLVMTargetMachineRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMDisposeTargetMachine';
-
-(** Returns the Target used in a TargetMachine *)
-function LLVMGetTargetMachineTarget(T: LLVMTargetMachineRef): LLVMTargetRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetMachineTarget';
-
-(** Returns the triple used creating this target machine. See
-  llvm::TargetMachine::getTriple. The result needs to be disposed with
-  LLVMDisposeMessage. *)
-function LLVMGetTargetMachineTriple(T: LLVMTargetMachineRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetMachineTriple';
-
-(** Returns the cpu used creating this target machine. See
-  llvm::TargetMachine::getCPU. The result needs to be disposed with
-  LLVMDisposeMessage. *)
-function LLVMGetTargetMachineCPU(T: LLVMTargetMachineRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetMachineCPU';
-
-(** Returns the feature string used creating this target machine. See
-  llvm::TargetMachine::getFeatureString. The result needs to be disposed with
-  LLVMDisposeMessage. *)
-function LLVMGetTargetMachineFeatureString(T: LLVMTargetMachineRef): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetTargetMachineFeatureString';
-
-(** Create a DataLayout based on the targetMachine. *)
-function LLVMCreateTargetDataLayout(T: LLVMTargetMachineRef): LLVMTargetDataRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreateTargetDataLayout';
-
-(** Set the target machine's ASM verbosity. *)
-procedure LLVMSetTargetMachineAsmVerbosity(T: LLVMTargetMachineRef; VerboseAsm: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetTargetMachineAsmVerbosity';
-
-(** Enable fast-path instruction selection. *)
-procedure LLVMSetTargetMachineFastISel(T: LLVMTargetMachineRef; Enable: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetTargetMachineFastISel';
-
-(** Enable global instruction selection. *)
-procedure LLVMSetTargetMachineGlobalISel(T: LLVMTargetMachineRef; Enable: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetTargetMachineGlobalISel';
-
-(** Set abort behaviour when global instruction selection fails to lower/select
- * an instruction. *)
-procedure LLVMSetTargetMachineGlobalISelAbort(T: LLVMTargetMachineRef; Mode: LLVMGlobalISelAbortMode); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetTargetMachineGlobalISelAbort';
-
-(** Enable the MachineOutliner pass. *)
-procedure LLVMSetTargetMachineMachineOutliner(T: LLVMTargetMachineRef; Enable: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetTargetMachineMachineOutliner';
-
-(** Emits an asm or object file for the given module to the filename. This
-  wraps several c++ only classes (among them a file stream). Returns any
-  error in ErrorMessage. Use LLVMDisposeMessage to dispose the message. *)
-function LLVMTargetMachineEmitToFile(T: LLVMTargetMachineRef; M: LLVMModuleRef; const Filename: PUTF8Char; codegen: LLVMCodeGenFileType; ErrorMessage: PPUTF8Char): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineEmitToFile';
-
-(** Compile the LLVM IR stored in \p M and store the result in \p OutMemBuf. *)
-function LLVMTargetMachineEmitToMemoryBuffer(T: LLVMTargetMachineRef; M: LLVMModuleRef; codegen: LLVMCodeGenFileType; ErrorMessage: PPUTF8Char; OutMemBuf: PLLVMMemoryBufferRef): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMTargetMachineEmitToMemoryBuffer';
-
-(** Get a triple for the host machine as a string. The result needs to be
-  disposed with LLVMDisposeMessage. *)
-function LLVMGetDefaultTargetTriple(): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetDefaultTargetTriple';
-
-(** Normalize a target triple. The result needs to be disposed with
-  LLVMDisposeMessage. *)
-function LLVMNormalizeTargetTriple(const triple: PUTF8Char): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMNormalizeTargetTriple';
-
-(** Get the host CPU as a string. The result needs to be disposed with
-  LLVMDisposeMessage. *)
-function LLVMGetHostCPUName(): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetHostCPUName';
-
-(** Get the host CPU's features as a string. The result needs to be disposed
-  with LLVMDisposeMessage. *)
-function LLVMGetHostCPUFeatures(): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetHostCPUFeatures';
-
-(** Adds the target-specific analysis passes to the pass manager. *)
-procedure LLVMAddAnalysisPasses(T: LLVMTargetMachineRef; PM: LLVMPassManagerRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMAddAnalysisPasses';
-
-(**
- * Construct and run a set of passes over a module
- *
- * This function takes a string with the passes that should be used. The format
- * of this string is the same as opt's -passes argument for the new pass
- * manager. Individual passes may be specified, separated by commas. Full
- * pipelines may also be invoked using `default<O3>` and friends. See opt for
- * full reference of the Passes format.
- *)
-function LLVMRunPasses(M: LLVMModuleRef; const Passes: PUTF8Char; TM: LLVMTargetMachineRef; Options: LLVMPassBuilderOptionsRef): LLVMErrorRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMRunPasses';
-
-(**
- * Construct and run a set of passes over a function.
- *
- * This function behaves the same as LLVMRunPasses, but operates on a single
- * function instead of an entire module.
- *)
-function LLVMRunPassesOnFunction(F: LLVMValueRef; const Passes: PUTF8Char; TM: LLVMTargetMachineRef; Options: LLVMPassBuilderOptionsRef): LLVMErrorRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMRunPassesOnFunction';
-
-(**
- * Create a new set of options for a PassBuilder
- *
- * Ownership of the returned instance is given to the client, and they are
- * responsible for it. The client should call LLVMDisposePassBuilderOptions
- * to free the pass builder options.
- *)
-function LLVMCreatePassBuilderOptions(): LLVMPassBuilderOptionsRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMCreatePassBuilderOptions';
-
-(**
- * Toggle adding the VerifierPass for the PassBuilder, ensuring all functions
- * inside the module is valid.
- *)
-procedure LLVMPassBuilderOptionsSetVerifyEach(Options: LLVMPassBuilderOptionsRef; VerifyEach: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetVerifyEach';
-
-(**
- * Toggle debug logging when running the PassBuilder
- *)
-procedure LLVMPassBuilderOptionsSetDebugLogging(Options: LLVMPassBuilderOptionsRef; DebugLogging: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetDebugLogging';
-
-(**
- * Specify a custom alias analysis pipeline for the PassBuilder to be used
- * instead of the default one. The string argument is not copied; the caller
- * is responsible for ensuring it outlives the PassBuilderOptions instance.
- *)
-procedure LLVMPassBuilderOptionsSetAAPipeline(Options: LLVMPassBuilderOptionsRef; const AAPipeline: PUTF8Char); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetAAPipeline';
-
-procedure LLVMPassBuilderOptionsSetLoopInterleaving(Options: LLVMPassBuilderOptionsRef; LoopInterleaving: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLoopInterleaving';
-
-procedure LLVMPassBuilderOptionsSetLoopVectorization(Options: LLVMPassBuilderOptionsRef; LoopVectorization: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLoopVectorization';
-
-procedure LLVMPassBuilderOptionsSetSLPVectorization(Options: LLVMPassBuilderOptionsRef; SLPVectorization: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetSLPVectorization';
-
-procedure LLVMPassBuilderOptionsSetLoopUnrolling(Options: LLVMPassBuilderOptionsRef; LoopUnrolling: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLoopUnrolling';
-
-procedure LLVMPassBuilderOptionsSetForgetAllSCEVInLoopUnroll(Options: LLVMPassBuilderOptionsRef; ForgetAllSCEVInLoopUnroll: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetForgetAllSCEVInLoopUnroll';
-
-procedure LLVMPassBuilderOptionsSetLicmMssaOptCap(Options: LLVMPassBuilderOptionsRef; LicmMssaOptCap: Cardinal); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLicmMssaOptCap';
-
-procedure LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap(Options: LLVMPassBuilderOptionsRef; LicmMssaNoAccForPromotionCap: Cardinal); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap';
-
-procedure LLVMPassBuilderOptionsSetCallGraphProfile(Options: LLVMPassBuilderOptionsRef; CallGraphProfile: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetCallGraphProfile';
-
-procedure LLVMPassBuilderOptionsSetMergeFunctions(Options: LLVMPassBuilderOptionsRef; MergeFunctions: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetMergeFunctions';
-
-procedure LLVMPassBuilderOptionsSetInlinerThreshold(Options: LLVMPassBuilderOptionsRef; Threshold: Integer); cdecl;
-  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetInlinerThreshold';
-
-(**
- * Dispose of a heap-allocated PassBuilderOptions instance
- *)
-procedure LLVMDisposePassBuilderOptions(Options: LLVMPassBuilderOptionsRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMDisposePassBuilderOptions';
+  LLVMPassBuilderOptionsRef = Pointer;
+  PLLVMPassBuilderOptionsRef = ^LLVMPassBuilderOptionsRef;
 
 function LLVMVerifyModule(M: LLVMModuleRef; Action: LLVMVerifierFailureAction; OutMessage: PPUTF8Char): LLVMBool; cdecl;
   external LLVM_DLL name _PU + 'LLVMVerifyModule';
@@ -4262,17 +3917,6 @@ function LLVMGetAsString(c: LLVMValueRef; Length: PNativeUInt): PUTF8Char; cdecl
   external LLVM_DLL name _PU + 'LLVMGetAsString';
 
 (**
- * Get the raw, underlying bytes of the given constant data sequential.
- *
- * This is the same as LLVMGetAsString except it works for all constant data
- * sequentials, not just i8 arrays.
- *
- * @see ConstantDataSequential::getRawDataValues()
- *)
-function LLVMGetRawDataValues(c: LLVMValueRef; SizeInBytes: PNativeUInt): PUTF8Char; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetRawDataValues';
-
-(**
  * Create an anonymous ConstantStruct with the specified values.
  *
  * @see llvm::ConstantStruct::getAnon()
@@ -4308,18 +3952,6 @@ function LLVMConstArray(ElementTy: LLVMTypeRef; ConstantVals: PLLVMValueRef; Len
  *)
 function LLVMConstArray2(ElementTy: LLVMTypeRef; ConstantVals: PLLVMValueRef; Length: UInt64): LLVMValueRef; cdecl;
   external LLVM_DLL name _PU + 'LLVMConstArray2';
-
-(**
- * Create a ConstantDataArray from raw values.
- *
- * ElementTy must be one of i8, i16, i32, i64, half, bfloat, float, or double.
- * Data points to a contiguous buffer of raw values in the host endianness. The
- * element count is inferred from the element type and the data size in bytes.
- *
- * @see llvm::ConstantDataArray::getRaw()
- *)
-function LLVMConstDataArray(ElementTy: LLVMTypeRef; const Data: PUTF8Char; SizeInBytes: NativeUInt): LLVMValueRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMConstDataArray';
 
 (**
  * Create a non-anonymous ConstantStruct from values.
@@ -4406,6 +4038,15 @@ function LLVMConstNSWSub(LHSConstant: LLVMValueRef; RHSConstant: LLVMValueRef): 
 
 function LLVMConstNUWSub(LHSConstant: LLVMValueRef; RHSConstant: LLVMValueRef): LLVMValueRef; cdecl;
   external LLVM_DLL name _PU + 'LLVMConstNUWSub';
+
+function LLVMConstMul(LHSConstant: LLVMValueRef; RHSConstant: LLVMValueRef): LLVMValueRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMConstMul';
+
+function LLVMConstNSWMul(LHSConstant: LLVMValueRef; RHSConstant: LLVMValueRef): LLVMValueRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMConstNSWMul';
+
+function LLVMConstNUWMul(LHSConstant: LLVMValueRef; RHSConstant: LLVMValueRef): LLVMValueRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMConstNUWMul';
 
 function LLVMConstXor(LHSConstant: LLVMValueRef; RHSConstant: LLVMValueRef): LLVMValueRef; cdecl;
   external LLVM_DLL name _PU + 'LLVMConstXor';
@@ -4525,7 +4166,6 @@ procedure LLVMSetUnnamedAddress(Global: LLVMValueRef; UnnamedAddr: LLVMUnnamedAd
  * type of a global value which is always a pointer type.
  *
  * @see llvm::GlobalValue::getValueType()
- * @see llvm::Function::getFunctionType()
  *)
 function LLVMGlobalGetValueType(Global: LLVMValueRef): LLVMTypeRef; cdecl;
   external LLVM_DLL name _PU + 'LLVMGlobalGetValueType';
@@ -5605,26 +5245,6 @@ function LLVMGetInstructionOpcode(Inst: LLVMValueRef): LLVMOpcode; cdecl;
  *)
 function LLVMGetICmpPredicate(Inst: LLVMValueRef): LLVMIntPredicate; cdecl;
   external LLVM_DLL name _PU + 'LLVMGetICmpPredicate';
-
-(**
- * Get whether or not an icmp instruction has the samesign flag.
- *
- * This is only valid for instructions that correspond to llvm::ICmpInst.
- *
- * @see llvm::ICmpInst::hasSameSign()
- *)
-function LLVMGetICmpSameSign(Inst: LLVMValueRef): LLVMBool; cdecl;
-  external LLVM_DLL name _PU + 'LLVMGetICmpSameSign';
-
-(**
- * Set the samesign flag on an icmp instruction.
- *
- * This is only valid for instructions that correspond to llvm::ICmpInst.
- *
- * @see llvm::ICmpInst::setSameSign()
- *)
-procedure LLVMSetICmpSameSign(Inst: LLVMValueRef; SameSign: LLVMBool); cdecl;
-  external LLVM_DLL name _PU + 'LLVMSetICmpSameSign';
 
 (**
  * Obtain the float predicate of an instruction.
@@ -7244,18 +6864,6 @@ function LLVMDIBuilderCreateEnumerator(Builder: LLVMDIBuilderRef; const Name: PU
   external LLVM_DLL name _PU + 'LLVMDIBuilderCreateEnumerator';
 
 (**
- * Create debugging information entry for an enumerator of arbitrary precision.
- * @param Builder        The DIBuilder.
- * @param Name           Enumerator name.
- * @param NameLen        Length of enumerator name.
- * @param SizeInBits     Number of bits of the value.
- * @param Words          The words that make up the value.
- * @param IsUnsigned     True if the value is unsigned.
- *)
-function LLVMDIBuilderCreateEnumeratorOfArbitraryPrecision(Builder: LLVMDIBuilderRef; const Name: PUTF8Char; NameLen: NativeUInt; SizeInBits: UInt64; Words: PUInt64; IsUnsigned: LLVMBool): LLVMMetadataRef; cdecl;
-  external LLVM_DLL name _PU + 'LLVMDIBuilderCreateEnumeratorOfArbitraryPrecision';
-
-(**
  * Create debugging information entry for an enumeration.
  * \param Builder        The DIBuilder.
  * \param Scope          Scope in which this enumeration is defined.
@@ -7953,16 +7561,6 @@ function LLVMDISubprogramGetLine(Subprogram: LLVMMetadataRef): Cardinal; cdecl;
   external LLVM_DLL name _PU + 'LLVMDISubprogramGetLine';
 
 (**
- * Replace the subprogram subroutine type.
- * \param Subprogram        The subprogram object.
- * \param SubroutineType    The new subroutine type.
- *
- * @see DISubprogram::replaceType()
- *)
-procedure LLVMDISubprogramReplaceType(Subprogram: LLVMMetadataRef; SubroutineType: LLVMMetadataRef); cdecl;
-  external LLVM_DLL name _PU + 'LLVMDISubprogramReplaceType';
-
-(**
  * Get the debug location for the given instruction.
  *
  * @see llvm::Instruction::getDebugLoc()
@@ -8089,16 +7687,487 @@ function LLVMDisasmInstruction(DC: LLVMDisasmContextRef; Bytes: PUInt8; BytesSiz
   external LLVM_DLL name _PU + 'LLVMDisasmInstruction';
 
 (**
- * Empty function used to force the linker to link MCJIT.
- * Has no effect when called on a pre-built library (dylib interface).
+ * Returns the type id for the given error instance, which must be a failure
+ * value (i.e. non-null).
+ *)
+function LLVMGetErrorTypeId(Err: LLVMErrorRef): LLVMErrorTypeId; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetErrorTypeId';
+
+(**
+ * Dispose of the given error without handling it. This operation consumes the
+ * error, and the given LLVMErrorRef value is not usable once this call returns.
+ * Note: This method *only* needs to be called if the error is not being passed
+ * to some other consuming operation, e.g. LLVMGetErrorMessage.
+ *)
+procedure LLVMConsumeError(Err: LLVMErrorRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMConsumeError';
+
+(**
+ * Report a fatal error if Err is a failure value.
+ *
+ * This function can be used to wrap calls to fallible functions ONLY when it is
+ * known that the Error will always be a success value.
+ *)
+procedure LLVMCantFail(Err: LLVMErrorRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMCantFail';
+
+(**
+ * Returns the given string's error message. This operation consumes the error,
+ * and the given LLVMErrorRef value is not usable once this call returns.
+ * The caller is responsible for disposing of the string by calling
+ * LLVMDisposeErrorMessage.
+ *)
+function LLVMGetErrorMessage(Err: LLVMErrorRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetErrorMessage';
+
+(**
+ * Dispose of the given error message.
+ *)
+procedure LLVMDisposeErrorMessage(ErrMsg: PUTF8Char); cdecl;
+  external LLVM_DLL name _PU + 'LLVMDisposeErrorMessage';
+
+(**
+ * Returns the type id for llvm StringError.
+ *)
+function LLVMGetStringErrorTypeId(): LLVMErrorTypeId; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetStringErrorTypeId';
+
+(**
+ * Create a StringError.
+ *)
+function LLVMCreateStringError(const ErrMsg: PUTF8Char): LLVMErrorRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreateStringError';
+
+procedure LLVMInitializeAArch64TargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeAArch64TargetInfo';
+
+procedure LLVMInitializeARMTargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeARMTargetInfo';
+
+procedure LLVMInitializeX86TargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeX86TargetInfo';
+
+procedure LLVMInitializeBPFTargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeBPFTargetInfo';
+
+procedure LLVMInitializeWebAssemblyTargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeWebAssemblyTargetInfo';
+
+procedure LLVMInitializeRISCVTargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeRISCVTargetInfo';
+
+procedure LLVMInitializeNVPTXTargetInfo(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeNVPTXTargetInfo';
+
+procedure LLVMInitializeAArch64Target(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeAArch64Target';
+
+procedure LLVMInitializeARMTarget(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeARMTarget';
+
+procedure LLVMInitializeX86Target(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeX86Target';
+
+procedure LLVMInitializeBPFTarget(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeBPFTarget';
+
+procedure LLVMInitializeWebAssemblyTarget(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeWebAssemblyTarget';
+
+procedure LLVMInitializeRISCVTarget(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeRISCVTarget';
+
+procedure LLVMInitializeNVPTXTarget(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeNVPTXTarget';
+
+procedure LLVMInitializeAArch64TargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeAArch64TargetMC';
+
+procedure LLVMInitializeARMTargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeARMTargetMC';
+
+procedure LLVMInitializeX86TargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeX86TargetMC';
+
+procedure LLVMInitializeBPFTargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeBPFTargetMC';
+
+procedure LLVMInitializeWebAssemblyTargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeWebAssemblyTargetMC';
+
+procedure LLVMInitializeRISCVTargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeRISCVTargetMC';
+
+procedure LLVMInitializeNVPTXTargetMC(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeNVPTXTargetMC';
+
+procedure LLVMInitializeAArch64AsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeAArch64AsmPrinter';
+
+procedure LLVMInitializeARMAsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeARMAsmPrinter';
+
+procedure LLVMInitializeX86AsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeX86AsmPrinter';
+
+procedure LLVMInitializeBPFAsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeBPFAsmPrinter';
+
+procedure LLVMInitializeWebAssemblyAsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeWebAssemblyAsmPrinter';
+
+procedure LLVMInitializeRISCVAsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeRISCVAsmPrinter';
+
+procedure LLVMInitializeNVPTXAsmPrinter(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeNVPTXAsmPrinter';
+
+procedure LLVMInitializeAArch64AsmParser(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeAArch64AsmParser';
+
+procedure LLVMInitializeARMAsmParser(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeARMAsmParser';
+
+procedure LLVMInitializeX86AsmParser(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeX86AsmParser';
+
+procedure LLVMInitializeBPFAsmParser(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeBPFAsmParser';
+
+procedure LLVMInitializeWebAssemblyAsmParser(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeWebAssemblyAsmParser';
+
+procedure LLVMInitializeRISCVAsmParser(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeRISCVAsmParser';
+
+procedure LLVMInitializeAArch64Disassembler(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeAArch64Disassembler';
+
+procedure LLVMInitializeARMDisassembler(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeARMDisassembler';
+
+procedure LLVMInitializeX86Disassembler(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeX86Disassembler';
+
+procedure LLVMInitializeBPFDisassembler(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeBPFDisassembler';
+
+procedure LLVMInitializeWebAssemblyDisassembler(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeWebAssemblyDisassembler';
+
+procedure LLVMInitializeRISCVDisassembler(); cdecl;
+  external LLVM_DLL name _PU + 'LLVMInitializeRISCVDisassembler';
+
+(**
+ * Obtain the data layout for a module.
+ *
+ * @see Module::getDataLayout()
+ *)
+function LLVMGetModuleDataLayout(M: LLVMModuleRef): LLVMTargetDataRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetModuleDataLayout';
+
+(**
+ * Set the data layout for a module.
+ *
+ * @see Module::setDataLayout()
+ *)
+procedure LLVMSetModuleDataLayout(M: LLVMModuleRef; DL: LLVMTargetDataRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMSetModuleDataLayout';
+
+(** Creates target data from a target layout string.
+    See the constructor llvm::DataLayout::DataLayout. *)
+function LLVMCreateTargetData(const StringRep: PUTF8Char): LLVMTargetDataRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreateTargetData';
+
+(** Deallocates a TargetData.
+    See the destructor llvm::DataLayout::~DataLayout. *)
+procedure LLVMDisposeTargetData(TD: LLVMTargetDataRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMDisposeTargetData';
+
+(** Adds target library information to a pass manager. This does not take
+    ownership of the target library info.
+    See the method llvm::PassManagerBase::add. *)
+procedure LLVMAddTargetLibraryInfo(TLI: LLVMTargetLibraryInfoRef; PM: LLVMPassManagerRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMAddTargetLibraryInfo';
+
+(** Converts target data to a target layout string. The string must be disposed
+    with LLVMDisposeMessage.
+    See the constructor llvm::DataLayout::DataLayout. *)
+function LLVMCopyStringRepOfTargetData(TD: LLVMTargetDataRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCopyStringRepOfTargetData';
+
+(** Returns the byte order of a target, either LLVMBigEndian or
+    LLVMLittleEndian.
+    See the method llvm::DataLayout::isLittleEndian. *)
+function LLVMByteOrder(TD: LLVMTargetDataRef): LLVMByteOrdering; cdecl;
+  external LLVM_DLL name _PU + 'LLVMByteOrder';
+
+(** Returns the pointer size in bytes for a target.
+    See the method llvm::DataLayout::getPointerSize. *)
+function LLVMPointerSize(TD: LLVMTargetDataRef): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMPointerSize';
+
+(** Returns the pointer size in bytes for a target for a specified
+    address space.
+    See the method llvm::DataLayout::getPointerSize. *)
+function LLVMPointerSizeForAS(TD: LLVMTargetDataRef; AS_: Cardinal): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMPointerSizeForAS';
+
+(** Returns the integer type that is the same size as a pointer on a target.
+    See the method llvm::DataLayout::getIntPtrType. *)
+function LLVMIntPtrType(TD: LLVMTargetDataRef): LLVMTypeRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMIntPtrType';
+
+(** Returns the integer type that is the same size as a pointer on a target.
+    This version allows the address space to be specified.
+    See the method llvm::DataLayout::getIntPtrType. *)
+function LLVMIntPtrTypeForAS(TD: LLVMTargetDataRef; AS_: Cardinal): LLVMTypeRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMIntPtrTypeForAS';
+
+(** Returns the integer type that is the same size as a pointer on a target.
+    See the method llvm::DataLayout::getIntPtrType. *)
+function LLVMIntPtrTypeInContext(C: LLVMContextRef; TD: LLVMTargetDataRef): LLVMTypeRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMIntPtrTypeInContext';
+
+(** Returns the integer type that is the same size as a pointer on a target.
+    This version allows the address space to be specified.
+    See the method llvm::DataLayout::getIntPtrType. *)
+function LLVMIntPtrTypeForASInContext(C: LLVMContextRef; TD: LLVMTargetDataRef; AS_: Cardinal): LLVMTypeRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMIntPtrTypeForASInContext';
+
+(** Computes the size of a type in bits for a target.
+    See the method llvm::DataLayout::getTypeSizeInBits. *)
+function LLVMSizeOfTypeInBits(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): UInt64; cdecl;
+  external LLVM_DLL name _PU + 'LLVMSizeOfTypeInBits';
+
+(** Computes the storage size of a type in bytes for a target.
+    See the method llvm::DataLayout::getTypeStoreSize. *)
+function LLVMStoreSizeOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): UInt64; cdecl;
+  external LLVM_DLL name _PU + 'LLVMStoreSizeOfType';
+
+(** Computes the ABI size of a type in bytes for a target.
+    See the method llvm::DataLayout::getTypeAllocSize. *)
+function LLVMABISizeOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): UInt64; cdecl;
+  external LLVM_DLL name _PU + 'LLVMABISizeOfType';
+
+(** Computes the ABI alignment of a type in bytes for a target.
+    See the method llvm::DataLayout::getTypeABISize. *)
+function LLVMABIAlignmentOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMABIAlignmentOfType';
+
+(** Computes the call frame alignment of a type in bytes for a target.
+    See the method llvm::DataLayout::getTypeABISize. *)
+function LLVMCallFrameAlignmentOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCallFrameAlignmentOfType';
+
+(** Computes the preferred alignment of a type in bytes for a target.
+    See the method llvm::DataLayout::getTypeABISize. *)
+function LLVMPreferredAlignmentOfType(TD: LLVMTargetDataRef; Ty: LLVMTypeRef): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMPreferredAlignmentOfType';
+
+(** Computes the preferred alignment of a global variable in bytes for a target.
+    See the method llvm::DataLayout::getPreferredAlignment. *)
+function LLVMPreferredAlignmentOfGlobal(TD: LLVMTargetDataRef; GlobalVar: LLVMValueRef): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMPreferredAlignmentOfGlobal';
+
+(** Computes the structure element that contains the byte offset for a target.
+    See the method llvm::StructLayout::getElementContainingOffset. *)
+function LLVMElementAtOffset(TD: LLVMTargetDataRef; StructTy: LLVMTypeRef; Offset: UInt64): Cardinal; cdecl;
+  external LLVM_DLL name _PU + 'LLVMElementAtOffset';
+
+(** Computes the byte offset of the indexed struct element for a target.
+    See the method llvm::StructLayout::getElementContainingOffset. *)
+function LLVMOffsetOfElement(TD: LLVMTargetDataRef; StructTy: LLVMTypeRef; Element: Cardinal): UInt64; cdecl;
+  external LLVM_DLL name _PU + 'LLVMOffsetOfElement';
+
+(** Returns the first llvm::Target in the registered targets list. *)
+function LLVMGetFirstTarget(): LLVMTargetRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetFirstTarget';
+
+(** Returns the next llvm::Target given a previous one (or null if there's none) *)
+function LLVMGetNextTarget(T: LLVMTargetRef): LLVMTargetRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetNextTarget';
+
+(** Finds the target corresponding to the given name and stores it in \p T.
+  Returns 0 on success. *)
+function LLVMGetTargetFromName(const Name: PUTF8Char): LLVMTargetRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetFromName';
+
+(** Finds the target corresponding to the given triple and stores it in \p T.
+  Returns 0 on success. Optionally returns any error in ErrorMessage.
+  Use LLVMDisposeMessage to dispose the message. *)
+function LLVMGetTargetFromTriple(const Triple: PUTF8Char; T: PLLVMTargetRef; ErrorMessage: PPUTF8Char): LLVMBool; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetFromTriple';
+
+(** Returns the name of a target. See llvm::Target::getName *)
+function LLVMGetTargetName(T: LLVMTargetRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetName';
+
+(** Returns the description  of a target. See llvm::Target::getDescription *)
+function LLVMGetTargetDescription(T: LLVMTargetRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetDescription';
+
+(** Returns if the target has a JIT *)
+function LLVMTargetHasJIT(T: LLVMTargetRef): LLVMBool; cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetHasJIT';
+
+(** Returns if the target has a TargetMachine associated *)
+function LLVMTargetHasTargetMachine(T: LLVMTargetRef): LLVMBool; cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetHasTargetMachine';
+
+(** Returns if the target as an ASM backend (required for emitting output) *)
+function LLVMTargetHasAsmBackend(T: LLVMTargetRef): LLVMBool; cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetHasAsmBackend';
+
+(**
+ * Create a new set of options for an llvm::TargetMachine.
+ *
+ * The returned option structure must be released with
+ * LLVMDisposeTargetMachineOptions() after the call to
+ * LLVMCreateTargetMachineWithOptions().
+ *)
+function LLVMCreateTargetMachineOptions(): LLVMTargetMachineOptionsRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreateTargetMachineOptions';
+
+(**
+ * Dispose of an LLVMTargetMachineOptionsRef instance.
+ *)
+procedure LLVMDisposeTargetMachineOptions(Options: LLVMTargetMachineOptionsRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMDisposeTargetMachineOptions';
+
+procedure LLVMTargetMachineOptionsSetCPU(Options: LLVMTargetMachineOptionsRef; const CPU: PUTF8Char); cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetCPU';
+
+(**
+ * Set the list of features for the target machine.
+ *
+ * \param Features a comma-separated list of features.
+ *)
+procedure LLVMTargetMachineOptionsSetFeatures(Options: LLVMTargetMachineOptionsRef; const Features: PUTF8Char); cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetFeatures';
+
+procedure LLVMTargetMachineOptionsSetABI(Options: LLVMTargetMachineOptionsRef; const ABI: PUTF8Char); cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetABI';
+
+procedure LLVMTargetMachineOptionsSetCodeGenOptLevel(Options: LLVMTargetMachineOptionsRef; Level: LLVMCodeGenOptLevel); cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetCodeGenOptLevel';
+
+procedure LLVMTargetMachineOptionsSetRelocMode(Options: LLVMTargetMachineOptionsRef; Reloc: LLVMRelocMode); cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetRelocMode';
+
+procedure LLVMTargetMachineOptionsSetCodeModel(Options: LLVMTargetMachineOptionsRef; CodeModel: LLVMCodeModel); cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineOptionsSetCodeModel';
+
+(**
+ * Create a new llvm::TargetMachine.
+ *
+ * \param T the target to create a machine for.
+ * \param Triple a triple describing the target machine.
+ * \param Options additional configuration (see
+ *                LLVMCreateTargetMachineOptions()).
+ *)
+function LLVMCreateTargetMachineWithOptions(T: LLVMTargetRef; const Triple: PUTF8Char; Options: LLVMTargetMachineOptionsRef): LLVMTargetMachineRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreateTargetMachineWithOptions';
+
+(** Creates a new llvm::TargetMachine. See llvm::Target::createTargetMachine *)
+function LLVMCreateTargetMachine(T: LLVMTargetRef; const Triple: PUTF8Char; const CPU: PUTF8Char; const Features: PUTF8Char; Level: LLVMCodeGenOptLevel; Reloc: LLVMRelocMode; CodeModel: LLVMCodeModel): LLVMTargetMachineRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreateTargetMachine';
+
+(** Dispose the LLVMTargetMachineRef instance generated by
+  LLVMCreateTargetMachine. *)
+procedure LLVMDisposeTargetMachine(T: LLVMTargetMachineRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMDisposeTargetMachine';
+
+(** Returns the Target used in a TargetMachine *)
+function LLVMGetTargetMachineTarget(T: LLVMTargetMachineRef): LLVMTargetRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetMachineTarget';
+
+(** Returns the triple used creating this target machine. See
+  llvm::TargetMachine::getTriple. The result needs to be disposed with
+  LLVMDisposeMessage. *)
+function LLVMGetTargetMachineTriple(T: LLVMTargetMachineRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetMachineTriple';
+
+(** Returns the cpu used creating this target machine. See
+  llvm::TargetMachine::getCPU. The result needs to be disposed with
+  LLVMDisposeMessage. *)
+function LLVMGetTargetMachineCPU(T: LLVMTargetMachineRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetMachineCPU';
+
+(** Returns the feature string used creating this target machine. See
+  llvm::TargetMachine::getFeatureString. The result needs to be disposed with
+  LLVMDisposeMessage. *)
+function LLVMGetTargetMachineFeatureString(T: LLVMTargetMachineRef): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetTargetMachineFeatureString';
+
+(** Create a DataLayout based on the targetMachine. *)
+function LLVMCreateTargetDataLayout(T: LLVMTargetMachineRef): LLVMTargetDataRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreateTargetDataLayout';
+
+(** Set the target machine's ASM verbosity. *)
+procedure LLVMSetTargetMachineAsmVerbosity(T: LLVMTargetMachineRef; VerboseAsm: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMSetTargetMachineAsmVerbosity';
+
+(** Enable fast-path instruction selection. *)
+procedure LLVMSetTargetMachineFastISel(T: LLVMTargetMachineRef; Enable: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMSetTargetMachineFastISel';
+
+(** Enable global instruction selection. *)
+procedure LLVMSetTargetMachineGlobalISel(T: LLVMTargetMachineRef; Enable: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMSetTargetMachineGlobalISel';
+
+(** Set abort behaviour when global instruction selection fails to lower/select
+ * an instruction. *)
+procedure LLVMSetTargetMachineGlobalISelAbort(T: LLVMTargetMachineRef; Mode: LLVMGlobalISelAbortMode); cdecl;
+  external LLVM_DLL name _PU + 'LLVMSetTargetMachineGlobalISelAbort';
+
+(** Enable the MachineOutliner pass. *)
+procedure LLVMSetTargetMachineMachineOutliner(T: LLVMTargetMachineRef; Enable: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMSetTargetMachineMachineOutliner';
+
+(** Emits an asm or object file for the given module to the filename. This
+  wraps several c++ only classes (among them a file stream). Returns any
+  error in ErrorMessage. Use LLVMDisposeMessage to dispose the message. *)
+function LLVMTargetMachineEmitToFile(T: LLVMTargetMachineRef; M: LLVMModuleRef; const Filename: PUTF8Char; codegen: LLVMCodeGenFileType; ErrorMessage: PPUTF8Char): LLVMBool; cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineEmitToFile';
+
+(** Compile the LLVM IR stored in \p M and store the result in \p OutMemBuf. *)
+function LLVMTargetMachineEmitToMemoryBuffer(T: LLVMTargetMachineRef; M: LLVMModuleRef; codegen: LLVMCodeGenFileType; ErrorMessage: PPUTF8Char; OutMemBuf: PLLVMMemoryBufferRef): LLVMBool; cdecl;
+  external LLVM_DLL name _PU + 'LLVMTargetMachineEmitToMemoryBuffer';
+
+(** Get a triple for the host machine as a string. The result needs to be
+  disposed with LLVMDisposeMessage. *)
+function LLVMGetDefaultTargetTriple(): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetDefaultTargetTriple';
+
+(** Normalize a target triple. The result needs to be disposed with
+  LLVMDisposeMessage. *)
+function LLVMNormalizeTargetTriple(const triple: PUTF8Char): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMNormalizeTargetTriple';
+
+(** Get the host CPU as a string. The result needs to be disposed with
+  LLVMDisposeMessage. *)
+function LLVMGetHostCPUName(): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetHostCPUName';
+
+(** Get the host CPU's features as a string. The result needs to be disposed
+  with LLVMDisposeMessage. *)
+function LLVMGetHostCPUFeatures(): PUTF8Char; cdecl;
+  external LLVM_DLL name _PU + 'LLVMGetHostCPUFeatures';
+
+(** Adds the target-specific analysis passes to the pass manager. *)
+procedure LLVMAddAnalysisPasses(T: LLVMTargetMachineRef; PM: LLVMPassManagerRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMAddAnalysisPasses';
+
+(**
+ * @defgroup LLVMCExecutionEngine Execution Engine
+ * @ingroup LLVMC
+ *
+ * @{
  *)
 procedure LLVMLinkInMCJIT(); cdecl;
   external LLVM_DLL name _PU + 'LLVMLinkInMCJIT';
 
-(**
- * Empty function used to force the linker to link the LLVM interpreter.
- * Has no effect when called on a pre-built library (dylib interface).
- *)
 procedure LLVMLinkInInterpreter(); cdecl;
   external LLVM_DLL name _PU + 'LLVMLinkInInterpreter';
 
@@ -8799,7 +8868,7 @@ function LLVMOrcCreateDynamicLibrarySearchGeneratorForPath(Result: PLLVMOrcDefin
  * THIS API IS EXPERIMENTAL AND LIKELY TO CHANGE IN THE NEAR FUTURE!
  *
  *)
-function LLVMOrcCreateStaticLibrarySearchGeneratorForPath(Result: PLLVMOrcDefinitionGeneratorRef; ObjLayer: LLVMOrcObjectLayerRef; const FileName: PUTF8Char): LLVMErrorRef; cdecl;
+function LLVMOrcCreateStaticLibrarySearchGeneratorForPath(Result: PLLVMOrcDefinitionGeneratorRef; ObjLayer: LLVMOrcObjectLayerRef; const FileName: PUTF8Char; const TargetTriple: PUTF8Char): LLVMErrorRef; cdecl;
   external LLVM_DLL name _PU + 'LLVMOrcCreateStaticLibrarySearchGeneratorForPath';
 
 (**
@@ -9736,6 +9805,94 @@ function LLVMSearchForAddressOfSymbol(const symbolName: PUTF8Char): Pointer; cde
  *)
 procedure LLVMAddSymbol(const symbolName: PUTF8Char; symbolValue: Pointer); cdecl;
   external LLVM_DLL name _PU + 'LLVMAddSymbol';
+
+(**
+ * Construct and run a set of passes over a module
+ *
+ * This function takes a string with the passes that should be used. The format
+ * of this string is the same as opt's -passes argument for the new pass
+ * manager. Individual passes may be specified, separated by commas. Full
+ * pipelines may also be invoked using `default<O3>` and friends. See opt for
+ * full reference of the Passes format.
+ *)
+function LLVMRunPasses(M: LLVMModuleRef; const Passes: PUTF8Char; TM: LLVMTargetMachineRef; Options: LLVMPassBuilderOptionsRef): LLVMErrorRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMRunPasses';
+
+(**
+ * Construct and run a set of passes over a function.
+ *
+ * This function behaves the same as LLVMRunPasses, but operates on a single
+ * function instead of an entire module.
+ *)
+function LLVMRunPassesOnFunction(F: LLVMValueRef; const Passes: PUTF8Char; TM: LLVMTargetMachineRef; Options: LLVMPassBuilderOptionsRef): LLVMErrorRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMRunPassesOnFunction';
+
+(**
+ * Create a new set of options for a PassBuilder
+ *
+ * Ownership of the returned instance is given to the client, and they are
+ * responsible for it. The client should call LLVMDisposePassBuilderOptions
+ * to free the pass builder options.
+ *)
+function LLVMCreatePassBuilderOptions(): LLVMPassBuilderOptionsRef; cdecl;
+  external LLVM_DLL name _PU + 'LLVMCreatePassBuilderOptions';
+
+(**
+ * Toggle adding the VerifierPass for the PassBuilder, ensuring all functions
+ * inside the module is valid.
+ *)
+procedure LLVMPassBuilderOptionsSetVerifyEach(Options: LLVMPassBuilderOptionsRef; VerifyEach: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetVerifyEach';
+
+(**
+ * Toggle debug logging when running the PassBuilder
+ *)
+procedure LLVMPassBuilderOptionsSetDebugLogging(Options: LLVMPassBuilderOptionsRef; DebugLogging: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetDebugLogging';
+
+(**
+ * Specify a custom alias analysis pipeline for the PassBuilder to be used
+ * instead of the default one. The string argument is not copied; the caller
+ * is responsible for ensuring it outlives the PassBuilderOptions instance.
+ *)
+procedure LLVMPassBuilderOptionsSetAAPipeline(Options: LLVMPassBuilderOptionsRef; const AAPipeline: PUTF8Char); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetAAPipeline';
+
+procedure LLVMPassBuilderOptionsSetLoopInterleaving(Options: LLVMPassBuilderOptionsRef; LoopInterleaving: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLoopInterleaving';
+
+procedure LLVMPassBuilderOptionsSetLoopVectorization(Options: LLVMPassBuilderOptionsRef; LoopVectorization: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLoopVectorization';
+
+procedure LLVMPassBuilderOptionsSetSLPVectorization(Options: LLVMPassBuilderOptionsRef; SLPVectorization: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetSLPVectorization';
+
+procedure LLVMPassBuilderOptionsSetLoopUnrolling(Options: LLVMPassBuilderOptionsRef; LoopUnrolling: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLoopUnrolling';
+
+procedure LLVMPassBuilderOptionsSetForgetAllSCEVInLoopUnroll(Options: LLVMPassBuilderOptionsRef; ForgetAllSCEVInLoopUnroll: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetForgetAllSCEVInLoopUnroll';
+
+procedure LLVMPassBuilderOptionsSetLicmMssaOptCap(Options: LLVMPassBuilderOptionsRef; LicmMssaOptCap: Cardinal); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLicmMssaOptCap';
+
+procedure LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap(Options: LLVMPassBuilderOptionsRef; LicmMssaNoAccForPromotionCap: Cardinal); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap';
+
+procedure LLVMPassBuilderOptionsSetCallGraphProfile(Options: LLVMPassBuilderOptionsRef; CallGraphProfile: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetCallGraphProfile';
+
+procedure LLVMPassBuilderOptionsSetMergeFunctions(Options: LLVMPassBuilderOptionsRef; MergeFunctions: LLVMBool); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetMergeFunctions';
+
+procedure LLVMPassBuilderOptionsSetInlinerThreshold(Options: LLVMPassBuilderOptionsRef; Threshold: Integer); cdecl;
+  external LLVM_DLL name _PU + 'LLVMPassBuilderOptionsSetInlinerThreshold';
+
+(**
+ * Dispose of a heap-allocated PassBuilderOptions instance
+ *)
+procedure LLVMDisposePassBuilderOptions(Options: LLVMPassBuilderOptionsRef); cdecl;
+  external LLVM_DLL name _PU + 'LLVMDisposePassBuilderOptions';
 
 implementation
 
