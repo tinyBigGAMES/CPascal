@@ -1,0 +1,62 @@
+// 102_FieldDeclaration.cpas
+// BNF Rules: <field_declaration>, <identifier_list>, <qualified_type>
+program FieldDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TPoint = record
+    LX: Int32;
+    LY: Int32;
+  end;
+  
+  TPerson = record
+    LFirstName, LLastName: PChar;
+    LAge: Int32;
+    LHeight: Double;
+    LIsActive: Boolean;
+  end;
+  
+  TComplex = record
+    LReal, LImaginary: Double;
+    LMagnitude: Double;
+  end;
+
+var
+  LPoint: TPoint;
+  LPerson: TPerson;
+  LComplex: TComplex;
+
+begin
+  printf("Field declaration test:\n");
+  
+  // Initialize point
+  LPoint.LX := 10;
+  LPoint.LY := 20;
+  
+  // Initialize person
+  LPerson.LFirstName := "John";
+  LPerson.LLastName := "Doe";
+  LPerson.LAge := 30;
+  LPerson.LHeight := 5.9;
+  LPerson.LIsActive := true;
+  
+  // Initialize complex number
+  LComplex.LReal := 3.0;
+  LComplex.LImaginary := 4.0;
+  LComplex.LMagnitude := 5.0;
+  
+  printf("  Point record:\n");
+  printf("    X: %d, Y: %d\n", LPoint.LX, LPoint.LY);
+  
+  printf("  Person record:\n");
+  printf("    Name: %s %s\n", LPerson.LFirstName, LPerson.LLastName);
+  printf("    Age: %d, Height: %.1f\n", LPerson.LAge, LPerson.LHeight);
+  printf("    Active: %d\n", LPerson.LIsActive);
+  
+  printf("  Complex number record:\n");
+  printf("    Real: %.1f, Imaginary: %.1f\n", LComplex.LReal, LComplex.LImaginary);
+  printf("    Magnitude: %.1f\n", LComplex.LMagnitude);
+  
+  printf("Field declaration test completed\n");
+end.

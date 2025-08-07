@@ -1,0 +1,54 @@
+// 106_CallingConvention.cpas
+// BNF Rules: <calling_convention>
+program CallingConventionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Different calling conventions
+function LAddCdecl(const AX: Int32; const AY: Int32): Int32; cdecl;
+begin
+  return AX + AY;
+end;
+
+function LAddStdcall(const AX: Int32; const AY: Int32): Int32; stdcall;
+begin
+  return AX + AY;
+end;
+
+function LAddFastcall(const AX: Int32; const AY: Int32): Int32; fastcall;
+begin
+  return AX + AY;
+end;
+
+function LAddRegister(const AX: Int32; const AY: Int32): Int32; register;
+begin
+  return AX + AY;
+end;
+
+// External functions with calling conventions
+function LGetTickCount(): UInt32; stdcall; external "kernel32.dll";
+
+var
+  LResult: Int32;
+  LTicks: UInt32;
+
+begin
+  printf("Calling convention test:\n");
+  
+  LResult := LAddCdecl(10, 20);
+  printf("  cdecl: 10 + 20 = %d\n", LResult);
+  
+  LResult := LAddStdcall(15, 25);
+  printf("  stdcall: 15 + 25 = %d\n", LResult);
+  
+  LResult := LAddFastcall(5, 8);
+  printf("  fastcall: 5 + 8 = %d\n", LResult);
+  
+  LResult := LAddRegister(12, 18);
+  printf("  register: 12 + 18 = %d\n", LResult);
+  
+  LTicks := LGetTickCount();
+  printf("  External stdcall (GetTickCount): %u\n", LTicks);
+  
+  printf("Calling convention test completed\n");
+end.

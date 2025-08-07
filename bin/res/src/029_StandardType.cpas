@@ -1,0 +1,59 @@
+// 029_StandardType.cpas
+// BNF Rules: <standard_type>
+program StandardTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInt8Val: Int8;
+  LUInt8Val: UInt8;
+  LInt16Val: Int16;
+  LUInt16Val: UInt16;
+  LInt32Val: Int32;
+  LUInt32Val: UInt32;
+  LInt64Val: Int64;
+  LUInt64Val: UInt64;
+  LSingleVal: Single;
+  LDoubleVal: Double;
+  LBooleanVal: Boolean;
+  LCharVal: Char;
+  LPointerVal: Pointer;
+  LNativeIntVal: NativeInt;
+  LNativeUIntVal: NativeUInt;
+  LPCharVal: PChar;
+
+begin
+  LInt8Val := -128;
+  LUInt8Val := 255;
+  LInt16Val := -32768;
+  LUInt16Val := 65535;
+  LInt32Val := -2147483648;
+  LUInt32Val := 4294967295;
+  LInt64Val := -9223372036854775807;
+  LUInt64Val := 18446744073709551614;
+  LSingleVal := 3.14;
+  LDoubleVal := 2.71828;
+  LBooleanVal := true;
+  LCharVal := 'A';
+  LPointerVal := nil;
+  LNativeIntVal := 12345;
+  LNativeUIntVal := 54321;
+  LPCharVal := "Hello";
+  
+  printf("Standard types:\n");
+  printf("  Int8: %d\n", LInt8Val);
+  printf("  UInt8: %u\n", LUInt8Val);
+  printf("  Int16: %d\n", LInt16Val);
+  printf("  UInt16: %u\n", LUInt16Val);
+  printf("  Int32: %d\n", LInt32Val);
+  printf("  UInt32: %u\n", LUInt32Val);
+  printf("  Int64: %lld\n", LInt64Val);
+  printf("  UInt64: %llu\n", LUInt64Val);  
+  printf("  Single: %.2f\n", LSingleVal);
+  printf("  Double: %.5f\n", LDoubleVal);
+  printf("  Boolean: %d\n", LBooleanVal);
+  printf("  Char: %c\n", LCharVal);
+  printf("  NativeInt: %d\n", LNativeIntVal);
+  printf("  NativeUInt: %u\n", LNativeUIntVal);
+  printf("  PChar: %s\n", LPCharVal);
+end.

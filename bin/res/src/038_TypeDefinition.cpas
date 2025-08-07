@@ -1,0 +1,26 @@
+// 038_TypeDefinition.cpas
+// BNF Rules: <type_definition>, <simple_type>, <pointer_type>
+program TypeDefinitionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TIntegerType = Int32;
+  TPointerType = ^Int32;
+  TRangeType = 1..10;
+
+var
+  LInteger: TIntegerType;
+  LPointer: TPointerType;
+  LRange: TRangeType;
+
+begin
+  LInteger := 42;
+  LPointer := @LInteger;
+  LRange := 5;
+  
+  printf("Type definitions:\n");
+  printf("  Integer: %d\n", LInteger);
+  printf("  Pointer value: %d\n", LPointer^);
+  printf("  Range: %d\n", LRange);
+end.

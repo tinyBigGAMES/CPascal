@@ -1,0 +1,24 @@
+// 011_String.cpas
+// BNF Rules: <string>, <dstring_char>, <printable_char>, <escape_sequence>
+program StringTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LSimple: PChar;
+  LEscaped: PChar;
+  LEmpty: PChar;
+  LQuoted: PChar;
+
+begin
+  LSimple := "Hello World";
+  LEscaped := "Line 1\nLine 2\tTabbed";
+  LEmpty := "";
+  LQuoted := "He said \"Hello\" to me";
+  
+  printf("String literals:\n");
+  printf("  Simple: %s\n", LSimple);
+  printf("  Escaped: %s\n", LEscaped);
+  printf("  Empty: '%s'\n", LEmpty);
+  printf("  Quoted: %s\n", LQuoted);
+end.

@@ -1,0 +1,9 @@
+// 030_ProgramHeader.cpas
+// BNF Rules: <program_header>, <identifier>
+program TestProgramName;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+begin
+  printf("Program header test: TestProgramName\n");
+end.

@@ -1,0 +1,74 @@
+// 146_IfndefBlock.cpas
+// BNF Rule: <ifndef_block>
+{$DEFINE DEBUG}
+// Note: RELEASE is NOT defined
+program IfndefBlockTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{$IFNDEF RELEASE}
+const
+  LOptimizationLevel: Int32 = 0;
+  LDebugSymbols: Boolean = true;
+{$ELSE}
+const
+  LOptimizationLevel: Int32 = 3;
+  LDebugSymbols: Boolean = false;
+{$ENDIF}
+
+{$IFNDEF TESTING}
+procedure ProductionInit();
+begin
+  printf('Production initialization\n');
+end;
+{$ELSE}
+procedure ProductionInit();
+begin
+  printf('Test initialization - safety checks disabled\n');
+end;
+{$ENDIF}
+
+{$IFNDEF EMBEDDED}
+function GetSystemMemory(): Int32;
+begin
+  printf('Using full system memory allocation\n');
+  result := 1024 * 1024 * 1024; // 1GB
+end;
+{$ELSE}
+function GetSystemMemory(): Int32;
+begin
+  printf('Using limited embedded memory allocation\n');
+  result := 64 * 1024; // 64KB
+end;
+{$ENDIF}
+
+var
+  LMemory: Int32;
+
+begin
+  printf('IFNDEF Block Test\n');
+  printf('IFNDEF block syntax:\n');
+  printf('  {$IFNDEF symbol}\n');
+  printf('    [code when symbol NOT defined]\n');
+  printf('  {$ELSE}\n');
+  printf('    [code when symbol IS defined]\n');
+  printf('  {$ENDIF}\n');
+  printf('\n');
+  
+  printf('Current compilation configuration:\n');
+  printf('  Optimization Level: %d\n', LOptimizationLevel);
+  printf('  Debug Symbols: %s\n', if LDebugSymbols then 'enabled' else 'disabled');
+  printf('\n');
+  
+  ProductionInit();
+  
+  LMemory := GetSystemMemory();
+  printf('Available Memory: %d bytes\n', LMemory);
+  printf('\n');
+  
+  printf('IFNDEF blocks test for ABSENCE of symbols\n');
+  printf('Useful for default configurations when symbols not defined\n');
+  printf('Common pattern: {$IFNDEF RELEASE} for debug-only code\n');
+  printf('Enables graceful handling of optional features\n');
+  printf('Test completed successfully\n');
+end.

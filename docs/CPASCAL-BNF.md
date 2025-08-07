@@ -123,8 +123,8 @@
                     | "procedure" <identifier> "(" <parameter_list>? ")"
 
 <function_modifiers> ::= <calling_convention> | "inline" 
-                       | <calling_convention> "inline"
-                       | "inline" <calling_convention>
+                       | <calling_convention> ";" "inline"
+                       | "inline" ";" <calling_convention>
 
 <function_body> ::= <declarations> <compound_statement>
 
@@ -132,19 +132,21 @@
 
 <parameter_declaration> ::= ["const" | "var" | "out"] <identifier_list> ":" <qualified_type>
 
-<external_function> ::= <function_header> <calling_convention>? "external" <string>? ";"
-                      | <function_header> "external" <string>? <calling_convention>? ";"
+<external_function> ::= <function_header> ";" <calling_convention>? ";" "external" <string>? ";"
+                      | <function_header> ";" "external" <string>? ";" <calling_convention>? ";"
+
 
 <inline_function> ::= <function_header> <calling_convention>? "inline" ";" <function_body>
                     | <function_header> "inline" <calling_convention>? ";" <function_body>
 
-<varargs_function> ::= "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> <calling_convention>? ";"
-                     | "procedure" <identifier> "(" <parameter_list> "," "..." ")" <calling_convention>? ";"
+<varargs_function> ::= "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> ";" <calling_convention>? ";"
+                     | "procedure" <identifier> "(" <parameter_list> "," "..." ")" ";" <calling_convention>? ";"
 
-<external_varargs_function> ::= "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> <calling_convention>? "external" <string>? ";"
-                              | "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> "external" <string>? <calling_convention>? ";"
-                              | "procedure" <identifier> "(" <parameter_list> "," "..." ")" <calling_convention>? "external" <string>? ";"
-                              | "procedure" <identifier> "(" <parameter_list> "," "..." ")" "external" <string>? <calling_convention>? ";"
+<external_varargs_function> ::= "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> ";" <calling_convention>? ";" "external" <string>? ";"
+                              | "function" <identifier> "(" <parameter_list> "," "..." ")" ":" <type_definition> ";" "external" <string>? ";" <calling_convention>? ";"
+                              | "procedure" <identifier> "(" <parameter_list> "," "..." ")" ";" <calling_convention>? ";" "external" <string>? ";"
+                              | "procedure" <identifier> "(" <parameter_list> "," "..." ")" ";" "external" <string>? ";" <calling_convention>? ";"
+
 ```
 
 ## Statements

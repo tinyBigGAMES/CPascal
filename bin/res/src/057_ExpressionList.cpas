@@ -1,0 +1,26 @@
+// 057_ExpressionList.cpas
+// BNF Rules: <expression_list>, <expression>
+program ExpressionListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LArray: array[0..2] of Int32;
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+
+begin
+  LA := 10;
+  LB := 20;
+  LC := 30;
+  
+  // Expression lists in array access
+  LArray[0] := LA;
+  LArray[1] := LB;
+  LArray[2] := LC;
+  
+  // Expression lists in function calls
+  printf("Expression list test: %d, %d, %d\n", LA + 1, LB * 2, LC - 5);
+  printf("Array values: %d, %d, %d\n", LArray[0], LArray[1], LArray[2]);
+end.

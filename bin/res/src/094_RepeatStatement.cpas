@@ -1,0 +1,44 @@
+// 094_RepeatStatement.cpas
+// BNF Rules: <repeat_statement>, <statement_list>, <expression>
+program RepeatStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LCounter: Int32;
+  LValue: Int32;
+  LSum: Int32;
+
+begin
+  printf("Repeat statement test:\n");
+  
+  // Simple repeat-until loop
+  LCounter := 1;
+  printf("  Repeat counting 1 to 5:\n");
+  repeat
+    printf("    Counter: %d\n", LCounter);
+    LCounter := LCounter + 1;
+  until LCounter > 5;
+  
+  // Repeat with multiple statements
+  LValue := 1;
+  LSum := 0;
+  printf("  Sum with repeat-until:\n");
+  repeat
+    LSum := LSum + LValue;
+    printf("    Adding %d, sum now %d\n", LValue, LSum);
+    LValue := LValue + 1;
+  until LValue > 4;
+  
+  // Repeat with break
+  LCounter := 1;
+  printf("  Repeat with break at 3:\n");
+  repeat
+    if LCounter = 3 then
+      break;
+    printf("    Value: %d\n", LCounter);
+    LCounter := LCounter + 1;
+  until LCounter > 10;
+  
+  printf("Repeat statement test completed\n");
+end.

@@ -1,0 +1,30 @@
+// 020_HexDigit.cpas
+// BNF Rules: <hex_digit>, <digit>
+program HexDigitTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LHex0: Int32;
+  LHex9: Int32;
+  LHexA: Int32;
+  LHexF: Int32;
+  LHexLower: Int32;
+  LHexUpper: Int32;
+
+begin
+  LHex0 := $0;
+  LHex9 := $9;
+  LHexA := $A;
+  LHexF := $F;
+  LHexLower := $abc;
+  LHexUpper := $DEF;
+  
+  printf("Hex digit tests:\n");
+  printf("  $0: %d (0x%X)\n", LHex0, LHex0);
+  printf("  $9: %d (0x%X)\n", LHex9, LHex9);
+  printf("  $A: %d (0x%X)\n", LHexA, LHexA);
+  printf("  $F: %d (0x%X)\n", LHexF, LHexF);
+  printf("  $abc: %d (0x%X)\n", LHexLower, LHexLower);
+  printf("  $DEF: %d (0x%X)\n", LHexUpper, LHexUpper);
+end.

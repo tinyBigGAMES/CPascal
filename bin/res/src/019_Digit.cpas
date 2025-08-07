@@ -1,0 +1,24 @@
+// 019_Digit.cpas
+// BNF Rules: <digit>
+program DigitTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LDigit0: Int32;
+  LDigit5: Int32;
+  LDigit9: Int32;
+  LMultiDigit: Int32;
+
+begin
+  LDigit0 := 0;
+  LDigit5 := 5;
+  LDigit9 := 9;
+  LMultiDigit := 123456789;
+  
+  printf("Digit tests:\n");
+  printf("  Single digit 0: %d\n", LDigit0);
+  printf("  Single digit 5: %d\n", LDigit5);
+  printf("  Single digit 9: %d\n", LDigit9);
+  printf("  Multi-digit: %d\n", LMultiDigit);
+end.

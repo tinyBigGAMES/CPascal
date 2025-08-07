@@ -1,0 +1,29 @@
+// 075_TypeCast.cpas
+// BNF Rules: <type_cast>, <type_definition>, <expression>
+program TypeCastTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInt: Int32;
+  LDouble: Double;
+  LPointer: Pointer;
+  LCharPtr: ^Char;
+  LChar: Char;
+
+begin
+  LInt := 65;
+  LDouble := 3.14159;
+  LChar := 'A';
+  LPointer := @LChar;
+  
+  printf("Type cast expressions:\n");
+  printf("  Int32(%f) = %d\n", LDouble, Int32(LDouble));
+  printf("  Double(%d) = %.2f\n", LInt, Double(LInt));
+  printf("  Char(%d) = %c\n", LInt, Char(LInt));
+  
+  LCharPtr := ^Char(LPointer);
+  printf("  ^Char(pointer) = %c\n", LCharPtr^);
+  
+  printf("  UInt32(-1) = %u\n", UInt32(-1));
+end.

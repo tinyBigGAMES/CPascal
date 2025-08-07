@@ -1,0 +1,24 @@
+// 028_Sign.cpas
+// BNF Rules: <sign>
+program SignTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LPositive: Int32;
+  LNegative: Int32;
+  LPositiveExp: Double;
+  LNegativeExp: Double;
+
+begin
+  LPositive := +42;
+  LNegative := -42;
+  LPositiveExp := 1.5e+10;
+  LNegativeExp := 2.7e-5;
+  
+  printf("Sign tests:\n");
+  printf("  Positive: %d\n", LPositive);
+  printf("  Negative: %d\n", LNegative);
+  printf("  Positive exp: %.2e\n", LPositiveExp);
+  printf("  Negative exp: %.8f\n", LNegativeExp);
+end.

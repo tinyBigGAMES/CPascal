@@ -1,0 +1,21 @@
+// 035_ConstSection.cpas
+// BNF Rules: <const_section>, <const_declaration>
+program ConstSectionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  LBufferSize = 1024;
+  LMaxRetries = 3;
+  LDefaultTimeout = 5000;
+  LVersionString = "1.0.0";
+  LDebugMode = false;
+
+begin
+  printf("Const section test:\n");
+  printf("  BufferSize: %d\n", LBufferSize);
+  printf("  MaxRetries: %d\n", LMaxRetries);
+  printf("  DefaultTimeout: %d\n", LDefaultTimeout);
+  printf("  VersionString: %s\n", LVersionString);
+  printf("  DebugMode: %d\n", LDebugMode);
+end.

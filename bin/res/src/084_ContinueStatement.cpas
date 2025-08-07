@@ -1,0 +1,32 @@
+// 084_ContinueStatement.cpas
+// BNF Rules: <continue_statement>
+program ContinueStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LI: Int32;
+
+begin
+  printf("Continue statement test:\n");
+  
+  printf("For loop with continue on even numbers:\n");
+  for LI := 1 to 6 do
+  begin
+    if (LI mod 2) = 0 then
+      continue;
+    printf("  Odd number: %d\n", LI);
+  end;
+  
+  printf("While loop with continue:\n");
+  LI := 0;
+  while LI < 6 do
+  begin
+    LI := LI + 1;
+    if LI = 3 then
+      continue;
+    printf("  Value (skipped 3): %d\n", LI);
+  end;
+  
+  printf("Continue test completed\n");
+end.

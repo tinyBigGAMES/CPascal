@@ -1,0 +1,45 @@
+// 096_SubrangeType.cpas
+// BNF Rules: <subrange_type>, <constant_expression>
+program SubrangeTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TPercentage = 0..100;
+  TDayOfMonth = 1..31;
+  TCharRange = 'A'..'Z';
+  TSmallRange = -10..10;
+
+var
+  LPercent: TPercentage;
+  LDay: TDayOfMonth;
+  LChar: TCharRange;
+  LSmall: TSmallRange;
+
+begin
+  printf("Subrange type test:\n");
+  
+  LPercent := 75;
+  LDay := 15;
+  LChar := 'M';
+  LSmall := -5;
+  
+  printf("  Percentage (0..100): %d\n", LPercent);
+  printf("  Day of month (1..31): %d\n", LDay);
+  printf("  Character ('A'..'Z'): %c\n", LChar);
+  printf("  Small range (-10..10): %d\n", LSmall);
+  
+  // Test boundary values
+  LPercent := 0;
+  LDay := 31;
+  LChar := 'A';
+  LSmall := 10;
+  
+  printf("  Boundary values:\n");
+  printf("    Min percentage: %d\n", LPercent);
+  printf("    Max day: %d\n", LDay);
+  printf("    Min char: %c\n", LChar);
+  printf("    Max small: %d\n", LSmall);
+  
+  printf("Subrange type test completed\n");
+end.

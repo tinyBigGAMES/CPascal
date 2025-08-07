@@ -1,0 +1,76 @@
+// 104_RecordType.cpas
+// BNF Rules: <record_type>, <field_list>
+program RecordTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TPoint3D = record
+    LX: Double;
+    LY: Double;
+    LZ: Double;
+  end;
+  
+  TPackedPoint = packed record
+    LX: Int16;
+    LY: Int16;
+  end;
+  
+  TEmployee = record
+    LID: Int32;
+    LName: PChar;
+    LDepartment: PChar;
+    LSalary: Double;
+    LStartDate: record
+      LYear: Int32;
+      LMonth: Int32;
+      LDay: Int32;
+    end;
+  end;
+
+var
+  LPoint: TPoint3D;
+  LPackedPoint: TPackedPoint;
+  LEmployee: TEmployee;
+
+begin
+  printf("Record type test:\n");
+  
+  // Initialize 3D point
+  LPoint.LX := 1.5;
+  LPoint.LY := 2.5;
+  LPoint.LZ := 3.5;
+  
+  // Initialize packed point
+  LPackedPoint.LX := 100;
+  LPackedPoint.LY := 200;
+  
+  // Initialize employee with nested record
+  LEmployee.LID := 1001;
+  LEmployee.LName := "Bob Smith";
+  LEmployee.LDepartment := "Engineering";
+  LEmployee.LSalary := 75000.0;
+  LEmployee.LStartDate.LYear := 2020;
+  LEmployee.LStartDate.LMonth := 3;
+  LEmployee.LStartDate.LDay := 15;
+  
+  printf("  3D Point record:\n");
+  printf("    X: %.1f, Y: %.1f, Z: %.1f\n", LPoint.LX, LPoint.LY, LPoint.LZ);
+  printf("    Size: %d bytes\n", SizeOf(TPoint3D));
+  
+  printf("  Packed Point record:\n");
+  printf("    X: %d, Y: %d\n", LPackedPoint.LX, LPackedPoint.LY);
+  printf("    Size: %d bytes\n", SizeOf(TPackedPoint));
+  
+  printf("  Employee record:\n");
+  printf("    ID: %d\n", LEmployee.LID);
+  printf("    Name: %s\n", LEmployee.LName);
+  printf("    Department: %s\n", LEmployee.LDepartment);
+  printf("    Salary: $%.2f\n", LEmployee.LSalary);
+  printf("    Start Date: %d/%d/%d\n", 
+         LEmployee.LStartDate.LMonth, 
+         LEmployee.LStartDate.LDay, 
+         LEmployee.LStartDate.LYear);
+  
+  printf("Record type test completed\n");
+end.

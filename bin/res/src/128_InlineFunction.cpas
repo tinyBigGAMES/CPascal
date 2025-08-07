@@ -1,0 +1,52 @@
+// 128_InlineFunction.cpas
+// BNF Rule: <inline_function>
+program InlineFunctionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Inline function with calling convention before inline
+function AddFast(a, b: Int32): Int32; cdecl inline;
+begin
+  result := a + b;
+end;
+
+// Inline function with inline before calling convention
+function MultiplyFast(a, b: Int32): Int32; inline cdecl;
+begin
+  result := a * b;
+end;
+
+// Inline function without calling convention
+function SquareFast(x: Int32): Int32; inline;
+begin
+  result := x * x;
+end;
+
+// Inline procedure
+procedure LogMessage(msg: PChar); inline;
+begin
+  printf('LOG: %s\n', msg);
+end;
+
+var
+  LResult: Int32;
+
+begin
+  printf('Inline Function Test\n');
+  
+  LResult := AddFast(5, 3);
+  printf('AddFast(5, 3) = %d\n', LResult);
+  
+  LResult := MultiplyFast(4, 7);
+  printf('MultiplyFast(4, 7) = %d\n', LResult);
+  
+  LResult := SquareFast(6);
+  printf('SquareFast(6) = %d\n', LResult);
+  
+  LogMessage('Test message');
+  
+  printf('Inline functions allow compiler optimization hints\n');
+  printf('Pattern 1: function_header; calling_convention inline; function_body\n');
+  printf('Pattern 2: function_header; inline calling_convention; function_body\n');
+  printf('Test completed successfully\n');
+end.

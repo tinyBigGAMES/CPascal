@@ -1,0 +1,18 @@
+// 006_OctalInteger.cpas
+// BNF Rules: <octal_integer>, <octal_digit>
+program OctalIntegerTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LOct1: Int32;
+  LOct2: Int32;
+  LOct3: Int32;
+
+begin
+  LOct1 := 0o777;
+  LOct2 := 0o123;
+  LOct3 := 0o755;
+  
+  printf("Octal integers: 0o777=%d, 0o123=%d, 0o755=%d\n", LOct1, LOct2, LOct3);
+end.

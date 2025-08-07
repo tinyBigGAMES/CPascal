@@ -1,0 +1,19 @@
+// 034_ConstDeclaration.cpas
+// BNF Rules: <const_declaration>, <identifier>, <constant_expression>
+program ConstDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  LMaxValue = 100;
+  LMinValue = 0;
+  LDefaultMessage = "Default";
+  LPiValue = 3.14159;
+
+begin
+  printf("Constant declarations:\n");
+  printf("  MaxValue: %d\n", LMaxValue);
+  printf("  MinValue: %d\n", LMinValue);
+  printf("  DefaultMessage: %s\n", LDefaultMessage);
+  printf("  PiValue: %.5f\n", LPiValue);
+end.

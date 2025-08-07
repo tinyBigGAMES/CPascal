@@ -1,0 +1,39 @@
+// 080_AssignmentStatement.cpas
+// BNF Rules: <assignment_statement>, <variable>, <expression>
+program AssignmentStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+
+begin
+  // Basic assignment
+  LA := 10;
+  LB := 20;
+  LC := LA + LB;
+  
+  printf("Basic assignments:\n");
+  printf("  LA := 10; LB := 20; LC := LA + LB = %d\n", LC);
+  
+  // Compound assignments
+  LA += 5;
+  LB -= 3;
+  LC *= 2;
+  
+  printf("Compound assignments:\n");
+  printf("  LA += 5 = %d\n", LA);
+  printf("  LB -= 3 = %d\n", LB);
+  printf("  LC *= 2 = %d\n", LC);
+  
+  LA /= 3;
+  LB and= $0F;
+  LC or= $F0;
+  
+  printf("More compound assignments:\n");
+  printf("  LA /= 3 = %d\n", LA);
+  printf("  LB and= $0F = %d\n", LB);
+  printf("  LC or= $F0 = %d\n", LC);
+end.

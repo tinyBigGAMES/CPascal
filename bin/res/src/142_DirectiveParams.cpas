@@ -1,0 +1,48 @@
+// 142_DirectiveParams.cpas
+// BNF Rule: <directive_params>
+// ACTUAL directive parameters implementation - tests the BNF rule
+// <directive_params> ::= <identifier> | <string> | <identifier_list>
+
+{$DEFINE DEBUG}                           // identifier parameter
+{$LINK "kernel32.lib"}                    // string parameter  
+{$DEFINE LOGGING, TRACING, PROFILING}     // identifier_list parameter
+{$LIBPATH "C:\Libraries\Math"}            // string parameter
+{$IFDEF DEBUG}                            // identifier parameter
+{$APPTYPE "console"}                      // string parameter
+
+program DirectiveParamsTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{$IFDEF DEBUG}
+const
+  LDebugMode: Boolean = true;
+{$ELSE}  
+const
+  LDebugMode: Boolean = false;
+{$ENDIF}
+
+{$IFDEF LOGGING}
+procedure Log(msg: PChar);
+begin
+  printf('[LOG] %s\n', msg);
+end;
+{$ELSE}
+procedure Log(msg: PChar);
+begin
+  // No logging
+end;
+{$ENDIF}
+
+begin
+  printf('Directive Parameters Test - Actual Implementation\n');
+  
+  Log('Testing directive parameters');
+  
+  if LDebugMode then
+    printf('DEBUG mode is active\n')
+  else
+    printf('RELEASE mode is active\n');
+    
+  printf('Directive parameters successfully implemented\n');
+end.

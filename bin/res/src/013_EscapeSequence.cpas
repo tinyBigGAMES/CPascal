@@ -1,0 +1,30 @@
+// 013_EscapeSequence.cpas
+// BNF Rules: <escape_sequence>, <octal_digit>, <hex_digit>
+program EscapeSequenceTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LNewline: PChar;
+  LTab: PChar;
+  LBackslash: PChar;
+  LQuote: PChar;
+  LOctal: PChar;
+  LHex: PChar;
+
+begin
+  LNewline := "First\nSecond";
+  LTab := "Col1\tCol2";
+  LBackslash := "Path\\to\\file";
+  LQuote := "Say \"Hello\"";
+  LOctal := "Bell\007sound";
+  LHex := "Euro\x80symbol";
+  
+  printf("Escape sequences:\n");
+  printf("  Newline: %s\n", LNewline);
+  printf("  Tab: %s\n", LTab);
+  printf("  Backslash: %s\n", LBackslash);
+  printf("  Quote: %s\n", LQuote);
+  printf("  Octal: %s\n", LOctal);
+  printf("  Hex: %s\n", LHex);
+end.

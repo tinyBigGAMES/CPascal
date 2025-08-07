@@ -1,0 +1,39 @@
+// 130_ExternalVarargsFunction.cpas
+// BNF Rule: <external_varargs_function>
+program ExternalVarargsFunctionTest;
+
+// External varargs function - pattern 1: calling_convention; external
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+function sprintf(buffer: PChar, format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// External varargs function - pattern 2: external; calling_convention
+function fprintf(stream: Pointer, format: PChar, ...): Int32; external "msvcrt.dll"; cdecl;
+function scanf(format: PChar, ...): Int32; external "msvcrt.dll"; cdecl;
+
+// External varargs procedure - pattern 1: calling_convention; external
+procedure DebugPrintA(format: PChar, ...); stdcall; external "mylib.dll";
+
+// External varargs procedure - pattern 2: external; calling_convention
+procedure DebugPrintB(format: PChar, ...); external "mylib.dll"; stdcall;
+
+// External varargs without library specification
+function LogVarargs(level: Int32, format: PChar, ...): Int32; cdecl; external;
+procedure TraceVarargs(category: PChar, ...); external; stdcall;
+
+var
+  LBuffer: array[0..255] of Char;
+
+begin
+  printf('External Varargs Function Test\n');
+  
+  // Demonstrate usage of external varargs functions
+  printf('Testing printf: %s %d\n', 'Hello', 42);
+  sprintf(@LBuffer[0], 'Formatted: %d', 123);
+  printf('sprintf result: %s\n', @LBuffer[0]);
+  
+  printf('External varargs combine variadic args with external libraries\n');
+  printf('Pattern 1: function(...); calling_convention; external library;\n');
+  printf('Pattern 2: function(...); external library; calling_convention;\n');
+  printf('Essential for C library integration (printf, scanf, etc.)\n');
+  printf('Test completed successfully\n');
+end.

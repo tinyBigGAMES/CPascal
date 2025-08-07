@@ -1,0 +1,29 @@
+// 050_MultiplyingOperator.cpas
+// BNF Rules: <multiplying_operator>
+program MultiplyingOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LProduct: Int32;
+  LQuotient: Double;
+  LIntDiv: Int32;
+  LModulo: Int32;
+
+begin
+  LA := 20;
+  LB := 6;
+  
+  LProduct := LA * LB;
+  LQuotient := LA / LB;
+  LIntDiv := LA div LB;
+  LModulo := LA mod LB;
+  
+  printf("Multiplying operators:\n");
+  printf("  %d * %d = %d\n", LA, LB, LProduct);
+  printf("  %d / %d = %.2f\n", LA, LB, LQuotient);
+  printf("  %d div %d = %d\n", LA, LB, LIntDiv);
+  printf("  %d mod %d = %d\n", LA, LB, LModulo);
+end.

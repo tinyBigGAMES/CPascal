@@ -1,0 +1,74 @@
+// 105_UnionType.cpas
+// BNF Rules: <union_type>, <field_list>
+program UnionTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TValue = union
+    LIntValue: Int32;
+    LFloatValue: Single;
+    LCharValue: array[0..3] of Char;
+  end;
+  
+  TPackedUnion = packed union
+    LByte: UInt8;
+    LWord: UInt16;
+    LDWord: UInt32;
+  end;
+  
+  TVariant = record
+    LValueType: Int32;
+    LData: union
+      LInteger: Int32;
+      LReal: Double;
+      LString: PChar;
+      LBoolean: Boolean;
+    end;
+  end;
+
+var
+  LValue: TValue;
+  LPackedUnion: TPackedUnion;
+  LVariant: TVariant;
+
+begin
+  printf("Union type test:\n");
+  
+  // Test basic union
+  LValue.LIntValue := $41424344;
+  printf("  Union as integer: $%X (%d)\n", LValue.LIntValue, LValue.LIntValue);
+  printf("  Union as chars: %c%c%c%c\n", 
+         LValue.LCharValue[0], LValue.LCharValue[1], 
+         LValue.LCharValue[2], LValue.LCharValue[3]);
+  
+  LValue.LFloatValue := 3.14159;
+  printf("  Union as float: %.5f\n", LValue.LFloatValue);
+  printf("  Same memory as int: $%X\n", LValue.LIntValue);
+  
+  // Test packed union
+  LPackedUnion.LDWord := $12345678;
+  printf("  Packed union:\n");
+  printf("    As DWord: $%X\n", LPackedUnion.LDWord);
+  printf("    As Word: $%X\n", LPackedUnion.LWord);
+  printf("    As Byte: $%X\n", LPackedUnion.LByte);
+  
+  // Test variant record
+  LVariant.LValueType := 1; // Integer type
+  LVariant.LData.LInteger := 42;
+  printf("  Variant (integer): %d\n", LVariant.LData.LInteger);
+  
+  LVariant.LValueType := 2; // Real type
+  LVariant.LData.LReal := 2.71828;
+  printf("  Variant (real): %.5f\n", LVariant.LData.LReal);
+  
+  LVariant.LValueType := 3; // String type
+  LVariant.LData.LString := "Hello Union";
+  printf("  Variant (string): %s\n", LVariant.LData.LString);
+  
+  printf("  Union sizes:\n");
+  printf("    TValue: %d bytes\n", SizeOf(TValue));
+  printf("    TPackedUnion: %d bytes\n", SizeOf(TPackedUnion));
+  
+  printf("Union type test completed\n");
+end.

@@ -1,0 +1,19 @@
+// 008_Real.cpas
+// BNF Rules: <real>, <digit>, <exponent>
+program RealTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LSimple: Double;
+  LWithExponent: Double;
+  LScientific: Double;
+
+begin
+  LSimple := 3.14159;
+  LWithExponent := 2.5e10;
+  LScientific := 1.23E-4;
+  
+  printf("Real numbers: simple=%.5f, exponent=%.2e, scientific=%.6f\n", 
+         LSimple, LWithExponent, LScientific);
+end.

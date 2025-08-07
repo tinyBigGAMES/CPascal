@@ -1,0 +1,19 @@
+// 054_PostfixOperator.cpas
+// BNF Rules: <postfix_operator>
+program PostfixOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LResult: Int32;
+
+begin
+  LValue := 10;
+  
+  LResult := LValue++;
+  printf("Post-increment: %d++ = %d (LValue now %d)\n", 10, LResult, LValue);
+  
+  LResult := LValue--;
+  printf("Post-decrement: %d-- = %d (LValue now %d)\n", 11, LResult, LValue);
+end.

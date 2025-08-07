@@ -1,0 +1,31 @@
+// 071_LogicalOrExpression.cpas
+// BNF Rules: <logical_or_expression>, <logical_and_expression>
+program LogicalOrExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Boolean;
+  LB: Boolean;
+  LC: Boolean;
+  LResult1: Boolean;
+  LResult2: Boolean;
+  LResult3: Boolean;
+
+begin
+  LA := true;
+  LB := false;
+  LC := false;
+  
+  LResult1 := LA or LB;
+  LResult2 := LB or LC;
+  LResult3 := LA or LB or LC;
+  
+  printf("Logical OR expressions:\n");
+  printf("  true or false = %d\n", LResult1);
+  printf("  false or false = %d\n", LResult2);
+  printf("  true or false or false = %d\n", LResult3);
+  
+  LResult1 := (5 < 3) or (10 > 20) or (15 = 15);
+  printf("  (5 < 3) or (10 > 20) or (15 = 15) = %d\n", LResult1);
+end.

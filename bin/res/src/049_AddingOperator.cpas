@@ -1,0 +1,23 @@
+// 049_AddingOperator.cpas
+// BNF Rules: <adding_operator>
+program AddingOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LSum: Int32;
+  LDiff: Int32;
+
+begin
+  LA := 15;
+  LB := 7;
+  
+  LSum := LA + LB;
+  LDiff := LA - LB;
+  
+  printf("Adding operators:\n");
+  printf("  %d + %d = %d\n", LA, LB, LSum);
+  printf("  %d - %d = %d\n", LA, LB, LDiff);
+end.

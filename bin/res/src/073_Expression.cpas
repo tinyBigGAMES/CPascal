@@ -1,0 +1,31 @@
+// 073_Expression.cpas
+// BNF Rules: <expression>, <ternary_expression>
+program ExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+  LResult: Int32;
+  LFlag: Boolean;
+
+begin
+  LA := 5;
+  LB := 10;
+  LC := 15;
+  
+  // Complex expression with all precedence levels
+  LResult := LA + LB * LC > 100 ? LA * 10 : LB + LC;
+  printf("Complex expression:\n");
+  printf("  %d + %d * %d > 100 ? %d * 10 : %d + %d = %d\n", 
+         LA, LB, LC, LA, LB, LC, LResult);
+  
+  LFlag := (LA < LB) and (LB < LC) or (LA = 5);
+  printf("  (%d < %d) and (%d < %d) or (%d = 5) = %d\n",
+         LA, LB, LB, LC, LA, LFlag);
+  
+  LResult := ++LA + LB++ - --LC;
+  printf("  After increment/decrement operations: %d\n", LResult);
+end.

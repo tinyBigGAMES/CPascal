@@ -1,0 +1,28 @@
+// 051_MultiplicativeExpression.cpas
+// BNF Rules: <multiplicative_expression>, <unary_expression>, <multiplying_operator>
+program MultiplicativeExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+  LResult1: Int32;
+  LResult2: Int32;
+  LResult3: Double;
+
+begin
+  LA := 2;
+  LB := 3;
+  LC := 4;
+  
+  LResult1 := LA * LB * LC;
+  LResult2 := 24 div 3 mod 5;
+  LResult3 := 20.0 / 4.0 * 2.5;
+  
+  printf("Multiplicative expressions:\n");
+  printf("  %d * %d * %d = %d\n", LA, LB, LC, LResult1);
+  printf("  24 div 3 mod 5 = %d\n", LResult2);
+  printf("  20.0 / 4.0 * 2.5 = %.1f\n", LResult3);
+end.

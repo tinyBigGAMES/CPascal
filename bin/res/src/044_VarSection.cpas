@@ -1,0 +1,31 @@
+// 044_VarSection.cpas
+// BNF Rules: <var_section>, <var_declaration>
+program VarSectionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LWidth: Int32;
+  LHeight: Int32;
+  LDepth: Int32;
+  LArea: Double;
+  LVolume: Double;
+  LIsValid: Boolean;
+  LTitle: PChar;
+
+begin
+  LWidth := 10;
+  LHeight := 20;
+  LDepth := 5;
+  LArea := LWidth * LHeight;
+  LVolume := LArea * LDepth;
+  LIsValid := (LVolume > 0);
+  LTitle := "Geometry Calculations";
+  
+  printf("Var section test:\n");
+  printf("  Title: %s\n", LTitle);
+  printf("  Dimensions: %d x %d x %d\n", LWidth, LHeight, LDepth);
+  printf("  Area: %.1f\n", LArea);
+  printf("  Volume: %.1f\n", LVolume);
+  printf("  Valid: %d\n", LIsValid);
+end.

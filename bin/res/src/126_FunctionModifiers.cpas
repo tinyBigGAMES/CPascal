@@ -1,0 +1,76 @@
+// 126_FunctionModifiers.cpas
+// BNF Rules: <function_modifiers>, <calling_convention>
+program FunctionModifiersTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Functions with different calling conventions
+function LCdeclFunction(const AX: Int32; const AY: Int32): Int32; cdecl;
+begin
+  return AX + AY;
+end;
+
+function LStdcallFunction(const AX: Int32; const AY: Int32): Int32; stdcall;
+begin
+  return AX * AY;
+end;
+
+function LFastcallFunction(const AX: Int32; const AY: Int32): Int32; fastcall;
+begin
+  return AX - AY;
+end;
+
+function LRegisterFunction(const AX: Int32; const AY: Int32): Int32; register;
+begin
+  return AX div AY;
+end;
+
+// Inline functions
+function LInlineFunction(const AValue: Int32): Int32; inline;
+begin
+  return AValue * AValue;
+end;
+
+// Mixed modifiers
+function LInlineStdcall(const AValue: Int32): Int32; stdcall; inline;
+begin
+  return AValue + 100;
+end;
+
+function LInlineCdecl(const AValue: Int32): Int32; inline; cdecl;
+begin
+  return AValue * 3;
+end;
+
+var
+  LResult: Int32;
+
+begin
+  printf("Function modifiers test:\n");
+  
+  // Test different calling conventions
+  LResult := LCdeclFunction(10, 5);
+  printf("  cdecl: 10 + 5 = %d\n", LResult);
+  
+  LResult := LStdcallFunction(10, 5);
+  printf("  stdcall: 10 * 5 = %d\n", LResult);
+  
+  LResult := LFastcallFunction(10, 5);
+  printf("  fastcall: 10 - 5 = %d\n", LResult);
+  
+  LResult := LRegisterFunction(10, 5);
+  printf("  register: 10 / 5 = %d\n", LResult);
+  
+  // Test inline function
+  LResult := LInlineFunction(7);
+  printf("  inline: 7^2 = %d\n", LResult);
+  
+  // Test mixed modifiers
+  LResult := LInlineStdcall(25);
+  printf("  stdcall inline: 25 + 100 = %d\n", LResult);
+  
+  LResult := LInlineCdecl(15);
+  printf("  inline cdecl: 15 * 3 = %d\n", LResult);
+  
+  printf("Function modifiers test completed\n");
+end.

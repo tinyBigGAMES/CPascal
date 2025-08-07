@@ -1,0 +1,67 @@
+// 122_ParameterDeclaration.cpas
+// BNF Rules: <parameter_declaration>, <identifier_list>, <qualified_type>
+program ParameterDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Functions with different parameter declaration styles
+function LSimpleParams(const AX: Int32; const AY: Int32): Int32;
+begin
+  return AX + AY;
+end;
+
+procedure LMultipleParams(const AFirst, ASecond, AThird: Int32; var AResult: Int32);
+begin
+  AResult := AFirst + ASecond + AThird;
+end;
+
+procedure LMixedParams(
+  const AConstValue: Int32;
+  var AVarValue: Int32;
+  out AOutValue: Int32;
+  AValueParam: Double
+);
+begin
+  AOutValue := AConstValue * 2;
+  AVarValue := AVarValue + AConstValue;
+  printf("  Mixed params: const=%d, value=%.1f\n", AConstValue, AValueParam);
+end;
+
+function LQualifiedParams(
+  const volatile AInput: Int32;
+  const AArray: array[0..2] of Int32
+): Int32;
+begin
+  return AInput + AArray[0] + AArray[1] + AArray[2];
+end;
+
+var
+  LResult: Int32;
+  LValue: Int32;
+  LArray: array[0..2] of Int32;
+
+begin
+  printf("Parameter declaration test:\n");
+  
+  // Simple parameter declarations
+  LResult := LSimpleParams(10, 20);
+  printf("  Simple params: %d\n", LResult);
+  
+  // Multiple parameters with same type
+  LMultipleParams(5, 8, 12, LResult);
+  printf("  Multiple params: %d\n", LResult);
+  
+  // Mixed parameter types
+  LValue := 15;
+  LMixedParams(10, LValue, LResult, 3.14);
+  printf("  After mixed call: var=%d, out=%d\n", LValue, LResult);
+  
+  // Qualified parameter types
+  LArray[0] := 1;
+  LArray[1] := 2;
+  LArray[2] := 3;
+  LResult := LQualifiedParams(100, LArray);
+  printf("  Qualified params: %d\n", LResult);
+  
+  printf("Parameter declaration test completed\n");
+end.

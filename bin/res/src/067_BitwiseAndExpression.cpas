@@ -1,0 +1,26 @@
+// 067_BitwiseAndExpression.cpas
+// BNF Rules: <bitwise_and_expression>, <equality_expression>
+program BitwiseAndExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LResult1: Int32;
+  LResult2: Int32;
+  LResult3: Boolean;
+
+begin
+  LA := $F0;
+  LB := $0F;
+  
+  LResult1 := LA & LB;
+  LResult2 := $FF & $AA & $55;
+  LResult3 := (LA & $F0) = $F0;
+  
+  printf("Bitwise AND expressions:\n");
+  printf("  $%X & $%X = $%X\n", LA, LB, LResult1);
+  printf("  $FF & $AA & $55 = $%X\n", LResult2);
+  printf("  ($%X & $F0) = $F0 is %d\n", LA, LResult3);
+end.

@@ -1,0 +1,59 @@
+// 134_QualifiedIdentifier.cpas
+// BNF Rule: <qualified_identifier>
+// ACTUAL qualified identifier implementation - tests the BNF rule
+// <qualified_identifier> ::= <identifier> ("." <identifier>)*
+
+program QualifiedIdentifierTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TPoint = record
+    x, y: Int32;
+  end;
+  
+  TSystem = record
+    Graphics: record
+      Window: record
+        Width, Height: Int32;
+        Canvas: record
+          Color: UInt32;
+          Brush: record
+            Style: Int32;
+          end;
+        end;
+      end;
+    end;
+    Network: record
+      Connection: record
+        Timeout: Int32;
+      end;
+    end;
+  end;
+
+var
+  LPoint: TPoint;
+  LSystem: TSystem;
+
+begin
+  printf('Qualified Identifier Test - Actual Implementation\n');
+  
+  // Simple qualified identifiers
+  LPoint.x := 100;
+  LPoint.y := 200;
+  
+  // Deeply nested qualified identifiers  
+  LSystem.Graphics.Window.Width := 1024;
+  LSystem.Graphics.Window.Height := 768;
+  LSystem.Graphics.Window.Canvas.Color := $FF0000;
+  LSystem.Graphics.Window.Canvas.Brush.Style := 1;
+  LSystem.Network.Connection.Timeout := 30000;
+  
+  printf('Point: (%d, %d)\n', LPoint.x, LPoint.y);
+  printf('Window: %dx%d\n', LSystem.Graphics.Window.Width, LSystem.Graphics.Window.Height);
+  printf('Canvas Color: $%06X\n', LSystem.Graphics.Window.Canvas.Color);
+  printf('Brush Style: %d\n', LSystem.Graphics.Window.Canvas.Brush.Style);
+  printf('Network Timeout: %d ms\n', LSystem.Network.Connection.Timeout);
+  
+  printf('Qualified identifiers successfully implemented\n');
+end.

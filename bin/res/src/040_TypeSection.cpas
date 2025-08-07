@@ -1,0 +1,32 @@
+// 040_TypeSection.cpas
+// BNF Rules: <type_section>, <type_declaration>
+program TypeSectionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TSize = Int32;
+  TLength = Int32;
+  TWidth = Int32;
+  THeight = Int32;
+  TPointerToSize = ^TSize;
+
+var
+  LSize: TSize;
+  LLength: TLength;
+  LWidth: TWidth;
+  LHeight: THeight;
+  LSizePtr: TPointerToSize;
+
+begin
+  LSize := 1024;
+  LLength := 100;
+  LWidth := 50;
+  LHeight := 25;
+  LSizePtr := @LSize;
+  
+  printf("Type section test:\n");
+  printf("  Size: %d\n", LSize);
+  printf("  Dimensions: %d x %d x %d\n", LLength, LWidth, LHeight);
+  printf("  Size via pointer: %d\n", LSizePtr^);
+end.

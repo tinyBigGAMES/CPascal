@@ -1,0 +1,27 @@
+// 018_Letter.cpas
+// BNF Rules: <letter>
+program LetterTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  La: Int32;
+  LZ: Int32;
+  LA: Int32;
+  LZ_upper: Int32;
+  L_underscore: Int32;
+
+begin
+  La := 1;
+  LZ := 26;
+  LA := 27;
+  LZ_upper := 52;
+  L_underscore := 99;
+  
+  printf("Letter identifiers:\n");
+  printf("  a: %d\n", La);
+  printf("  z: %d\n", LZ);
+  printf("  A: %d\n", LA);
+  printf("  Z_upper: %d\n", LZ_upper);
+  printf("  _underscore: %d\n", L_underscore);
+end.

@@ -1,0 +1,109 @@
+// 147_ConditionalCompilation.cpas
+// BNF Rule: <conditional_compilation>
+{$DEFINE WINDOWS}
+{$DEFINE DEBUG}
+// Note: LINUX and RELEASE are NOT defined
+program ConditionalCompilationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// IFDEF block - code when symbol IS defined
+{$IFDEF WINDOWS}
+const
+  LPlatformName: PChar = 'Windows';
+  LPathSeparator: Char = '\';
+{$ENDIF}
+
+{$IFDEF LINUX}
+const
+  LPlatformName: PChar = 'Linux';
+  LPathSeparator: Char = '/';
+{$ENDIF}
+
+// IFNDEF block - code when symbol is NOT defined
+{$IFNDEF RELEASE}
+const
+  LBuildType: PChar = 'Debug Build';
+  LAssertionsEnabled: Boolean = true;
+{$ELSE}
+const
+  LBuildType: PChar = 'Release Build';
+  LAssertionsEnabled: Boolean = false;
+{$ENDIF}
+
+// Nested conditional compilation
+{$IFDEF DEBUG}
+  {$IFNDEF SILENT}
+procedure DebugLog(msg: PChar);
+begin
+  printf('[DEBUG] %s\n', msg);
+end;
+  {$ELSE}
+procedure DebugLog(msg: PChar);
+begin
+  // Silent debug mode - no output
+end;
+  {$ENDIF}
+{$ELSE}
+procedure DebugLog(msg: PChar);
+begin
+  // No debug logging in release builds
+end;
+{$ENDIF}
+
+// Platform-specific code
+{$IFDEF WINDOWS}
+function GetPlatformInfo(): PChar;
+begin
+  result := 'Windows platform detected';
+end;
+{$ENDIF}
+
+{$IFDEF LINUX}
+function GetPlatformInfo(): PChar;
+begin
+  result := 'Linux platform detected';
+end;
+{$ENDIF}
+
+{$IFNDEF WINDOWS}
+  {$IFNDEF LINUX}
+function GetPlatformInfo(): PChar;
+begin
+  result := 'Unknown platform';
+end;
+  {$ENDIF}
+{$ENDIF}
+
+begin
+  printf('Conditional Compilation Test\n');
+  printf('Conditional compilation includes both IFDEF and IFNDEF blocks\n');
+  printf('\n');
+  
+  printf('CURRENT BUILD CONFIGURATION:\n');
+  printf('  Platform: %s\n', LPlatformName);
+  printf('  Path Separator: %c\n', LPathSeparator);
+  printf('  Build Type: %s\n', LBuildType);
+  printf('  Assertions: %s\n', if LAssertionsEnabled then 'enabled' else 'disabled');
+  printf('\n');
+  
+  DebugLog('This is a debug message');
+  printf('Platform Info: %s\n', GetPlatformInfo());
+  printf('\n');
+  
+  printf('CONDITIONAL COMPILATION FEATURES:\n');
+  printf('  - IFDEF blocks: code when symbol defined\n');
+  printf('  - IFNDEF blocks: code when symbol NOT defined\n');
+  printf('  - Nested conditions supported\n');
+  printf('  - Platform-specific code sections\n');
+  printf('  - Debug/Release build variations\n');
+  printf('  - Feature flags and optional components\n');
+  printf('\n');
+  
+  printf('Essential for:\n');
+  printf('  - Cross-platform development\n');
+  printf('  - Debug vs Release builds\n');
+  printf('  - Optional feature inclusion\n');
+  printf('  - Compiler/target-specific code\n');
+  printf('Test completed successfully\n');
+end.

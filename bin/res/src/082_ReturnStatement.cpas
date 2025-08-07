@@ -1,0 +1,31 @@
+// 082_ReturnStatement.cpas
+// BNF Rules: <return_statement>, <expression>
+program ReturnStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+function LAddNumbers(const AX: Int32; const AY: Int32): Int32;
+begin
+  return AX + AY;
+end;
+
+function LGetMessage(): PChar;
+begin
+  return "Hello from function";
+end;
+
+procedure LTestProcedure();
+begin
+  printf("In procedure\n");
+  return; // Return without value in procedure
+  printf("This should not print\n");
+end;
+
+begin
+  printf("Return statement test:\n");
+  printf("  AddNumbers(5, 3) = %d\n", LAddNumbers(5, 3));
+  printf("  GetMessage() = %s\n", LGetMessage());
+  
+  LTestProcedure();
+  printf("Test completed\n");
+end.

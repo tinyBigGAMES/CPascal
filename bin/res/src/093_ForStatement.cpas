@@ -1,0 +1,53 @@
+// 093_ForStatement.cpas
+// BNF Rules: <for_statement>, <identifier>, <expression>, <statement>
+program ForStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LI: Int32;
+  LSum: Int32;
+  LProduct: Int32;
+
+begin
+  printf("For statement test:\n");
+  
+  // Simple for loop (to)
+  printf("  Counting up 1 to 5:\n");
+  for LI := 1 to 5 do
+    printf("    %d\n", LI);
+  
+  // For loop downto
+  printf("  Counting down 10 to 6:\n");
+  for LI := 10 downto 6 do
+    printf("    %d\n", LI);
+  
+  // For loop with calculations
+  LSum := 0;
+  printf("  Sum of squares 1-5:\n");
+  for LI := 1 to 5 do
+  begin
+    LSum := LSum + (LI * LI);
+    printf("    %d^2 = %d, running sum = %d\n", LI, LI * LI, LSum);
+  end;
+  
+  // For loop with break
+  printf("  For loop with break at 3:\n");
+  for LI := 1 to 10 do
+  begin
+    if LI = 3 then
+      break;
+    printf("    Value: %d\n", LI);
+  end;
+  
+  // For loop with continue
+  printf("  For loop skipping even numbers:\n");
+  for LI := 1 to 8 do
+  begin
+    if (LI mod 2) = 0 then
+      continue;
+    printf("    Odd: %d\n", LI);
+  end;
+  
+  printf("For statement test completed\n");
+end.

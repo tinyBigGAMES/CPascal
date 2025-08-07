@@ -1,0 +1,30 @@
+// 079_LabelSection.cpas
+// BNF Rules: <label_section>, <identifier_list>
+program LabelSectionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+label
+  LStart, LMiddle, LEnd;
+
+var
+  LStep: Int32;
+
+begin
+  LStep := 1;
+  goto LStart;
+  
+  LStart:
+  printf("Step %d: At start\n", LStep);
+  LStep := LStep + 1;
+  goto LMiddle;
+  
+  LMiddle:
+  printf("Step %d: At middle\n", LStep);
+  LStep := LStep + 1;
+  goto LEnd;
+  
+  LEnd:
+  printf("Step %d: At end\n", LStep);
+  printf("Label section test completed\n");
+end.

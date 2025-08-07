@@ -1,0 +1,31 @@
+// 010_Number.cpas
+// BNF Rules: <number>, <integer>, <real>
+program NumberTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LDecimal: Int32;
+  LHex: Int32;
+  LBinary: Int32;
+  LReal: Double;
+  LExponent: Double;
+  LSum: Double;
+
+begin
+  LDecimal := 42;
+  LHex := $FF;
+  LBinary := 0b1010;
+  LReal := 3.14159;
+  LExponent := 2.5e10;
+  
+  LSum := LDecimal + LReal;
+  
+  printf("Number types:\n");
+  printf("  Decimal: %d\n", LDecimal);
+  printf("  Hex: %d (0x%X)\n", LHex, LHex);
+  printf("  Binary: %d\n", LBinary);
+  printf("  Real: %.5f\n", LReal);
+  printf("  Exponent: %.2e\n", LExponent);
+  printf("  Mixed sum: %.3f\n", LSum);
+end.

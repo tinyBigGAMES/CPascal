@@ -1,0 +1,71 @@
+// 108_ParameterTypeList.cpas
+// BNF Rules: <parameter_type_list>, <parameter_type>
+program ParameterTypeListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Function with multiple parameter types
+function LCalculate(
+  const AOperation: Char;
+  var AAccumulator: Double;
+  out AResult: Double;
+  const AValue1: Double;
+  const AValue2: Double
+): Boolean;
+begin
+  case AOperation of
+    '+': AResult := AValue1 + AValue2;
+    '-': AResult := AValue1 - AValue2;
+    '*': AResult := AValue1 * AValue2;
+    '/': 
+      if AValue2 <> 0.0 then
+        AResult := AValue1 / AValue2
+      else
+        return false;
+  else
+    return false;
+  end;
+  
+  AAccumulator := AAccumulator + AResult;
+  return true;
+end;
+
+// Varargs function
+function LSum(const ACount: Int32, ...): Int32; cdecl;
+begin
+  // Note: Varargs implementation would require more complex parameter handling
+  // This is a simplified version
+  return ACount * 10; // Placeholder
+end;
+
+var
+  LAccumulator: Double;
+  LResult: Double;
+  LSuccess: Boolean;
+
+begin
+  printf("Parameter type list test:\n");
+  
+  LAccumulator := 0.0;
+  
+  // Test multiple parameter types
+  LSuccess := LCalculate('+', LAccumulator, LResult, 10.5, 5.3);
+  printf("  Addition: success=%d, result=%.2f, accumulator=%.2f\n", 
+         LSuccess, LResult, LAccumulator);
+  
+  LSuccess := LCalculate('*', LAccumulator, LResult, 4.0, 3.5);
+  printf("  Multiplication: success=%d, result=%.2f, accumulator=%.2f\n",
+         LSuccess, LResult, LAccumulator);
+  
+  LSuccess := LCalculate('/', LAccumulator, LResult, 20.0, 0.0);
+  printf("  Division by zero: success=%d\n", LSuccess);
+  
+  LSuccess := LCalculate('/', LAccumulator, LResult, 20.0, 4.0);
+  printf("  Valid division: success=%d, result=%.2f, accumulator=%.2f\n",
+         LSuccess, LResult, LAccumulator);
+  
+  // Test varargs (simplified)
+  printf("  Varargs function result: %d\n", LSum(3));
+  
+  printf("Parameter type list test completed\n");
+end.

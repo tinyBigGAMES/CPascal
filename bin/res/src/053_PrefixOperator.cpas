@@ -1,0 +1,37 @@
+// 053_PrefixOperator.cpas
+// BNF Rules: <prefix_operator>
+program PrefixOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LPointer: ^Int32;
+  LAddress: Pointer;
+  LResult: Int32;
+
+begin
+  LValue := 10;
+  LPointer := @LValue;
+  
+  LResult := +LValue;
+  printf("Unary plus: +%d = %d\n", LValue, LResult);
+  
+  LResult := -LValue;
+  printf("Unary minus: -%d = %d\n", LValue, LResult);
+  
+  LResult := not 0;
+  printf("Logical not: not 0 = %d\n", LResult);
+  
+  ++LValue;
+  printf("Pre-increment: ++10 = %d\n", LValue);
+  
+  --LValue;
+  printf("Pre-decrement: --11 = %d\n", LValue);
+  
+  LAddress := @LValue;
+  printf("Address-of: @LValue = %p\n", LAddress);
+  
+  LResult := LPointer^;
+  printf("Dereference: LPointer^ = %d\n", LResult);
+end.

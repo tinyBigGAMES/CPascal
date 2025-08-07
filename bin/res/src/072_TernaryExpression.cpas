@@ -1,0 +1,27 @@
+// 072_TernaryExpression.cpas
+// BNF Rules: <ternary_expression>, <logical_or_expression>, <expression>
+program TernaryExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LResult1: Int32;
+  LResult2: PChar;
+  LResult3: Int32;
+
+begin
+  LA := 10;
+  LB := 20;
+  
+  LResult1 := LA > LB ? LA : LB;
+  printf("Ternary expressions:\n");
+  printf("  %d > %d ? %d : %d = %d\n", LA, LB, LA, LB, LResult1);
+  
+  LResult2 := LA = LB ? "Equal" : "Not equal";
+  printf("  %d = %d ? \"Equal\" : \"Not equal\" = %s\n", LA, LB, LResult2);
+  
+  LResult3 := true ? (LA + LB) : (LA - LB);
+  printf("  true ? (%d + %d) : (%d - %d) = %d\n", LA, LB, LA, LB, LResult3);
+end.

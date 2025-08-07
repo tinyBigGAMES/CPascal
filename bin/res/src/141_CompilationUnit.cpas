@@ -1,0 +1,51 @@
+// 141_CompilationUnit.cpas
+// BNF Rule: <compilation_unit>
+// ACTUAL compilation unit implementation - tests the BNF rule
+// <compilation_unit> ::= <program> | <library> | <module>
+// This file demonstrates a PROGRAM compilation unit
+
+{$DEFINE DEMO_PROGRAM}
+{$APPTYPE "console"}
+
+program CompilationUnitDemo;
+
+import System.IO;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  PROGRAM_NAME = "CompilationUnitDemo";
+  VERSION = "1.0";
+
+type
+  TStatus = (stStarting, stRunning, stCompleted);
+
+var
+  LStatus: TStatus;
+  LCounter: Int32;
+
+function GetStatus(): TStatus;
+begin
+  result := LStatus;
+end;
+
+procedure ProcessData();
+begin
+  LCounter := LCounter + 1;
+  LStatus := stRunning;
+end;
+
+begin
+  printf('Compilation Unit: PROGRAM\n');
+  printf('Name: %s v%s\n', PROGRAM_NAME, VERSION);
+  
+  LStatus := stStarting;
+  LCounter := 0;
+  
+  ProcessData();
+  
+  printf('Status: %d, Counter: %d\n', LStatus, LCounter);
+  
+  LStatus := stCompleted;
+  printf('Program compilation unit completed\n');
+end.

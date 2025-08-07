@@ -1,0 +1,29 @@
+// 037_SimpleType.cpas
+// BNF Rules: <simple_type>, <identifier>, <subrange_type>
+program SimpleTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TMyInteger = Int32;
+  TByteRange = 0..255;
+  TPercentage = 0..100;
+
+var
+  LStandardInt: Int32;
+  LCustomInt: TMyInteger;
+  LByteValue: TByteRange;
+  LPercent: TPercentage;
+
+begin
+  LStandardInt := 42;
+  LCustomInt := 84;
+  LByteValue := 128;
+  LPercent := 75;
+  
+  printf("Simple types:\n");
+  printf("  Standard Int32: %d\n", LStandardInt);
+  printf("  Custom integer: %d\n", LCustomInt);
+  printf("  Byte range: %d\n", LByteValue);
+  printf("  Percentage: %d\n", LPercent);
+end.

@@ -1,0 +1,42 @@
+// 047_VariableSuffix.cpas
+// BNF Rules: <variable_suffix>, <expression_list>
+program VariableSuffixTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TMatrix = array[0..1, 0..1] of Int32;
+  TNode = record
+    LValue: Int32;
+    LNext: ^TNode;
+  end;
+
+var
+  LArray: array[0..2] of Int32;
+  LMatrix: TMatrix;
+  LPointer: ^Int32;
+  LNode: TNode;
+  LNodePtr: ^TNode;
+
+begin
+  LArray[0] := 10;
+  LArray[1] := 20;
+  LArray[2] := 30;
+  
+  LMatrix[0, 0] := 11;
+  LMatrix[0, 1] := 12;
+  LMatrix[1, 0] := 21;
+  LMatrix[1, 1] := 22;
+  
+  LPointer := @LArray[1];
+  
+  LNode.LValue := 100;
+  LNode.LNext := nil;
+  LNodePtr := @LNode;
+  
+  printf("Variable suffixes:\n");
+  printf("  Array[2]: %d\n", LArray[2]);
+  printf("  Matrix[1,1]: %d\n", LMatrix[1, 1]);
+  printf("  Pointer^: %d\n", LPointer^);
+  printf("  Node.Value: %d\n", LNodePtr^.LValue);
+end.

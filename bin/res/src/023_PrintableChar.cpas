@@ -1,0 +1,27 @@
+// 023_PrintableChar.cpas
+// BNF Rules: <printable_char>
+program PrintableCharTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LSpace: Char;
+  LAlpha: Char;
+  LDigit: Char;
+  LSymbol: Char;
+  LPunctuation: Char;
+
+begin
+  LSpace := ' ';
+  LAlpha := 'Z';
+  LDigit := '9';
+  LSymbol := '@';
+  LPunctuation := '!';
+  
+  printf("Printable character tests:\n");
+  printf("  Space: '%c' (ASCII %d)\n", LSpace, LSpace);
+  printf("  Alpha: '%c' (ASCII %d)\n", LAlpha, LAlpha);
+  printf("  Digit: '%c' (ASCII %d)\n", LDigit, LDigit);
+  printf("  Symbol: '%c' (ASCII %d)\n", LSymbol, LSymbol);
+  printf("  Punct: '%c' (ASCII %d)\n", LPunctuation, LPunctuation);
+end.

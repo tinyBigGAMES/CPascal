@@ -1,0 +1,29 @@
+// 026_AnyCharExceptBrace.cpas
+// BNF Rules: <any_char_except_brace>
+program AnyCharExceptBraceTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{ All these chars can appear in brace comments except closing brace:
+  Letters: ABC abc
+  Digits: 123
+  Symbols: !@#$%^&*()
+  Spaces and tabs
+  Newlines
+}
+
+var
+  LValue: Int32;
+
+begin
+  LValue := 42;
+  
+  { Comment with various chars: 
+    Letters: ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz
+    Digits: 0123456789
+    Symbols: !@#$%^&*()-_=+[]|\;':",./<>?
+    Whitespace characters allowed
+  }
+  
+  printf("Any char except brace test: %d\n", LValue);
+end.

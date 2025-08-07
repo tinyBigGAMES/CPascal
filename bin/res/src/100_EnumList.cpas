@@ -1,0 +1,43 @@
+// 100_EnumList.cpas
+// BNF Rules: <enum_list>, <identifier>
+program EnumListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TColor = (LRed, LGreen, LBlue);
+  TDay = (LMonday, LTuesday, LWednesday, LThursday, LFriday, LSaturday, LSunday);
+  TSize = (LSmall, LMedium, LLarge, LExtraLarge);
+
+var
+  LColor: TColor;
+  LDay: TDay;
+  LSize: TSize;
+
+begin
+  printf("Enum list test:\n");
+  
+  LColor := LBlue;
+  LDay := LFriday;
+  LSize := LLarge;
+  
+  printf("  Color enumeration:\n");
+  printf("    Selected color: %d (Blue)\n", LColor);
+  printf("    Red=%d, Green=%d, Blue=%d\n", LRed, LGreen, LBlue);
+  
+  printf("  Day enumeration:\n");
+  printf("    Selected day: %d (Friday)\n", LDay);
+  printf("    Monday=%d, Wednesday=%d, Sunday=%d\n", LMonday, LWednesday, LSunday);
+  
+  printf("  Size enumeration:\n");
+  printf("    Selected size: %d (Large)\n", LSize);
+  printf("    Small=%d, Medium=%d, Large=%d, XL=%d\n", 
+         LSmall, LMedium, LLarge, LExtraLarge);
+  
+  // Test enum arithmetic
+  LColor := LRed;
+  LColor := TColor(LColor + 1);
+  printf("  After increment: color = %d (Green)\n", LColor);
+  
+  printf("Enum list test completed\n");
+end.

@@ -1,0 +1,66 @@
+// 115_AssemblyBlock.cpas
+// BNF Rules: <assembly_block>, <assembly_line>
+program AssemblyBlockTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LSum: Int32;
+  LProduct: Int32;
+
+begin
+  printf("Assembly block test:\n");
+  
+  LA := 12;
+  LB := 8;
+  
+  // Assembly block with multiple lines
+  asm
+    "movl %2, %%eax";
+    "addl %3, %%eax";
+    "movl %%eax, %0";
+    "movl %2, %%ebx";
+    "imull %3, %%ebx";
+    "movl %%ebx, %1";
+    : "=m" (LSum), "=m" (LProduct)
+    : "m" (LA), "m" (LB)
+    : "eax", "ebx"
+  end;
+  
+  printf("  Assembly calculations:\n");
+  printf("    %d + %d = %d\n", LA, LB, LSum);
+  printf("    %d * %d = %d\n", LA, LB, LProduct);
+  
+  // Assembly block with string operations
+  LA := 16;
+  asm
+    "movl %1, %%eax";
+    "shrl $1, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LSum)
+    : "m" (LA)
+    : "eax"
+  end;
+  
+  printf("  Bit shift: %d >> 1 = %d\n", LA, LSum);
+  
+  // Complex assembly block
+  LA := 100;
+  LB := 7;
+  asm
+    "movl %2, %%eax";
+    "xorl %%edx, %%edx";
+    "divl %3";
+    "movl %%eax, %0";
+    "movl %%edx, %1";
+    : "=m" (LSum), "=m" (LProduct)
+    : "m" (LA), "m" (LB)
+    : "eax", "edx"
+  end;
+  
+  printf("  Division: %d / %d = %d remainder %d\n", LA, LB, LSum, LProduct);
+  
+  printf("Assembly block test completed\n");
+end.

@@ -1,0 +1,27 @@
+// 016_BraceComment.cpas
+// BNF Rules: <brace_comment>, <any_char_except_brace>
+program BraceCommentTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{ This is a brace comment
+  spanning multiple lines
+  with various characters: !@#$%^&*()
+  and numbers: 123456789 }
+
+var
+  LValue: Int32; { inline brace comment }
+
+begin
+  { Brace comment at start of begin }
+  LValue := 42;
+  
+  { Multi-line brace comment
+    with indentation
+    and special chars: <>?/.,;':"[]|\`~
+  }
+  
+  printf("Brace comments test: value = %d\n", LValue);
+  
+  { Final brace comment }
+end.

@@ -1,0 +1,30 @@
+// 009_Exponent.cpas
+// BNF Rules: <exponent>, <sign>, <digit>
+program ExponentTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LUpperE: Double;
+  LLowerE: Double;
+  LPositiveExp: Double;
+  LNegativeExp: Double;
+  LPositiveExpLower: Double;
+  LNegativeExpLower: Double;
+
+begin
+  LUpperE := 1.0E10;
+  LLowerE := 1.0e10;
+  LPositiveExp := 2.5E+5;
+  LNegativeExp := 3.7E-4;
+  LPositiveExpLower := 4.2e+8;
+  LNegativeExpLower := 5.1e-6;
+  
+  printf("Exponent variations:\n");
+  printf("  Upper E: %.2e\n", LUpperE);
+  printf("  Lower e: %.2e\n", LLowerE);
+  printf("  E+: %.2e\n", LPositiveExp);
+  printf("  E-: %.6f\n", LNegativeExp);
+  printf("  e+: %.2e\n", LPositiveExpLower);
+  printf("  e-: %.8f\n", LNegativeExpLower);
+end.

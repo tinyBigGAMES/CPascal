@@ -1,0 +1,45 @@
+// 091_CaseStatement.cpas
+// BNF Rules: <case_statement>, <expression>, <case_list>, <statement_list>
+program CaseStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LMenuChoice: Int32;
+  LOperator: Char;
+  LA: Int32;
+  LB: Int32;
+
+begin
+  printf("Case statement test:\n");
+  
+  LMenuChoice := 2;
+  
+  case LMenuChoice of
+    1: printf("  Menu choice 1: New file\n");
+    2: printf("  Menu choice 2: Open file\n");
+    3: printf("  Menu choice 3: Save file\n");
+    4, 5: printf("  Menu choice %d: Import/Export\n", LMenuChoice);
+  else
+    printf("  Invalid menu choice: %d\n", LMenuChoice);
+  end;
+  
+  // Case with calculations
+  LOperator := '+';
+  LA := 10;
+  LB := 5;
+  
+  case LOperator of
+    '+': printf("  %d + %d = %d\n", LA, LB, LA + LB);
+    '-': printf("  %d - %d = %d\n", LA, LB, LA - LB);
+    '*': printf("  %d * %d = %d\n", LA, LB, LA * LB);
+    '/': printf("  %d / %d = %d\n", LA, LB, LA div LB);
+  else
+    begin
+      printf("  Unknown operator: %c\n", LOperator);
+      printf("  Supported: +, -, *, /\n");
+    end;
+  end;
+  
+  printf("Case statement test completed\n");
+end.

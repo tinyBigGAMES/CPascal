@@ -1,0 +1,40 @@
+// 078_GotoStatement.cpas
+// BNF Rules: <goto_statement>, <identifier>
+program GotoStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+label
+  LLoop;
+  LSkip;
+  LDone;
+
+var
+  LCounter: Int32;
+
+begin
+  LCounter := 1;
+  goto LLoop;
+  
+  printf("This line should be skipped\n");
+  
+  LLoop:
+  printf("Loop iteration: %d\n", LCounter);
+  LCounter := LCounter + 1;
+  
+  if LCounter = 3 then
+    goto LSkip;
+    
+  if LCounter <= 4 then
+    goto LLoop;
+    
+  goto LDone;
+  
+  LSkip:
+  printf("Skipped iteration %d\n", LCounter);
+  LCounter := LCounter + 1;
+  goto LLoop;
+  
+  LDone:
+  printf("Goto test completed\n");
+end.

@@ -1,0 +1,29 @@
+// 033_Constant.cpas
+// BNF Rules: <constant>, <number>, <string>, <character>, <identifier>
+program ConstantTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  LNumberConst = 123;
+  LRealConst = 3.14159;
+  LStringConst = "Test String";
+  LCharConst = 'X';
+  LBooleanTrue = true;
+  LBooleanFalse = false;
+
+var
+  LNilPointer: Pointer;
+
+begin
+  LNilPointer := nil;
+  
+  printf("Constant literals:\n");
+  printf("  Number: %d\n", LNumberConst);
+  printf("  Real: %.5f\n", LRealConst);
+  printf("  String: %s\n", LStringConst);
+  printf("  Char: %c\n", LCharConst);
+  printf("  True: %d\n", LBooleanTrue);
+  printf("  False: %d\n", LBooleanFalse);
+  printf("  Nil pointer: %p\n", LNilPointer);
+end.

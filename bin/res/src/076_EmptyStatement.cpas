@@ -1,0 +1,22 @@
+// 076_EmptyStatement.cpas
+// BNF Rules: <empty_statement>
+program EmptyStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LCounter: Int32;
+
+begin
+  LCounter := 0;
+  
+  ; // Empty statement
+  
+  LCounter := LCounter + 1;
+  
+  ; // Another empty statement
+  
+  printf("Empty statement test: counter = %d\n", LCounter);
+  
+  ; // Final empty statement
+end.

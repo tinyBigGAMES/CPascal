@@ -1,0 +1,40 @@
+// 090_CaseList.cpas
+// BNF Rules: <case_list>, <case_label_list>, <statement>
+program CaseListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LGrade: Char;
+  LDayOfWeek: Int32;
+
+begin
+  printf("Case list test:\n");
+  
+  LGrade := 'B';
+  
+  case LGrade of
+    'A': printf("  Excellent work!\n");
+    'B': printf("  Good job!\n");
+    'C': printf("  Satisfactory\n");
+    'D': printf("  Needs improvement\n");
+    'F': printf("  Failing grade\n");
+  else
+    printf("  Invalid grade\n");
+  end;
+  
+  LDayOfWeek := 3;
+  
+  case LDayOfWeek of
+    1: printf("  Monday - Start of work week\n");
+    2: printf("  Tuesday - Getting into rhythm\n");
+    3: printf("  Wednesday - Midweek\n");
+    4: printf("  Thursday - Almost there\n");
+    5: printf("  Friday - TGIF!\n");
+    6, 7: printf("  Weekend day\n");
+  else
+    printf("  Invalid day\n");
+  end;
+  
+  printf("Case list test completed\n");
+end.

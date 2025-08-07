@@ -1,0 +1,53 @@
+// 137_ExportList.cpas
+// BNF Rule: <export_list>
+library ExportListDemo;
+
+// Namespace simulation with nested record types
+type
+  TMath = record
+    // Static-like functions would be referenced as Math.Add, etc.
+  end;
+  
+  TGraphics = record
+    TCanvas = record
+      // Canvas functions
+    end;
+  end;
+
+// Simple functions for export
+function Add(a, b: Int32): Int32;
+begin
+  result := a + b;
+end;
+
+function Multiply(a, b: Int32): Int32;
+begin
+  result := a * b;
+end;
+
+// Qualified-style functions (simulating module structure)
+function MathSquare(x: Int32): Int32;
+begin
+  result := x * x;
+end;
+
+function GraphicsDrawLine(x1, y1, x2, y2: Int32): Int32;
+begin
+  result := 0; // Placeholder
+end;
+
+function UtilsValidate(input: Int32): Boolean;
+begin
+  result := input > 0;
+end;
+
+// ACTUAL export list implementation - demonstrates BNF rule
+// <export_list> ::= <qualified_identifier> ("," <qualified_identifier>)*
+exports 
+  Add,                    // Simple identifier
+  Multiply,               // Simple identifier  
+  MathSquare,             // Qualified-style identifier
+  GraphicsDrawLine,       // Qualified-style identifier
+  UtilsValidate;          // Qualified-style identifier
+
+.

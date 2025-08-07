@@ -1,0 +1,85 @@
+// 131_FunctionDeclaration.cpas
+// BNF Rule: <function_declaration>
+program FunctionDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Regular function declaration
+function Add(a, b: Int32): Int32;
+begin
+  result := a + b;
+end;
+
+// Public function declaration
+public function PublicAdd(a, b: Int32): Int32;
+begin
+  result := a + b;
+end;
+
+// Function with modifiers
+function FastMultiply(a, b: Int32): Int32; cdecl;
+begin
+  result := a * b;
+end;
+
+// Public external function
+public function strlen(str: PChar): Int32; cdecl; external "msvcrt.dll";
+
+// Public inline function
+public function Square(x: Int32): Int32; inline;
+begin
+  result := x * x;
+end;
+
+// Public varargs function
+public function MyLogger(level: Int32, format: PChar, ...): Int32; cdecl;
+begin
+  printf('[Level %d] %s\n', level, format);
+  result := 0;
+end;
+
+// Public external varargs function
+public function sprintf(buffer: PChar, format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Procedure declarations
+procedure SimpleProc();
+begin
+  printf('Simple procedure called\n');
+end;
+
+public procedure PublicProc();
+begin
+  printf('Public procedure called\n');
+end;
+
+var
+  LResult: Int32;
+  LBuffer: array[0..255] of Char;
+
+begin
+  printf('Function Declaration Test\n');
+  
+  LResult := Add(5, 3);
+  printf('Add(5, 3) = %d\n', LResult);
+  
+  LResult := PublicAdd(7, 2);
+  printf('PublicAdd(7, 2) = %d\n', LResult);
+  
+  LResult := FastMultiply(4, 6);
+  printf('FastMultiply(4, 6) = %d\n', LResult);
+  
+  LResult := Square(8);
+  printf('Square(8) = %d\n', LResult);
+  
+  LResult := MyLogger(1, 'Test message');
+  
+  sprintf(@LBuffer[0], 'Formatted: %d', 42);
+  printf('sprintf result: %s\n', @LBuffer[0]);
+  
+  SimpleProc();
+  PublicProc();
+  
+  printf('Function declarations support all variants with optional public modifier\n');
+  printf('Types: regular, external, inline, varargs, external varargs\n');
+  printf('Test completed successfully\n');
+end.

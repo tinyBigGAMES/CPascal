@@ -1,0 +1,122 @@
+// 125_FunctionBody.cpas
+// BNF Rules: <function_body>, <declarations>, <compound_statement>
+program FunctionBodyTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Function with local constants
+function LWithConstants(const AInput: Int32): Int32;
+const
+  LMultiplier = 5;
+  LOffset = 100;
+begin
+  return (AInput * LMultiplier) + LOffset;
+end;
+
+// Function with local types
+function LWithTypes(const ASize: Int32): Int32;
+type
+  TLocalArray = array[0..4] of Int32;
+var
+  LArray: TLocalArray;
+  LI: Int32;
+  LSum: Int32;
+begin
+  LSum := 0;
+  for LI := 0 to 4 do
+  begin
+    LArray[LI] := LI * ASize;
+    LSum := LSum + LArray[LI];
+  end;
+  return LSum;
+end;
+
+// Function with local variables and nested blocks
+function LWithVariables(const ABase: Int32): Int32;
+var
+  LResult: Int32;
+  LTemp: Int32;
+  LCounter: Int32;
+begin
+  LResult := ABase;
+  LCounter := 1;
+  
+  while LCounter <= 3 do
+  begin
+    LTemp := LCounter * 10;
+    LResult := LResult + LTemp;
+    LCounter := LCounter + 1;
+  end;
+  
+  begin
+    LTemp := LResult div 2;
+    if LTemp > 50 then
+      LResult := LResult + 25
+    else
+      LResult := LResult - 5;
+  end;
+  
+  return LResult;
+end;
+
+// Function with complex body
+function LComplexBody(const AValue1: Int32; const AValue2: Int32): Int32;
+const
+  LMaxIterations = 5;
+type
+  TResultRecord = record
+    LSum: Int32;
+    LProduct: Int32;
+  end;
+var
+  LRecord: TResultRecord;
+  LI: Int32;
+  LArray: array[0..4] of Int32;
+  LFinalResult: Int32;
+begin
+  // Initialize record
+  LRecord.LSum := AValue1 + AValue2;
+  LRecord.LProduct := AValue1 * AValue2;
+  
+  // Fill array
+  for LI := 0 to 4 do
+    LArray[LI] := LI + LRecord.LSum;
+  
+  // Calculate final result
+  LFinalResult := 0;
+  for LI := 0 to 4 do
+  begin
+    case LI of
+      0, 1: LFinalResult := LFinalResult + LArray[LI];
+      2, 3: LFinalResult := LFinalResult + (LArray[LI] * 2);
+      4: LFinalResult := LFinalResult + LRecord.LProduct;
+    end;
+  end;
+  
+  return LFinalResult;
+end;
+
+var
+  LResult: Int32;
+
+begin
+  printf("Function body test:\n");
+  
+  // Test function with constants
+  LResult := LWithConstants(10);
+  printf("  With constants: %d\n", LResult);
+  
+  // Test function with local types
+  LResult := LWithTypes(3);
+  printf("  With local types: %d\n", LResult);
+  
+  // Test function with variables and blocks
+  LResult := LWithVariables(20);
+  printf("  With variables: %d\n", LResult);
+  
+  // Test complex function body
+  LResult := LComplexBody(8, 6);
+  printf("  Complex body: %d\n", LResult);
+  
+  printf("Function body test completed\n");
+end.

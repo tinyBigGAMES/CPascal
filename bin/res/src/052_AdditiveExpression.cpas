@@ -1,0 +1,28 @@
+// 052_AdditiveExpression.cpas
+// BNF Rules: <additive_expression>, <multiplicative_expression>, <adding_operator>
+program AdditiveExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+  LResult1: Int32;
+  LResult2: Int32;
+  LResult3: Double;
+
+begin
+  LA := 10;
+  LB := 5;
+  LC := 3;
+  
+  LResult1 := LA + LB - LC;
+  LResult2 := 2 * 5 + 3 * 4;
+  LResult3 := 10.5 + 2.3 - 1.8;
+  
+  printf("Additive expressions:\n");
+  printf("  %d + %d - %d = %d\n", LA, LB, LC, LResult1);
+  printf("  2 * 5 + 3 * 4 = %d\n", LResult2);
+  printf("  10.5 + 2.3 - 1.8 = %.1f\n", LResult3);
+end.

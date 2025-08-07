@@ -1,0 +1,53 @@
+// 129_VarargsFunction.cpas
+// BNF Rule: <varargs_function>
+program VarargsFunctionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Variadic function with calling convention
+function MyPrintf(format: PChar, ...): Int32; cdecl;
+begin
+  // Note: actual implementation would require special varargs handling
+  // This is just syntax demonstration
+  printf('MyPrintf called with format: %s\n', format);
+  result := 0;
+end;
+
+// Variadic function without calling convention
+function LogMessage(level: Int32, format: PChar, ...): Int32;
+begin
+  printf('LogMessage level %d: %s\n', level, format);
+  result := 1;
+end;
+
+// Variadic procedure with calling convention
+procedure DebugPrint(category: PChar, ...); stdcall;
+begin
+  printf('Debug [%s]: variadic procedure called\n', category);
+end;
+
+// Variadic procedure without calling convention
+procedure TraceCall(funcName: PChar, ...);
+begin
+  printf('TRACE: %s called with variadic args\n', funcName);
+end;
+
+var
+  LResult: Int32;
+
+begin
+  printf('Varargs Function Test\n');
+  
+  LResult := MyPrintf('Hello %s %d\n');
+  printf('MyPrintf returned: %d\n', LResult);
+  
+  LResult := LogMessage(1, 'Warning message');
+  printf('LogMessage returned: %d\n', LResult);
+  
+  DebugPrint('SYSTEM');
+  TraceCall('TestFunction');
+  
+  printf('Variadic functions allow variable argument lists\n');
+  printf('Pattern: function/procedure identifier(params, ...): type; [calling_convention];\n');
+  printf('Test completed successfully\n');
+end.

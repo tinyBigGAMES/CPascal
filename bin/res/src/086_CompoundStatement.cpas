@@ -1,0 +1,38 @@
+// 086_CompoundStatement.cpas
+// BNF Rules: <compound_statement>, <statement_list>
+program CompoundStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+
+begin
+  printf("Compound statement test:\n");
+  
+  // Simple compound statement
+  begin
+    LValue := 10;
+    printf("  In compound block: value = %d\n", LValue);
+  end;
+  
+  // Nested compound statements
+  begin
+    LValue := LValue + 5;
+    printf("  Outer block: value = %d\n", LValue);
+    
+    begin
+      LValue := LValue * 2;
+      printf("    Inner block: value = %d\n", LValue);
+      
+      begin
+        LValue := LValue - 3;
+        printf("      Nested block: value = %d\n", LValue);
+      end;
+    end;
+    
+    printf("  Back in outer block: value = %d\n", LValue);
+  end;
+  
+  printf("Compound statement test completed\n");
+end.

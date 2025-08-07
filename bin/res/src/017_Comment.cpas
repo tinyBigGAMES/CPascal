@@ -1,0 +1,29 @@
+// 017_Comment.cpas
+// BNF Rules: <comment>, <line_comment>, <block_comment>, <brace_comment>
+program CommentTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Line comment style
+/* Block comment style */
+{ Brace comment style }
+
+var
+  LValue: Int32; // Line comment
+  LValue2: Int32; /* Block comment */ 
+  LValue3: Int32; { Brace comment }
+
+begin
+  // All three comment styles in action
+  LValue := 10;  // Line
+  LValue2 := 20; /* Block */
+  LValue3 := 30; { Brace }
+  
+  /* Multi-line
+     block comment */
+  
+  { Multi-line
+    brace comment }
+    
+  printf("All comment styles: %d, %d, %d\n", LValue, LValue2, LValue3);
+end.

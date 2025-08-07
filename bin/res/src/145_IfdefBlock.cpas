@@ -1,0 +1,70 @@
+// 145_IfdefBlock.cpas
+// BNF Rule: <ifdef_block>
+{$DEFINE DEBUG}
+{$DEFINE LOGGING}
+program IfdefBlockTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{$IFDEF DEBUG}
+const
+  LDebugEnabled: Boolean = true;
+  LDebugLevel: Int32 = 3;
+{$ELSE}
+const
+  LDebugEnabled: Boolean = false;
+  LDebugLevel: Int32 = 0;
+{$ENDIF}
+
+{$IFDEF LOGGING}
+procedure LogDebug(msg: PChar);
+begin
+  printf('[DEBUG] %s\n', msg);
+end;
+{$ELSE}
+procedure LogDebug(msg: PChar);
+begin
+  // No logging in non-debug builds
+end;
+{$ENDIF}
+
+{$IFDEF PROFILING}
+var
+  LProfileCounter: Int32 = 0;
+  
+procedure StartProfiling();
+begin
+  printf('Profiling started\n');
+  LProfileCounter := 0;
+end;
+{$ELSE}
+procedure StartProfiling();
+begin
+  // Profiling disabled
+end;
+{$ENDIF}
+
+begin
+  printf('IFDEF Block Test\n');
+  printf('IFDEF block syntax:\n');
+  printf('  {$IFDEF symbol}\n');
+  printf('    [code when symbol defined]\n');
+  printf('  {$ELSE}\n');
+  printf('    [code when symbol not defined]\n');
+  printf('  {$ENDIF}\n');
+  printf('\n');
+  
+  printf('Current compilation symbols:\n');
+  printf('  DEBUG: %s\n', if LDebugEnabled then 'defined' else 'not defined');
+  printf('  Debug Level: %d\n', LDebugLevel);
+  printf('\n');
+  
+  LogDebug('This message appears only if LOGGING is defined');
+  StartProfiling();
+  
+  printf('IFDEF blocks enable conditional compilation\n');
+  printf('Allow different code for debug/release builds\n');
+  printf('Support platform-specific and feature-specific code\n');
+  printf('Essential for maintaining single codebase across configurations\n');
+  printf('Test completed successfully\n');
+end.

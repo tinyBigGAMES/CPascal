@@ -1,0 +1,21 @@
+// 012_Character.cpas
+// BNF Rules: <character>, <printable_char>
+program CharacterTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LCharLiteral: Char;
+  LCharCode: Char;
+  LCharValue: Int32;
+
+begin
+  LCharLiteral := 'A';
+  LCharCode := #65;
+  LCharValue := 66;
+  
+  printf("Character literals:\n");
+  printf("  Char literal: %c\n", LCharLiteral);
+  printf("  Char code: %c (%d)\n", LCharCode, LCharCode);
+  printf("  From value: %c\n", LCharValue);
+end.

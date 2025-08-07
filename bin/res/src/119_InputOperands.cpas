@@ -1,0 +1,75 @@
+// 119_InputOperands.cpas
+// BNF Rules: <input_operands>, <operand>
+program InputOperandsTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInput1: Int32;
+  LInput2: Int32;
+  LInput3: Int32;
+  LOutput: Int32;
+
+begin
+  printf("Input operands test:\n");
+  
+  LInput1 := 10;
+  LInput2 := 15;
+  LInput3 := 3;
+  
+  // Single input operand
+  asm
+    "movl %1, %%eax";
+    "imull $7, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput1)
+    : "eax"
+  end;
+  
+  printf("  Single input: %d * 7 = %d\n", LInput1, LOutput);
+  
+  // Multiple input operands
+  asm
+    "movl %1, %%eax";
+    "addl %2, %%eax";
+    "imull %3, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput1), "m" (LInput2), "m" (LInput3)
+    : "eax"
+  end;
+  
+  printf("  Multiple inputs: (%d + %d) * %d = %d\n", 
+         LInput1, LInput2, LInput3, LOutput);
+  
+  // Mixed constraint input operands
+  LInput1 := 32;
+  LInput2 := 4;
+  asm
+    "movl %1, %%eax";
+    "shrl %2, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput)
+    : "r" (LInput1), "i" (2)
+    : "eax"
+  end;
+  
+  printf("  Mixed constraints: %d >> 2 = %d\n", LInput1, LOutput);
+  
+  // Immediate and memory input operands
+  LInput1 := 100;
+  asm
+    "movl %1, %%eax";
+    "subl $25, %%eax";
+    "addl %2, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput1), "i" (5)
+    : "eax"
+  end;
+  
+  printf("  Immediate + memory: (%d - 25) + 5 = %d\n", LInput1, LOutput);
+  
+  printf("Input operands test completed\n");
+end.

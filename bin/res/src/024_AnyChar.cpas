@@ -1,0 +1,24 @@
+// 024_AnyChar.cpas
+// BNF Rules: <any_char>
+program AnyCharTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LPrintable: Char;
+  LTab: Char;
+  LNewlineCode: Int32;
+  LCarriageReturn: Int32;
+
+begin
+  LPrintable := 'A';
+  LTab := #9;
+  LNewlineCode := 10;
+  LCarriageReturn := 13;
+  
+  printf("Any character tests:\n");
+  printf("  Printable: '%c' (ASCII %d)\n", LPrintable, LPrintable);
+  printf("  Tab: (ASCII %d)\n", LTab);
+  printf("  Newline code: %d\n", LNewlineCode);
+  printf("  CR code: %d\n", LCarriageReturn);
+end.

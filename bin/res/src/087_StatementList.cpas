@@ -1,0 +1,30 @@
+// 087_StatementList.cpas
+// BNF Rules: <statement_list>, <statement>
+program StatementListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+
+begin
+  printf("Statement list test:\n");
+  
+  // Statement list with semicolon separation
+  LA := 10;
+  LB := 20;
+  LC := LA + LB;
+  printf("  Sequential statements: %d + %d = %d\n", LA, LB, LC);
+  
+  // Statement list in compound statement
+  begin
+    LA := LA * 2;
+    LB := LB / 2;
+    LC := LA - LB;
+    printf("  Modified values: %d - %d = %d\n", LA, LB, LC);
+  end;
+  
+  printf("Statement list test completed\n");
+end.

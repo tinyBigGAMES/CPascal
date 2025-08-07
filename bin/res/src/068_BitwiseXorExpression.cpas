@@ -1,0 +1,26 @@
+// 068_BitwiseXorExpression.cpas
+// BNF Rules: <bitwise_xor_expression>, <bitwise_and_expression>
+program BitwiseXorExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LResult1: Int32;
+  LResult2: Int32;
+  LResult3: Boolean;
+
+begin
+  LA := $F0;
+  LB := $0F;
+  
+  LResult1 := LA xor LB;
+  LResult2 := $AA xor $55 xor $FF;
+  LResult3 := (LA xor $F0) = 0;
+  
+  printf("Bitwise XOR expressions:\n");
+  printf("  $%X xor $%X = $%X\n", LA, LB, LResult1);
+  printf("  $AA xor $55 xor $FF = $%X\n", LResult2);
+  printf("  ($%X xor $F0) = 0 is %d\n", LA, LResult3);
+end.

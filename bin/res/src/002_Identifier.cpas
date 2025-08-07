@@ -1,0 +1,19 @@
+// 002_Identifier.cpas
+// BNF Rules: <identifier>, <letter>, <digit>
+program IdentifierTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  _valid_identifier: Int32;
+  anotherValidId123: Int32;
+  CamelCaseIdentifier: Int32;
+
+begin
+  _valid_identifier := 100;
+  anotherValidId123 := 200;
+  CamelCaseIdentifier := 300;
+  
+  printf("Identifier test: _valid_identifier=%d, anotherValidId123=%d, CamelCaseIdentifier=%d\n", 
+         _valid_identifier, anotherValidId123, CamelCaseIdentifier);
+end.

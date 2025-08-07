@@ -1,0 +1,28 @@
+// 061_RelationalOperator.cpas
+// BNF Rules: <relational_operator>
+program RelationalOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LResult: Boolean;
+
+begin
+  LA := 10;
+  LB := 20;
+  
+  LResult := LA < LB;
+  printf("Relational operators:\n");
+  printf("  %d < %d = %d\n", LA, LB, LResult);
+  
+  LResult := LA <= LB;
+  printf("  %d <= %d = %d\n", LA, LB, LResult);
+  
+  LResult := LA > LB;
+  printf("  %d > %d = %d\n", LA, LB, LResult);
+  
+  LResult := LA >= LB;
+  printf("  %d >= %d = %d\n", LA, LB, LResult);
+end.

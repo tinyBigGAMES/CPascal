@@ -1,0 +1,18 @@
+// 042_TypeQualifier.cpas
+// BNF Rules: <type_qualifier>
+program TypeQualifierTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LConstInt: const Int32;
+  LVolatileInt: volatile Int32;
+
+begin
+  LConstInt := 42;
+  LVolatileInt := 84;
+  
+  printf("Type qualifiers:\n");
+  printf("  const qualifier: %d\n", LConstInt);
+  printf("  volatile qualifier: %d\n", LVolatileInt);
+end.

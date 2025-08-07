@@ -1,0 +1,53 @@
+// 139_Library.cpas
+// BNF Rule: <library>
+// Math library for basic calculations
+
+library MathLib;
+
+// Library functions for mathematical operations
+function Add(a, b: Int32): Int32;
+begin
+  result := a + b;
+end;
+
+function Subtract(a, b: Int32): Int32;
+begin
+  result := a - b;
+end;
+
+function Multiply(a, b: Int32): Int32;
+begin
+  result := a * b;
+end;
+
+function Divide(a, b: Int32): Int32;
+begin
+  if b <> 0 then
+    result := a div b
+  else
+    result := 0;
+end;
+
+// Mathematical constants
+const
+  PI_INT = 314159; // PI * 100000 for integer math
+  E_INT = 271828;  // E * 100000 for integer math
+
+// Utility functions
+function Square(x: Int32): Int32;
+begin
+  result := x * x;
+end;
+
+function Abs(x: Int32): Int32;
+begin
+  if x < 0 then
+    result := -x
+  else
+    result := x;
+end;
+
+// Export the public interface
+exports Add, Subtract, Multiply, Divide, Square, Abs;
+
+.

@@ -1,0 +1,40 @@
+// 144_CompilerDirective.cpas
+// BNF Rule: <compiler_directive>
+// ACTUAL compiler directives implementation - tests the BNF rule
+// <compiler_directive> ::= "{$" <directive_name> <directive_params>? "}"
+
+{$DEFINE TESTING}
+{$LINK "kernel32.lib"}
+{$APPTYPE "console"}
+{$LIBPATH "C:\Libraries"}
+
+program CompilerDirectiveTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{$IFDEF TESTING}
+const
+  LTestMode: Boolean = true;
+{$ELSE}
+const
+  LTestMode: Boolean = false;
+{$ENDIF}
+
+{$IFNDEF RELEASE}
+  {$DEFINE DEBUG_BUILD}
+{$ENDIF}
+
+begin
+  printf('Compiler Directive Test - Actual Implementation\n');
+  
+  {$IFDEF DEBUG_BUILD}
+  printf('Debug build active\n');
+  {$ENDIF}
+  
+  if LTestMode then
+    printf('Test mode: enabled\n')
+  else
+    printf('Test mode: disabled\n');
+    
+  printf('Compiler directives successfully implemented\n');
+end.

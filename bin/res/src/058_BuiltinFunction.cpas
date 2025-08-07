@@ -1,0 +1,31 @@
+// 058_BuiltinFunction.cpas
+// BNF Rules: <builtin_function>
+program BuiltinFunctionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+function GetMem(ASize: NativeUInt): Pointer; cdecl; external "msvcrt.dll";
+procedure FreeMem(APtr: Pointer); cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LPointer: Pointer;
+  LSize: Int32;
+
+begin
+  LValue := 42;
+  
+  LSize := SizeOf(LValue);
+  printf("SizeOf(Int32): %d bytes\n", LSize);
+  
+  LPointer := GetMem(100);
+  printf("GetMem(100): %p\n", LPointer);
+  
+  Inc(LValue);
+  printf("Inc(42): %d\n", LValue);
+  
+  Dec(LValue);
+  printf("Dec(43): %d\n", LValue);
+  
+  FreeMem(LPointer);
+  printf("FreeMem completed\n");
+end.

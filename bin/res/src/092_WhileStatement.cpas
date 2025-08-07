@@ -1,0 +1,47 @@
+// 092_WhileStatement.cpas
+// BNF Rules: <while_statement>, <expression>, <statement>
+program WhileStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LCounter: Int32;
+  LSum: Int32;
+  LValue: Int32;
+
+begin
+  printf("While statement test:\n");
+  
+  // Simple while loop
+  LCounter := 1;
+  printf("  Counting from 1 to 5:\n");
+  while LCounter <= 5 do
+  begin
+    printf("    Counter: %d\n", LCounter);
+    LCounter := LCounter + 1;
+  end;
+  
+  // While loop with calculation
+  LSum := 0;
+  LValue := 1;
+  printf("  Sum of numbers 1-10:\n");
+  while LValue <= 10 do
+  begin
+    LSum := LSum + LValue;
+    LValue := LValue + 1;
+  end;
+  printf("    Result: %d\n", LSum);
+  
+  // While loop with break
+  LCounter := 1;
+  printf("  While with break at 3:\n");
+  while LCounter <= 10 do
+  begin
+    if LCounter = 3 then
+      break;
+    printf("    Value: %d\n", LCounter);
+    LCounter := LCounter + 1;
+  end;
+  
+  printf("While statement test completed\n");
+end.

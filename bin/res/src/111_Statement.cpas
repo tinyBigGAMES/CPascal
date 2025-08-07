@@ -1,0 +1,86 @@
+// 111_Statement.cpas
+// BNF Rules: <statement>, <simple_statement>, <structured_statement>
+program StatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+procedure LTestProcedure();
+begin
+  printf("    Called test procedure\n");
+end;
+
+label
+  LJumpTarget;
+
+var
+  LValue: Int32;
+  LI: Int32;
+
+begin
+  printf("Statement test (all statement types):\n");
+  
+  // Simple statements
+  printf("  Simple statements:\n");
+  
+  // Assignment statement
+  LValue := 10;
+  
+  // Procedure call
+  LTestProcedure();
+  
+  // Goto statement
+  if LValue = 10 then
+    goto LJumpTarget;
+    
+  printf("    This should be skipped\n");
+  
+  LJumpTarget:
+  printf("    Jumped to target\n");
+  
+  // Empty statement
+  ;
+  
+  // Structured statements
+  printf("  Structured statements:\n");
+  
+  // Compound statement
+  begin
+    printf("    In compound statement\n");
+    LValue := LValue + 5;
+  end;
+  
+  // If statement
+  if LValue > 10 then
+    printf("    If condition met: value = %d\n", LValue);
+  
+  // Case statement
+  case LValue of
+    15: printf("    Case matched: fifteen\n");
+  else
+    printf("    Case default\n");
+  end;
+  
+  // While statement
+  LI := 1;
+  printf("    While loop:\n");
+  while LI <= 2 do
+  begin
+    printf("      Iteration %d\n", LI);
+    LI := LI + 1;
+  end;
+  
+  // For statement
+  printf("    For loop:\n");
+  for LI := 1 to 2 do
+    printf("      For iteration %d\n", LI);
+  
+  // Repeat statement
+  LI := 1;
+  printf("    Repeat loop:\n");
+  repeat
+    printf("      Repeat iteration %d\n", LI);
+    LI := LI + 1;
+  until LI > 2;
+  
+  printf("Statement test completed\n");
+end.

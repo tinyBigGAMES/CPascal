@@ -1,0 +1,43 @@
+// 085_SimpleStatement.cpas
+// BNF Rules: <simple_statement>, <assignment_statement>, <procedure_call>, <goto_statement>, <label_statement>, <empty_statement>, <break_statement>, <continue_statement>, <return_statement>
+program SimpleStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+procedure LTestProcedure();
+begin
+  printf("  Procedure called\n");
+end;
+
+label
+  LTestLabel;
+  LSkipLabel;
+
+var
+  LValue: Int32;
+
+begin
+  printf("Simple statement test:\n");
+  
+  // Assignment statement
+  LValue := 42;
+  
+  // Procedure call
+  LTestProcedure();
+  
+  // Label statement
+  LTestLabel:
+  printf("  At label, value = %d\n", LValue);
+  
+  // Empty statement
+  ;
+  
+  // Goto statement (to skip some code)
+  if LValue = 42 then
+    goto LSkipLabel; // Jump past the next printf
+    
+  printf("This should be skipped\n");
+  
+  LSkipLabel:
+  printf("Simple statements test completed\n");
+end.

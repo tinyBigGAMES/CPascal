@@ -1,0 +1,18 @@
+// 005_BinaryInteger.cpas
+// BNF Rules: <binary_integer>, <binary_digit>
+program BinaryIntegerTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LBin1: Int32;
+  LBin2: Int32;
+  LBin3: Int32;
+
+begin
+  LBin1 := 0b1010;
+  LBin2 := 0b11111111;
+  LBin3 := 0b10000001;
+  
+  printf("Binary integers: 0b1010=%d, 0b11111111=%d, 0b10000001=%d\n", LBin1, LBin2, LBin3);
+end.

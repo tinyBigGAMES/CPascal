@@ -1,0 +1,31 @@
+// 070_LogicalAndExpression.cpas
+// BNF Rules: <logical_and_expression>, <bitwise_or_expression>
+program LogicalAndExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Boolean;
+  LB: Boolean;
+  LC: Boolean;
+  LResult1: Boolean;
+  LResult2: Boolean;
+  LResult3: Boolean;
+
+begin
+  LA := true;
+  LB := false;
+  LC := true;
+  
+  LResult1 := LA and LB;
+  LResult2 := LA and LC;
+  LResult3 := LA and LC and LB;
+  
+  printf("Logical AND expressions:\n");
+  printf("  true and false = %d\n", LResult1);
+  printf("  true and true = %d\n", LResult2);
+  printf("  true and true and false = %d\n", LResult3);
+  
+  LResult1 := (5 > 3) and (10 < 20);
+  printf("  (5 > 3) and (10 < 20) = %d\n", LResult1);
+end.

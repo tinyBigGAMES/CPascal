@@ -1,0 +1,46 @@
+// 143_DirectiveName.cpas
+// BNF Rule: <directive_name>
+// ACTUAL directive names implementation - tests the BNF rule
+// All supported directive names used in actual context
+
+{$DEFINE TESTING}                         // DEFINE directive
+{$IFDEF TESTING}                          // IFDEF directive
+  {$DEFINE LOGGING}                       // DEFINE directive
+  {$LINK "user32.lib"}                    // LINK directive
+  {$LIBPATH "C:\Windows\System32"}        // LIBPATH directive
+  {$APPTYPE "console"}                    // APPTYPE directive
+  {$MODULEPATH "modules"}                 // MODULEPATH directive
+  {$EXEPATH "bin"}                        // EXEPATH directive
+  {$OBJPATH "obj"}                        // OBJPATH directive
+{$ELSE}                                   // ELSE directive
+  {$UNDEF LOGGING}                        // UNDEF directive
+{$ENDIF}                                  // ENDIF directive
+
+{$IFNDEF RELEASE}                         // IFNDEF directive
+  {$DEFINE DEBUG_SYMBOLS}                 // DEFINE directive
+{$ENDIF}                                  // ENDIF directive
+
+program DirectiveNameTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+{$IFDEF LOGGING}
+procedure LogMessage(msg: PChar);
+begin
+  printf('[LOG] %s\n', msg);
+end;
+{$ENDIF}
+
+begin
+  printf('Directive Name Test - Actual Implementation\n');
+  
+  {$IFDEF LOGGING}
+  LogMessage('All directive names successfully used');
+  {$ENDIF}
+  
+  {$IFDEF DEBUG_SYMBOLS}
+  printf('Debug symbols enabled\n');
+  {$ENDIF}
+  
+  printf('Directive names successfully implemented\n');
+end.

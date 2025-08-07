@@ -1,0 +1,30 @@
+// 048_PrimaryExpression.cpas
+// BNF Rules: <primary_expression>, <variable>, <constant>, <function_call>
+program PrimaryExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+function SizeOf(const AValue): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LVariable: Int32;
+  LPointer: ^Int32;
+  LResult: Int32;
+
+begin
+  LVariable := 42;
+  LPointer := @LVariable;
+  
+  // Primary expressions: variables, constants, parenthesized expressions
+  LResult := LVariable;
+  LResult := 100;
+  LResult := (10 + 20);
+  LResult := LPointer^;
+  LResult := SizeOf(LVariable);
+  
+  printf("Primary expressions:\n");
+  printf("  Variable: %d\n", LVariable);
+  printf("  Constant: %d\n", 123);
+  printf("  Parenthesized: %d\n", (5 * 8));
+  printf("  Pointer deref: %d\n", LPointer^);
+  printf("  Function call result: %d\n", LResult);
+end.

@@ -1,0 +1,31 @@
+// 074_AddressOf.cpas
+// BNF Rules: <address_of>, <variable>
+program AddressOfTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LArray: array[0..2] of Int32;
+  LPointer: ^Int32;
+  LAddress: Pointer;
+
+begin
+  LValue := 42;
+  LArray[0] := 10;
+  LArray[1] := 20;
+  LArray[2] := 30;
+  
+  LAddress := @LValue;
+  printf("Address-of expressions:\n");
+  printf("  @LValue = %p\n", LAddress);
+  
+  LPointer := @LValue;
+  printf("  Pointer to LValue: %p (value: %d)\n", LPointer, LPointer^);
+  
+  LAddress := @LArray[1];
+  printf("  @LArray[1] = %p\n", LAddress);
+  
+  LPointer := @LArray[0];
+  printf("  Array element via pointer: %d\n", LPointer^);
+end.

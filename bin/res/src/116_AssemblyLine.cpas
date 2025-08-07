@@ -1,0 +1,59 @@
+// 116_AssemblyLine.cpas
+// BNF Rules: <assembly_line>, <string>, <assembly_constraint>
+program AssemblyLineTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInput: Int32;
+  LOutput: Int32;
+
+begin
+  printf("Assembly line test:\n");
+  
+  LInput := 25;
+  
+  // Single assembly line
+  asm
+    "movl %1, %%eax; movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Simple copy: %d -> %d\n", LInput, LOutput);
+  
+  // Assembly line with arithmetic
+  asm
+    "movl %1, %%eax; addl $10, %%eax; movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Add 10: %d + 10 = %d\n", LInput, LOutput);
+  
+  // Assembly line with bit operations
+  asm
+    "movl %1, %%eax; shll $1, %%eax; movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Left shift: %d << 1 = %d\n", LInput, LOutput);
+  
+  // Multiple separate assembly lines
+  asm
+    "movl %1, %%eax";
+    "negl %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Negate: -%d = %d\n", LInput, LOutput);
+  
+  printf("Assembly line test completed\n");
+end.

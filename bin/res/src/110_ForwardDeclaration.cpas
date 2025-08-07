@@ -1,0 +1,121 @@
+// 110_ForwardDeclaration.cpas
+// BNF Rules: <forward_declaration>, <identifier>
+program ForwardDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  // Forward declarations for mutually recursive types
+  TNode = ^TNodeRecord;
+  TNodeRecord = record
+    LData: Int32;
+    LNext: TNode;
+    LPrev: TNode;
+  end;
+  
+  // Forward declaration for tree structure
+  TTreeNode = ^TTreeNodeRecord;
+  TTreeNodeRecord = record
+    LValue: Int32;
+    LLeft: TTreeNode;
+    LRight: TTreeNode;
+    LParent: TTreeNode;
+  end;
+
+// Forward function declarations
+function LCalculateDepth(const ANode: TTreeNode): Int32; forward;
+procedure LPrintList(const AHead: TNode); forward;
+
+// Function implementations
+function LCalculateDepth(const ANode: TTreeNode): Int32;
+var
+  LLeftDepth: Int32;
+  LRightDepth: Int32;
+begin
+  if ANode = nil then
+    return 0;
+    
+  LLeftDepth := LCalculateDepth(ANode^.LLeft);
+  LRightDepth := LCalculateDepth(ANode^.LRight);
+  
+  if LLeftDepth > LRightDepth then
+    return LLeftDepth + 1
+  else
+    return LRightDepth + 1;
+end;
+
+procedure LPrintList(const AHead: TNode);
+var
+  LCurrent: TNode;
+begin
+  LCurrent := AHead;
+  while LCurrent <> nil do
+  begin
+    printf("  Node: %d\n", LCurrent^.LData);
+    LCurrent := LCurrent^.LNext;
+  end;
+end;
+
+var
+  LNode1: TNode;
+  LNode2: TNode;
+  LNode3: TNode;
+  LTreeRoot: TTreeNode;
+  LTreeLeft: TTreeNode;
+  LTreeRight: TTreeNode;
+
+begin
+  printf("Forward declaration test:\n");
+  
+  // Create linked list nodes
+  GetMem(LNode1, SizeOf(TNodeRecord));
+  GetMem(LNode2, SizeOf(TNodeRecord));
+  GetMem(LNode3, SizeOf(TNodeRecord));
+  
+  LNode1^.LData := 10;
+  LNode1^.LNext := LNode2;
+  LNode1^.LPrev := nil;
+  
+  LNode2^.LData := 20;
+  LNode2^.LNext := LNode3;
+  LNode2^.LPrev := LNode1;
+  
+  LNode3^.LData := 30;
+  LNode3^.LNext := nil;
+  LNode3^.LPrev := LNode2;
+  
+  printf("  Linked list:\n");
+  LPrintList(LNode1);
+  
+  // Create tree nodes
+  GetMem(LTreeRoot, SizeOf(TTreeNodeRecord));
+  GetMem(LTreeLeft, SizeOf(TTreeNodeRecord));
+  GetMem(LTreeRight, SizeOf(TTreeNodeRecord));
+  
+  LTreeRoot^.LValue := 50;
+  LTreeRoot^.LLeft := LTreeLeft;
+  LTreeRoot^.LRight := LTreeRight;
+  LTreeRoot^.LParent := nil;
+  
+  LTreeLeft^.LValue := 25;
+  LTreeLeft^.LLeft := nil;
+  LTreeLeft^.LRight := nil;
+  LTreeLeft^.LParent := LTreeRoot;
+  
+  LTreeRight^.LValue := 75;
+  LTreeRight^.LLeft := nil;
+  LTreeRight^.LRight := nil;
+  LTreeRight^.LParent := LTreeRoot;
+  
+  printf("  Tree depth: %d\n", LCalculateDepth(LTreeRoot));
+  
+  // Cleanup
+  FreeMem(LNode1);
+  FreeMem(LNode2);
+  FreeMem(LNode3);
+  FreeMem(LTreeRoot);
+  FreeMem(LTreeLeft);
+  FreeMem(LTreeRight);
+  
+  printf("Forward declaration test completed\n");
+end.

@@ -1,0 +1,16 @@
+// 031_Program.cpas
+// BNF Rules: <program>, <program_header>, <declarations>, <compound_statement>
+program FullProgramTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  LMessage = "Full program structure test";
+
+var
+  LValue: Int32;
+
+begin
+  LValue := 42;
+  printf("%s: value = %d\n", LMessage, LValue);
+end.

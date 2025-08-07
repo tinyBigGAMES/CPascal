@@ -1,0 +1,92 @@
+// 123_ParameterList.cpas
+// BNF Rules: <parameter_list>, <parameter_declaration>
+program ParameterListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Empty parameter list
+procedure LNoParameters();
+begin
+  printf("  No parameters procedure\n");
+end;
+
+// Single parameter
+function LSingleParameter(const AValue: Int32): Int32;
+begin
+  return AValue * 2;
+end;
+
+// Multiple parameters with semicolons
+function LMultipleParameters(
+  const AFirst: Int32;
+  var ASecond: Int32;
+  out AThird: Int32;
+  const AFourth: Double;
+  const AFifth: PChar
+): Boolean;
+begin
+  AThird := AFirst + ASecond;
+  ASecond := ASecond * 2;
+  printf("  Multiple params: %s, %.1f\n", AFifth, AFourth);
+  return true;
+end;
+
+// Mixed parameter modifiers
+procedure LMixedModifiers(
+  AValue: Int32;
+  const AConstValue: Int32;
+  var AVarValue: Int32;
+  out AOutValue: Int32
+);
+begin
+  AOutValue := AValue + AConstValue + AVarValue;
+  AVarValue := AVarValue + 10;
+end;
+
+// Long parameter list
+function LLongParameterList(
+  const AP1: Int32;
+  const AP2: Int32;
+  const AP3: Int32;
+  const AP4: Int32;
+  const AP5: Int32;
+  const AP6: Int32;
+  const AP7: Int32;
+  const AP8: Int32
+): Int32;
+begin
+  return AP1 + AP2 + AP3 + AP4 + AP5 + AP6 + AP7 + AP8;
+end;
+
+var
+  LValue: Int32;
+  LResult: Int32;
+  LSuccess: Boolean;
+
+begin
+  printf("Parameter list test:\n");
+  
+  // No parameters
+  LNoParameters();
+  
+  // Single parameter
+  LResult := LSingleParameter(21);
+  printf("  Single param result: %d\n", LResult);
+  
+  // Multiple parameters
+  LValue := 15;
+  LSuccess := LMultipleParameters(10, LValue, LResult, 2.71, "Test");
+  printf("  Multiple params: success=%d, modified=%d, out=%d\n", 
+         LSuccess, LValue, LResult);
+  
+  // Mixed modifiers
+  LValue := 5;
+  LMixedModifiers(20, 30, LValue, LResult);
+  printf("  Mixed modifiers: modified=%d, result=%d\n", LValue, LResult);
+  
+  // Long parameter list
+  LResult := LLongParameterList(1, 2, 3, 4, 5, 6, 7, 8);
+  printf("  Long param list sum: %d\n", LResult);
+  
+  printf("Parameter list test completed\n");
+end.

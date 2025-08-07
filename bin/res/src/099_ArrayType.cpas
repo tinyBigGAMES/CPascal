@@ -1,0 +1,63 @@
+// 099_ArrayType.cpas
+// BNF Rules: <array_type>, <index_range>, <type_definition>
+program ArrayTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TIntArray = array[0..4] of Int32;
+  TCharArray = array[1..3] of Char;
+  TMatrix = array[0..2, 0..2] of Int32;
+  TStringArray = array[0..2] of PChar;
+
+var
+  LIntArray: TIntArray;
+  LCharArray: TCharArray;
+  LMatrix: TMatrix;
+  LStringArray: TStringArray;
+  LI: Int32;
+  LJ: Int32;
+
+begin
+  printf("Array type test:\n");
+  
+  // Initialize single-dimension arrays
+  for LI := 0 to 4 do
+    LIntArray[LI] := (LI + 1) * 10;
+  
+  LCharArray[1] := 'A';
+  LCharArray[2] := 'B';
+  LCharArray[3] := 'C';
+  
+  LStringArray[0] := "First";
+  LStringArray[1] := "Second";
+  LStringArray[2] := "Third";
+  
+  // Initialize two-dimension array
+  for LI := 0 to 2 do
+    for LJ := 0 to 2 do
+      LMatrix[LI, LJ] := (LI * 3) + LJ + 1;
+  
+  printf("  Integer array [0..4]:\n");
+  for LI := 0 to 4 do
+    printf("    [%d] = %d\n", LI, LIntArray[LI]);
+  
+  printf("  Character array [1..3]:\n");
+  for LI := 1 to 3 do
+    printf("    [%d] = %c\n", LI, LCharArray[LI]);
+  
+  printf("  String array [0..2]:\n");
+  for LI := 0 to 2 do
+    printf("    [%d] = %s\n", LI, LStringArray[LI]);
+  
+  printf("  Matrix [0..2, 0..2]:\n");
+  for LI := 0 to 2 do
+  begin
+    printf("    Row %d: ", LI);
+    for LJ := 0 to 2 do
+      printf("%d ", LMatrix[LI, LJ]);
+    printf("\n");
+  end;
+  
+  printf("Array type test completed\n");
+end.

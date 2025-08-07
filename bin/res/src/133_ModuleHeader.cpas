@@ -1,0 +1,27 @@
+// 133_ModuleHeader.cpas
+// BNF Rule: <module_header>
+// Demonstrates module header syntax: module <identifier>;
+module MathUtils;
+
+// Basic mathematical constants
+const
+  PI = 3.14159265359;
+  E = 2.71828182846;
+
+// Basic mathematical functions
+function Add(a, b: Int32): Int32;
+begin
+  result := a + b;
+end;
+
+function Multiply(a, b: Int32): Int32;
+begin
+  result := a * b;
+end;
+
+function Square(x: Int32): Int32;
+begin
+  result := x * x;
+end;
+
+.

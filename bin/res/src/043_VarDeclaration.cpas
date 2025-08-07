@@ -1,0 +1,26 @@
+// 043_VarDeclaration.cpas
+// BNF Rules: <var_declaration>, <identifier_list>, <qualified_type>
+program VarDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LCounter: Int32;
+  LValue1, LValue2, LValue3: Double;
+  LFlag: Boolean;
+  LMessage: PChar;
+
+begin
+  LCounter := 100;
+  LValue1 := 1.1;
+  LValue2 := 2.2;
+  LValue3 := 3.3;
+  LFlag := true;
+  LMessage := "Variable declarations";
+  
+  printf("Variable declarations:\n");
+  printf("  Counter: %d\n", LCounter);
+  printf("  Values: %.1f, %.1f, %.1f\n", LValue1, LValue2, LValue3);
+  printf("  Flag: %d\n", LFlag);
+  printf("  Message: %s\n", LMessage);
+end.

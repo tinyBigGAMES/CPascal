@@ -1,0 +1,28 @@
+// 039_TypeDeclaration.cpas
+// BNF Rules: <type_declaration>, <identifier>, <type_definition>
+program TypeDeclarationTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TCounter = Int32;
+  TFloatValue = Double;
+  TCharPointer = ^Char;
+
+var
+  LCounter: TCounter;
+  LFloat: TFloatValue;
+  LCharPtr: TCharPointer;
+  LChar: Char;
+
+begin
+  LCounter := 100;
+  LFloat := 3.14159;
+  LChar := 'Z';
+  LCharPtr := @LChar;
+  
+  printf("Type declarations:\n");
+  printf("  Counter: %d\n", LCounter);
+  printf("  Float: %.5f\n", LFloat);
+  printf("  Char via pointer: %c\n", LCharPtr^);
+end.

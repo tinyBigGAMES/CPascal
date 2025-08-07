@@ -1,0 +1,28 @@
+// 045_Declarations.cpas
+// BNF Rules: <declarations>, <const_section>, <type_section>, <var_section>
+program DeclarationsTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  LMaxSize = 1000;
+  LDefaultName = "DefaultItem";
+
+type
+  TItemSize = Int32;
+  TItemName = PChar;
+
+var
+  LSize: TItemSize;
+  LName: TItemName;
+  LCount: Int32;
+
+begin
+  LSize := LMaxSize;
+  LName := LDefaultName;
+  LCount := 42;
+  
+  printf("Complete declarations test:\n");
+  printf("  Constants: MaxSize=%d, DefaultName=%s\n", LMaxSize, LDefaultName);
+  printf("  Variables: Size=%d, Name=%s, Count=%d\n", LSize, LName, LCount);
+end.

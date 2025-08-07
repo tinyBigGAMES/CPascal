@@ -1,0 +1,24 @@
+// 022_OctalDigit.cpas
+// BNF Rules: <octal_digit>
+program OctalDigitTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LOct0: Int32;
+  LOct7: Int32;
+  LOctPattern: Int32;
+  LOctMax: Int32;
+
+begin
+  LOct0 := 0o0;
+  LOct7 := 0o7;
+  LOctPattern := 0o123;
+  LOctMax := 0o777;
+  
+  printf("Octal digit tests:\n");
+  printf("  0o0: %d\n", LOct0);
+  printf("  0o7: %d\n", LOct7);
+  printf("  0o123: %d\n", LOctPattern);
+  printf("  0o777: %d\n", LOctMax);
+end.

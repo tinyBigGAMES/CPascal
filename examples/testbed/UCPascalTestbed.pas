@@ -68,9 +68,10 @@ implementation
 
 uses
   System.SysUtils,
-  System.TypInfo,
-  CPascal,
-  CPascal.Tests;
+  System.IOUtils,
+  System.Math,
+  System.Generics.Collections,
+  CPascal;
 
 procedure Pause();
 begin
@@ -80,34 +81,93 @@ begin
   WriteLn;
 end;
 
-procedure RunCPascalTestbed();
+procedure TestFile(const AFirst, ALast, AMaxNum: UInt32);
 var
-  LCPPlatformInitResult: TCPPlatformInitResult;
+  LPath: string;
+  LCompiler: TCPCompiler;
+  LSource: string;
+  LIR: string;
+  LModuleRef: PCPModuleRef;
+  LFiles: TArray<string>;
+  LFilename: string;
+  LFirst: UInt32;
+  LLast: UInt32;
+  LNum: UInt32;
 begin
-  try
+  if (AFirst > ALast) or (AFirst > AMaxNum)  then
+  begin
+    raise Exception.CreateFmt('Invalid first test file number: %d', [AFirst])
+  end;
+
+  if (ALast < AFirst) or (ALast > AMaxNum)  then
+  begin
+    raise Exception.CreateFmt('Invalid last test file number: %d', [ALast])
+  end;
+
+  LPath := 'res\src';
+  LFiles := System.IOUtils.TDirectory.GetFiles(LPath, '*.cpas');
+
+  if Length(LFiles) = 0 then
+  begin
+    raise Exception.CreateFmt('No .CPAS files found in: %s', [LPath])
+  end;
+
+  LFirst := EnsureRange(AFirst-1, AFirst-1, ALast);
+  if LFirst > High(LFiles) then
+  begin
+    raise Exception.CreateFmt('There are only %s files, invalid first test file number: %d', [Length(LFiles), LFirst]);
+  end;
+
+  LLast  := EnsureRange(ALast-1, ALast-1, High(LFiles));
+
+  for LNum := LFirst to LLast do
+  begin
+
+    LFilename := LFiles[LNum];
+
+    CPPrintLn(sLineBreak + '==== TEST FILE: %s ===' + sLineBreak, [LFilename]);
+
+    LCompiler := TCPCompiler.Create();
     try
-      if CPIsPlatformInitialized() then
+      LSource := '';
+      LIR := '';
+      LModuleRef := LCompiler.CompileFile(LFilename, LSource);
+
+      if not LSource.IsEmpty then
+        CPPrintLn('--- SOURCE ---' + sLineBreak + '%s' + sLineBreak, [LSource.Trim()]);
+
+      LIR := LCompiler.GetLastIR();
+      if not LIR.IsEmpty then
+        CPPrintLn('--- IR SOURCE ---' + sLineBreak + '%s', [LIR.Trim()]);
+
+      if Assigned(LModuleRef) then
       begin
-        LCPPlatformInitResult := CPGetPlatformInitResult();
-        WriteLn(LCPPlatformInitResult.TargetTriple);
+        CPPrintLn('--- JIT EXECUTION ---', []);
+        CPPrintLn('Exit Code: %d', [LCompiler.JIT(LModuleRef)]);
       end;
 
-      TestFullSuite(00);
-
-    except
-      on E: Exception do
-      begin
-        WriteLn('');
-        WriteLn('❌ UNEXPECTED EXCEPTION IN COVERAGE TEST:');
-        WriteLn(Format('   Exception Type: %s', [E.ClassName]));
-        WriteLn(Format('   Message: %s', [E.Message]));
-        WriteLn('   This may indicate a compiler bug or test issue.');
-        WriteLn('');
-      end;
+    finally
+      LCompiler.Free();
     end;
-  finally
-    // ALWAYS pause, regardless of success or exception
-    Pause();
   end;
 end;
+
+procedure RunCPascalTestbed();
+begin
+  try
+    // currently working examples: 1-29
+    TestFile(1, 29, 29);
+  except
+    // Handle ECPException
+    on E: ECPException do
+      CPDisplayExceptionError(E);
+
+    // Catch-all for unexpected exceptions
+    on E: Exception do
+      CPDisplayExceptionError(E);
+  end;
+
+  Pause();
+end;
+
 end.

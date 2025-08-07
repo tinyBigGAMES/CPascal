@@ -1,0 +1,21 @@
+// 032_ConstantExpression.cpas
+// BNF Rules: <constant_expression>, <expression>
+program ConstantExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+const
+  LSimpleConst = 42;
+  LArithmeticConst = 10 + 5 * 2;
+  LBooleanConst = true;
+  LStringConst = "Hello World";
+  LCharConst = 'A';
+
+begin
+  printf("Constant expressions:\n");
+  printf("  Simple: %d\n", LSimpleConst);
+  printf("  Arithmetic: %d\n", LArithmeticConst);
+  printf("  Boolean: %d\n", LBooleanConst);
+  printf("  String: %s\n", LStringConst);
+  printf("  Char: %c\n", LCharConst);
+end.

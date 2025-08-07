@@ -1,0 +1,26 @@
+// 077_LabelStatement.cpas
+// BNF Rules: <label_statement>, <identifier>
+program LabelStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+label
+  LStart;
+  LEnd;
+
+var
+  LCounter: Int32;
+
+begin
+  LCounter := 0;
+  
+  LStart:
+  printf("At start label: counter = %d\n", LCounter);
+  LCounter := LCounter + 1;
+  
+  if LCounter < 3 then
+    goto LStart;
+    
+  LEnd:
+  printf("At end label: final counter = %d\n", LCounter);
+end.

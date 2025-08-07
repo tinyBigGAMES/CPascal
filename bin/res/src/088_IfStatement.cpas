@@ -1,0 +1,40 @@
+// 088_IfStatement.cpas
+// BNF Rules: <if_statement>, <expression>, <statement>
+program IfStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LAge: Int32;
+
+begin
+  printf("If statement test:\n");
+  
+  LValue := 15;
+  
+  // Simple if statement
+  if LValue > 10 then
+    printf("  Value %d is greater than 10\n", LValue);
+  
+  // If-else statement
+  if LValue < 10 then
+    printf("  Value is less than 10\n")
+  else
+    printf("  Value %d is not less than 10\n", LValue);
+  
+  // Nested if statements
+  LAge := 25;
+  if LAge >= 18 then
+  begin
+    printf("  Age %d: Adult\n", LAge);
+    if LAge >= 65 then
+      printf("    Senior citizen\n")
+    else
+      printf("    Working age\n");
+  end
+  else
+    printf("  Age %d: Minor\n", LAge);
+  
+  printf("If statement test completed\n");
+end.

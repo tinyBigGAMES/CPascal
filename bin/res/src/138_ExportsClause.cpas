@@ -1,0 +1,29 @@
+// 138_ExportsClause.cpas
+// BNF Rule: <exports_clause>
+library MathExports;
+
+// Functions to be exported
+function Add(a, b: Int32): Int32;
+begin
+  result := a + b;
+end;
+
+function Subtract(a, b: Int32): Int32;
+begin
+  result := a - b;
+end;
+
+function Multiply(a, b: Int32): Int32;
+begin
+  result := a * b;
+end;
+
+procedure LogMessage(msg: PChar);
+begin
+  // Simple logging function
+end;
+
+// ACTUAL exports clause implementation - tests the BNF rule
+exports Add, Subtract, Multiply, LogMessage;
+
+.

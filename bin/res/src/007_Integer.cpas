@@ -1,0 +1,21 @@
+// 007_Integer.cpas
+// BNF Rules: <integer>, <decimal_integer>, <hexadecimal_integer>, <binary_integer>, <octal_integer>
+program IntegerTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LDecimal: Int32;
+  LHex: Int32;
+  LBinary: Int32;
+  LOctal: Int32;
+
+begin
+  LDecimal := 42;
+  LHex := 0x2A;
+  LBinary := 0b101010;
+  LOctal := 0o52;
+  
+  printf("Integer formats - decimal: %d, hex: %d, binary: %d, octal: %d\n", 
+         LDecimal, LHex, LBinary, LOctal);
+end.

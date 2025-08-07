@@ -1,0 +1,23 @@
+// 127_ExternalFunction.cpas
+// BNF Rule: <external_function>
+program ExternalFunctionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// External function declarations with different patterns
+function strlen(str: PChar): Int32; cdecl; external "msvcrt.dll";
+function GetTickCount(): UInt32; stdcall; external "kernel32.dll";
+function malloc(size: Int32): Pointer; external "msvcrt.dll"; cdecl;
+procedure free(ptr: Pointer); external "msvcrt.dll";
+function sin(x: Double): Double; external; cdecl;
+procedure ExternalProc(); external "mylib.dll"; stdcall;
+
+begin
+  printf('External Function Test\n');
+  printf('External functions can specify calling conventions and libraries\n');
+  printf('Pattern 1: function_header; calling_convention; external library;\n');
+  printf('Pattern 2: function_header; external library; calling_convention;\n');
+  printf('Pattern 3: function_header; external; calling_convention;\n');
+  printf('Pattern 4: function_header; external library;\n');
+  printf('Test completed successfully\n');
+end.

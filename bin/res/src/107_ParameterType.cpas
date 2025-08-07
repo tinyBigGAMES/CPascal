@@ -1,0 +1,59 @@
+// 107_ParameterType.cpas
+// BNF Rules: <parameter_type>, <qualified_type>
+program ParameterTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Function with different parameter types
+procedure LTestParameters(
+  const AConstParam: Int32;
+  var AVarParam: Int32;
+  out AOutParam: Int32;
+  AValueParam: Int32
+);
+begin
+  printf("  Inside function:\n");
+  printf("    const param: %d\n", AConstParam);
+  printf("    var param (before): %d\n", AVarParam);
+  printf("    value param: %d\n", AValueParam);
+  
+  // Modify parameters
+  AVarParam := AVarParam * 2;
+  AOutParam := AConstParam + 100;
+  AValueParam := AValueParam + 50; // This won't affect caller
+  
+  printf("    var param (after): %d\n", AVarParam);
+  printf("    out param (set): %d\n", AOutParam);
+  printf("    value param (modified): %d\n", AValueParam);
+end;
+
+var
+  LConstValue: Int32;
+  LVarValue: Int32;
+  LOutValue: Int32;
+  LValueParam: Int32;
+
+begin
+  printf("Parameter type test:\n");
+  
+  LConstValue := 10;
+  LVarValue := 20;
+  LOutValue := 999; // Will be overwritten
+  LValueParam := 30;
+  
+  printf("  Before call:\n");
+  printf("    const value: %d\n", LConstValue);
+  printf("    var value: %d\n", LVarValue);
+  printf("    out value: %d\n", LOutValue);
+  printf("    value param: %d\n", LValueParam);
+  
+  LTestParameters(LConstValue, LVarValue, LOutValue, LValueParam);
+  
+  printf("  After call:\n");
+  printf("    const value: %d (unchanged)\n", LConstValue);
+  printf("    var value: %d (modified)\n", LVarValue);
+  printf("    out value: %d (set by function)\n", LOutValue);
+  printf("    value param: %d (unchanged)\n", LValueParam);
+  
+  printf("Parameter type test completed\n");
+end.

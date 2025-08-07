@@ -1,0 +1,44 @@
+// 135_QualifiedIdentifierList.cpas
+// BNF Rule: <qualified_identifier_list>
+program QualifiedIdentifierListTest;
+
+// ACTUAL qualified identifier list implementation - tests the BNF rule
+// <qualified_identifier_list> ::= <qualified_identifier> ("," <qualified_identifier>)*
+import Math.Core, System.IO, Graphics.Drawing.Canvas, Network.HTTP.Client, Database.MySQL.Connection;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TSystem = record
+    Graphics: record
+      Drawing: record
+        Canvas: record
+          Width, Height: Int32;
+        end;
+      end;
+    end;
+    Network: record
+      HTTP: record
+        Client: record
+          Timeout: Int32;
+        end;
+      end;
+    end;
+  end;
+
+var
+  LSystem: TSystem;
+
+begin
+  printf('Qualified Identifier List Test - Actual Implementation\n');
+  
+  // Demonstrate qualified identifier access
+  LSystem.Graphics.Drawing.Canvas.Width := 800;
+  LSystem.Graphics.Drawing.Canvas.Height := 600;
+  LSystem.Network.HTTP.Client.Timeout := 5000;
+  
+  printf('Canvas: %dx%d\n', LSystem.Graphics.Drawing.Canvas.Width, LSystem.Graphics.Drawing.Canvas.Height);
+  printf('HTTP Timeout: %d ms\n', LSystem.Network.HTTP.Client.Timeout);
+  
+  printf('Qualified identifier list successfully implemented\n');
+end.

@@ -1,0 +1,59 @@
+// 101_EnumType.cpas
+// BNF Rules: <enum_type>, <enum_list>
+program EnumTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TTrafficLight = (LRed, LYellow, LGreen);
+  TDirection = (LNorth, LSouth, LEast, LWest);
+  TOperator = (LAdd, LSubtract, LMultiply, LDivide);
+
+var
+  LLight: TTrafficLight;
+  LDirection: TDirection;
+  LOperator: TOperator;
+  LA: Int32;
+  LB: Int32;
+  LResult: Int32;
+
+begin
+  printf("Enum type test:\n");
+  
+  LLight := LYellow;
+  LDirection := LNorth;
+  LOperator := LMultiply;
+  
+  printf("  Traffic light states:\n");
+  case LLight of
+    LRed: printf("    STOP\n");
+    LYellow: printf("    CAUTION\n");
+    LGreen: printf("    GO\n");
+  end;
+  
+  printf("  Direction navigation:\n");
+  case LDirection of
+    LNorth: printf("    Heading North\n");
+    LSouth: printf("    Heading South\n");
+    LEast: printf("    Heading East\n");
+    LWest: printf("    Heading West\n");
+  end;
+  
+  printf("  Calculator operation:\n");
+  LA := 15;
+  LB := 3;
+  case LOperator of
+    LAdd: LResult := LA + LB;
+    LSubtract: LResult := LA - LB;
+    LMultiply: LResult := LA * LB;
+    LDivide: LResult := LA div LB;
+  end;
+  printf("    %d op %d = %d\n", LA, LB, LResult);
+  
+  printf("  Enum ordinal values:\n");
+  printf("    Red=%d, Yellow=%d, Green=%d\n", LRed, LYellow, LGreen);
+  printf("    North=%d, South=%d, East=%d, West=%d\n", 
+         LNorth, LSouth, LEast, LWest);
+  
+  printf("Enum type test completed\n");
+end.

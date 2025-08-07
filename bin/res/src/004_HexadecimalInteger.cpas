@@ -1,0 +1,18 @@
+// 004_HexadecimalInteger.cpas
+// BNF Rules: <hexadecimal_integer>, <hex_digit>
+program HexadecimalIntegerTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LHex1: Int32;
+  LHex2: Int32;
+  LHex3: Int64;
+
+begin
+  LHex1 := 0xFF;
+  LHex2 := $1A2B;
+  LHex3 := 0xDEADBEEF;
+  
+  printf("Hexadecimal integers: 0xFF=%d, $1A2B=%d, 0xDEADBEEF=%lld\n", LHex1, LHex2, LHex3);
+end.

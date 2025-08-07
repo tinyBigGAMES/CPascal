@@ -1,0 +1,57 @@
+// 095_StructuredStatement.cpas
+// BNF Rules: <structured_statement>, <compound_statement>, <if_statement>, <case_statement>, <while_statement>, <for_statement>, <repeat_statement>
+program StructuredStatementTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LI: Int32;
+
+begin
+  printf("Structured statement test:\n");
+  
+  LValue := 15;
+  
+  // Compound statement
+  begin
+    printf("  In compound statement\n");
+    LValue := LValue + 5;
+  end;
+  
+  // If statement
+  if LValue > 10 then
+    printf("  Value %d is greater than 10\n", LValue);
+  
+  // Case statement
+  case LValue of
+    20: printf("  Case matched: exactly 20\n");
+    15..25: printf("  Case matched: in range 15-25\n");
+  else
+    printf("  Case: no match\n");
+  end;
+  
+  // While statement
+  LI := 1;
+  printf("  While loop:\n");
+  while LI <= 3 do
+  begin
+    printf("    Iteration %d\n", LI);
+    LI := LI + 1;
+  end;
+  
+  // For statement
+  printf("  For loop:\n");
+  for LI := 1 to 3 do
+    printf("    For iteration %d\n", LI);
+  
+  // Repeat statement
+  LI := 1;
+  printf("  Repeat loop:\n");
+  repeat
+    printf("    Repeat iteration %d\n", LI);
+    LI := LI + 1;
+  until LI > 3;
+  
+  printf("Structured statement test completed\n");
+end.

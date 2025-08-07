@@ -1,0 +1,30 @@
+// 062_EqualityOperator.cpas
+// BNF Rules: <equality_operator>
+program EqualityOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+  LResult: Boolean;
+
+begin
+  LA := 10;
+  LB := 10;
+  LC := 20;
+  
+  LResult := LA = LB;
+  printf("Equality operators:\n");
+  printf("  %d = %d is %d\n", LA, LB, LResult);
+  
+  LResult := LA = LC;
+  printf("  %d = %d is %d\n", LA, LC, LResult);
+  
+  LResult := LA <> LB;
+  printf("  %d <> %d is %d\n", LA, LB, LResult);
+  
+  LResult := LA <> LC;
+  printf("  %d <> %d is %d\n", LA, LC, LResult);
+end.

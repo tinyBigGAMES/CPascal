@@ -1,0 +1,85 @@
+// 113_ProcedureCall.cpas
+// BNF Rules: <procedure_call>, <identifier>, <expression_list>
+program ProcedureCallTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Test procedures with different signatures
+procedure LPrintMessage(const AMessage: PChar);
+begin
+  printf("  Message: %s\n", AMessage);
+end;
+
+procedure LPrintNumbers(const AX: Int32; const AY: Int32; const AZ: Int32);
+begin
+  printf("  Numbers: %d, %d, %d\n", AX, AY, AZ);
+end;
+
+procedure LModifyValue(var AValue: Int32);
+begin
+  AValue := AValue * 2;
+  printf("  Modified value to: %d\n", AValue);
+end;
+
+procedure LInitializeArray(out AArray: array[0..2] of Int32);
+begin
+  AArray[0] := 10;
+  AArray[1] := 20;
+  AArray[2] := 30;
+  printf("  Array initialized\n");
+end;
+
+procedure LNoParams();
+begin
+  printf("  No parameters procedure called\n");
+end;
+
+// Procedure pointer type
+type
+  TSimpleProcedure = procedure();
+  TMessageProcedure = procedure(const AMessage: PChar);
+
+var
+  LValue: Int32;
+  LArray: array[0..2] of Int32;
+  LSimpleProc: TSimpleProcedure;
+  LMessageProc: TMessageProcedure;
+  LI: Int32;
+
+begin
+  printf("Procedure call test:\n");
+  
+  // Simple procedure calls
+  LPrintMessage("Hello World");
+  LPrintNumbers(1, 2, 3);
+  LNoParams();
+  
+  // Procedure with var parameter
+  LValue := 21;
+  printf("  Before modify: %d\n", LValue);
+  LModifyValue(LValue);
+  printf("  After modify: %d\n", LValue);
+  
+  // Procedure with out parameter
+  LInitializeArray(LArray);
+  printf("  Array contents: ");
+  for LI := 0 to 2 do
+    printf("%d ", LArray[LI]);
+  printf("\n");
+  
+  // Procedure calls with expressions
+  LPrintNumbers(5 + 5, 10 * 2, 30 / 3);
+  
+  // Procedure pointer calls
+  LSimpleProc := @LNoParams;
+  LSimpleProc();
+  
+  LMessageProc := @LPrintMessage;
+  LMessageProc("Via procedure pointer");
+  
+  // Nested procedure calls (procedures in expressions)
+  LModifyValue(LValue);
+  LPrintNumbers(LValue, LValue + 10, LValue + 20);
+  
+  printf("Procedure call test completed\n");
+end.

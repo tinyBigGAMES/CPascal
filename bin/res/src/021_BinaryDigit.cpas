@@ -1,0 +1,24 @@
+// 021_BinaryDigit.cpas
+// BNF Rules: <binary_digit>
+program BinaryDigitTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LBin0: Int32;
+  LBin1: Int32;
+  LBinPattern: Int32;
+  LBinMax: Int32;
+
+begin
+  LBin0 := 0b0;
+  LBin1 := 0b1;
+  LBinPattern := 0b1010;
+  LBinMax := 0b11111111;
+  
+  printf("Binary digit tests:\n");
+  printf("  0b0: %d\n", LBin0);
+  printf("  0b1: %d\n", LBin1);
+  printf("  0b1010: %d\n", LBinPattern);
+  printf("  0b11111111: %d\n", LBinMax);
+end.

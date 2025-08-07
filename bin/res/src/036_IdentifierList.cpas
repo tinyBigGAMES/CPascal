@@ -1,0 +1,24 @@
+// 036_IdentifierList.cpas
+// BNF Rules: <identifier_list>, <identifier>
+program IdentifierListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LFirst, LSecond, LThird: Int32;
+  LValueA, LValueB, LValueC, LValueD: Double;
+
+begin
+  LFirst := 10;
+  LSecond := 20;
+  LThird := 30;
+  
+  LValueA := 1.1;
+  LValueB := 2.2;
+  LValueC := 3.3;
+  LValueD := 4.4;
+  
+  printf("Identifier lists:\n");
+  printf("  Int group: %d, %d, %d\n", LFirst, LSecond, LThird);
+  printf("  Double group: %.1f, %.1f, %.1f, %.1f\n", LValueA, LValueB, LValueC, LValueD);
+end.

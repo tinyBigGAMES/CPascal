@@ -1,0 +1,61 @@
+// 098_PointerType.cpas
+// BNF Rules: <pointer_type>, <type_definition>
+program PointerTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TIntPtr = ^Int32;
+  TCharPtr = ^Char;
+  TDoublePtr = ^Double;
+  TPtrToPtr = ^TIntPtr;
+
+var
+  LValue: Int32;
+  LChar: Char;
+  LDouble: Double;
+  LIntPtr: TIntPtr;
+  LCharPtr: TCharPtr;
+  LDoublePtr: TDoublePtr;
+  LPtrToPtr: TPtrToPtr;
+
+begin
+  printf("Pointer type test:\n");
+  
+  LValue := 42;
+  LChar := 'X';
+  LDouble := 3.14159;
+  
+  LIntPtr := @LValue;
+  LCharPtr := @LChar;
+  LDoublePtr := @LDouble;
+  LPtrToPtr := @LIntPtr;
+  
+  printf("  Original values:\n");
+  printf("    Int: %d\n", LValue);
+  printf("    Char: %c\n", LChar);
+  printf("    Double: %.5f\n", LDouble);
+  
+  printf("  Via pointers:\n");
+  printf("    *IntPtr: %d\n", LIntPtr^);
+  printf("    *CharPtr: %c\n", LCharPtr^);
+  printf("    *DoublePtr: %.5f\n", LDoublePtr^);
+  
+  printf("  Pointer addresses:\n");
+  printf("    IntPtr: %p\n", LIntPtr);
+  printf("    CharPtr: %p\n", LCharPtr);
+  printf("    DoublePtr: %p\n", LDoublePtr);
+  
+  printf("  Pointer to pointer:\n");
+  printf("    **PtrToPtr: %d\n", LPtrToPtr^^);
+  
+  // Modify via pointers
+  LIntPtr^ := 99;
+  LCharPtr^ := 'Z';
+  
+  printf("  Modified via pointers:\n");
+  printf("    Int: %d\n", LValue);
+  printf("    Char: %c\n", LChar);
+  
+  printf("Pointer type test completed\n");
+end.

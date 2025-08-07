@@ -1,0 +1,6 @@
+// Hello World
+program HelloWorld;
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+begin
+  printf("Hello, World. I am %s\n", "CPascal - Better C with Pascal Syntax!");
+end.

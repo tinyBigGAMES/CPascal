@@ -1,0 +1,63 @@
+// 103_FieldList.cpas
+// BNF Rules: <field_list>, <field_declaration>
+program FieldListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TStudent = record
+    LID: Int32;
+    LName: PChar;
+    LGrade: Char;
+    LScore: Double;
+    LPassed: Boolean;
+    LCredits: Int32;
+  end;
+  
+  TRectangle = record
+    LWidth: Double;
+    LHeight: Double;
+    LArea: Double;
+    LPerimeter: Double;
+    LIsSquare: Boolean;
+  end;
+
+var
+  LStudent: TStudent;
+  LRectangle: TRectangle;
+
+begin
+  printf("Field list test:\n");
+  
+  // Initialize student record with multiple fields
+  LStudent.LID := 12345;
+  LStudent.LName := "Alice Johnson";
+  LStudent.LGrade := 'A';
+  LStudent.LScore := 95.5;
+  LStudent.LPassed := true;
+  LStudent.LCredits := 24;
+  
+  // Initialize rectangle record
+  LRectangle.LWidth := 10.0;
+  LRectangle.LHeight := 15.0;
+  LRectangle.LArea := LRectangle.LWidth * LRectangle.LHeight;
+  LRectangle.LPerimeter := 2.0 * (LRectangle.LWidth + LRectangle.LHeight);
+  LRectangle.LIsSquare := (LRectangle.LWidth = LRectangle.LHeight);
+  
+  printf("  Student record fields:\n");
+  printf("    ID: %d\n", LStudent.LID);
+  printf("    Name: %s\n", LStudent.LName);
+  printf("    Grade: %c\n", LStudent.LGrade);
+  printf("    Score: %.1f\n", LStudent.LScore);
+  printf("    Passed: %d\n", LStudent.LPassed);
+  printf("    Credits: %d\n", LStudent.LCredits);
+  
+  printf("  Rectangle record fields:\n");
+  printf("    Width: %.1f\n", LRectangle.LWidth);
+  printf("    Height: %.1f\n", LRectangle.LHeight);
+  printf("    Area: %.1f\n", LRectangle.LArea);
+  printf("    Perimeter: %.1f\n", LRectangle.LPerimeter);
+  printf("    Is square: %d\n", LRectangle.LIsSquare);
+  
+  printf("Field list test completed\n");
+end.

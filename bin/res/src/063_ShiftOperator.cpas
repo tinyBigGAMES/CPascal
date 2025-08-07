@@ -1,0 +1,28 @@
+// 063_ShiftOperator.cpas
+// BNF Rules: <shift_operator>
+program ShiftOperatorTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32;
+  LLeftShift: Int32;
+  LRightShift: Int32;
+
+begin
+  LValue := 8;
+  
+  LLeftShift := LValue shl 2;
+  LRightShift := LValue shr 1;
+  
+  printf("Shift operators:\n");
+  printf("  %d shl 2 = %d\n", LValue, LLeftShift);
+  printf("  %d shr 1 = %d\n", LValue, LRightShift);
+  
+  LValue := 32;
+  LLeftShift := LValue shl 1;
+  LRightShift := LValue shr 3;
+  
+  printf("  %d shl 1 = %d\n", LValue, LLeftShift);
+  printf("  %d shr 3 = %d\n", LValue, LRightShift);
+end.

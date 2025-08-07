@@ -1,0 +1,28 @@
+// 025_AnyCharExceptNewline.cpas
+// BNF Rules: <any_char_except_newline>
+program AnyCharExceptNewlineTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LAlpha: Char;
+  LDigit: Char;
+  LSymbol: Char;
+  LSpace: Char;
+  LTab: Char;
+
+begin
+  LAlpha := 'X';
+  LDigit := '7';
+  LSymbol := '#';
+  LSpace := ' ';
+  LTab := #9;
+  
+  // These chars can appear in line comments (any char except newline)
+  printf("Characters except newline:\n");
+  printf("  Alpha: '%c'\n", LAlpha);
+  printf("  Digit: '%c'\n", LDigit);
+  printf("  Symbol: '%c'\n", LSymbol);
+  printf("  Space: '%c'\n", LSpace);
+  printf("  Tab: (char %d)\n", LTab);
+end.

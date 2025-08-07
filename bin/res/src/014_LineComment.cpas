@@ -1,0 +1,18 @@
+// 014_LineComment.cpas
+// BNF Rules: <line_comment>, <any_char_except_newline>, <newline>
+program LineCommentTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue: Int32; // This is a line comment
+
+begin
+  // Single line comment at start
+  LValue := 42; // End of line comment
+  // Another comment with symbols: !@#$%^&*()
+  // Comment with numbers: 123456789
+  
+  printf("Line comments test: value = %d\n", LValue);
+  // Final comment
+end.

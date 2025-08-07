@@ -1,0 +1,29 @@
+// 081_VariableList.cpas
+// BNF Rules: <variable_list>, <variable>
+program VariableListTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+  LX: Double;
+  LY: Double;
+
+begin
+  // Multiple assignment using variable lists
+  LA, LB, LC := 10, 20, 30;
+  printf("Multiple assignment:\n");
+  printf("  LA, LB, LC := 10, 20, 30\n");
+  printf("  Results: LA=%d, LB=%d, LC=%d\n", LA, LB, LC);
+  
+  LX, LY := 3.14, 2.71;
+  printf("  LX, LY := 3.14, 2.71\n");
+  printf("  Results: LX=%.2f, LY=%.2f\n", LX, LY);
+  
+  // Swapping variables using variable lists
+  LA, LB := LB, LA;
+  printf("Swap: LA, LB := LB, LA\n");
+  printf("  Results: LA=%d, LB=%d\n", LA, LB);
+end.

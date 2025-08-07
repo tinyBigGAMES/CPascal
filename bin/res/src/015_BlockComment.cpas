@@ -1,0 +1,27 @@
+// 015_BlockComment.cpas
+// BNF Rules: <block_comment>, <any_char>
+program BlockCommentTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+/* This is a block comment
+   spanning multiple lines
+   with various characters: !@#$%^&*()
+   and numbers: 123456789 */
+
+var
+  LValue: Int32; /* inline block comment */
+
+begin
+  /* Block comment at start of begin */
+  LValue := 42;
+  
+  /* Multi-line block comment
+     with indentation
+     and special chars: <>?/.,;':"[]{}|\`~
+  */
+  
+  printf("Block comments test: value = %d\n", LValue);
+  
+  /* Final block comment */
+end.

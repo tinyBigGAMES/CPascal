@@ -1,0 +1,28 @@
+// 059_SizeofExpression.cpas
+// BNF Rules: <sizeof_expression>, <type_definition>, <expression>
+program SizeofExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TPoint = record
+    LX: Int32;
+    LY: Int32;
+  end;
+
+var
+  LInt: Int32;
+  LDouble: Double;
+  LPoint: TPoint;
+  LArray: array[0..9] of Int32;
+
+begin
+  LInt := 42;
+  
+  printf("SizeOf expressions:\n");
+  printf("  SizeOf(Int32): %d\n", SizeOf(Int32));
+  printf("  SizeOf(Double): %d\n", SizeOf(Double));
+  printf("  SizeOf(TPoint): %d\n", SizeOf(TPoint));
+  printf("  SizeOf(array[0..9] of Int32): %d\n", SizeOf(LArray));
+  printf("  SizeOf(variable): %d\n", SizeOf(LInt));
+end.

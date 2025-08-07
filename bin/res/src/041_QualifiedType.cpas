@@ -1,0 +1,24 @@
+// 041_QualifiedType.cpas
+// BNF Rules: <qualified_type>, <type_qualifier>, <type_definition>
+program QualifiedTypeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LNormalValue: Int32;
+  LConstValue: const Int32;
+  LVolatileValue: volatile Int32;
+  LConstVolatileValue: const volatile Int32;
+
+begin
+  LNormalValue := 10;
+  LConstValue := 20;
+  LVolatileValue := 30;
+  LConstVolatileValue := 40;
+  
+  printf("Qualified types:\n");
+  printf("  Normal: %d\n", LNormalValue);
+  printf("  Const: %d\n", LConstValue);
+  printf("  Volatile: %d\n", LVolatileValue);
+  printf("  Const volatile: %d\n", LConstVolatileValue);
+end.

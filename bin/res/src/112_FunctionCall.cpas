@@ -1,0 +1,76 @@
+// 112_FunctionCall.cpas
+// BNF Rules: <function_call>, <identifier>, <expression_list>
+program FunctionCallTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Test functions with different signatures
+function LAdd(const AX: Int32; const AY: Int32): Int32;
+begin
+  return AX + AY;
+end;
+
+function LMax(const AX: Int32; const AY: Int32; const AZ: Int32): Int32;
+begin
+  if (AX >= AY) and (AX >= AZ) then
+    return AX
+  else if AY >= AZ then
+    return AY
+  else
+    return AZ;
+end;
+
+function LGetMessage(): PChar;
+begin
+  return "Hello from function";
+end;
+
+function LCalculateArea(const ARadius: Double): Double;
+begin
+  return 3.14159 * ARadius * ARadius;
+end;
+
+// Function pointer type
+type
+  TBinaryFunction = function(const AX: Int32; const AY: Int32): Int32;
+
+var
+  LResult: Int32;
+  LArea: Double;
+  LMessage: PChar;
+  LFunction: TBinaryFunction;
+
+begin
+  printf("Function call test:\n");
+  
+  // Simple function calls
+  LResult := LAdd(10, 20);
+  printf("  Add(10, 20) = %d\n", LResult);
+  
+  LResult := LMax(5, 15, 8);
+  printf("  Max(5, 15, 8) = %d\n", LResult);
+  
+  LMessage := LGetMessage();
+  printf("  GetMessage() = %s\n", LMessage);
+  
+  LArea := LCalculateArea(5.0);
+  printf("  CalculateArea(5.0) = %.2f\n", LArea);
+  
+  // Nested function calls
+  LResult := LAdd(LAdd(5, 3), LAdd(2, 4));
+  printf("  Nested: Add(Add(5,3), Add(2,4)) = %d\n", LResult);
+  
+  // Function calls with expressions
+  LResult := LMax(10 + 5, 20 - 3, 8 * 2);
+  printf("  With expressions: Max(10+5, 20-3, 8*2) = %d\n", LResult);
+  
+  // Function pointer calls
+  LFunction := @LAdd;
+  LResult := LFunction(7, 8);
+  printf("  Via function pointer: %d\n", LResult);
+  
+  // Function call as expression in other calls
+  printf("  Direct call result: %d\n", LAdd(LMax(1, 2, 3), 10));
+  
+  printf("Function call test completed\n");
+end.

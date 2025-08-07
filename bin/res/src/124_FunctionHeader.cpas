@@ -1,0 +1,107 @@
+// 124_FunctionHeader.cpas
+// BNF Rules: <function_header>, <identifier>, <parameter_list>, <type_definition>
+program FunctionHeaderTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+// Function headers with different return types
+function LReturnInteger(const AValue: Int32): Int32;
+begin
+  return AValue + 100;
+end;
+
+function LReturnDouble(const AValue: Double): Double;
+begin
+  return AValue * 3.14159;
+end;
+
+function LReturnBoolean(const AValue: Int32): Boolean;
+begin
+  return AValue > 0;
+end;
+
+function LReturnPointer(var AValue: Int32): ^Int32;
+begin
+  return @AValue;
+end;
+
+function LReturnString(): PChar;
+begin
+  return "Function result";
+end;
+
+// Procedure headers (no return type)
+procedure LProcedureHeader(const AMessage: PChar);
+begin
+  printf("  Procedure: %s\n", AMessage);
+end;
+
+procedure LProcedureWithMultipleParams(
+  const AFirst: Int32;
+  const ASecond: Int32;
+  var AResult: Int32
+);
+begin
+  AResult := AFirst * ASecond;
+end;
+
+// Function with complex parameter list
+function LComplexHeader(
+  const AArray: array[0..2] of Int32;
+  const ACallback: function(const AX: Int32): Int32;
+  var ACount: Int32
+): Double;
+begin
+  ACount := AArray[0] + AArray[1] + AArray[2];
+  return ACount * 1.5;
+end;
+
+// Simple callback function
+function LCallback(const AX: Int32): Int32;
+begin
+  return AX * 2;
+end;
+
+var
+  LIntResult: Int32;
+  LDoubleResult: Double;
+  LBoolResult: Boolean;
+  LPtrResult: ^Int32;
+  LStringResult: PChar;
+  LArray: array[0..2] of Int32;
+  LCount: Int32;
+
+begin
+  printf("Function header test:\n");
+  
+  // Test different return types
+  LIntResult := LReturnInteger(42);
+  printf("  Integer function: %d\n", LIntResult);
+  
+  LDoubleResult := LReturnDouble(2.0);
+  printf("  Double function: %.5f\n", LDoubleResult);
+  
+  LBoolResult := LReturnBoolean(-5);
+  printf("  Boolean function: %d\n", LBoolResult);
+  
+  LPtrResult := LReturnPointer(LIntResult);
+  printf("  Pointer function: %d (via pointer)\n", LPtrResult^);
+  
+  LStringResult := LReturnString();
+  printf("  String function: %s\n", LStringResult);
+  
+  // Test procedure headers
+  LProcedureHeader("Test message");
+  
+  LProcedureWithMultipleParams(6, 7, LIntResult);
+  printf("  Procedure result: %d\n", LIntResult);
+  
+  // Test complex header
+  LArray[0] := 10;
+  LArray[1] := 20;
+  LArray[2] := 30;
+  LDoubleResult := LComplexHeader(LArray, @LCallback, LCount);
+  printf("  Complex header: count=%d, result=%.1f\n", LCount, LDoubleResult);
+  
+  printf("Function header test completed\n");
+end.

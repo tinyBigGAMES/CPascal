@@ -1,0 +1,82 @@
+// 120_ClobberedRegisters.cpas
+// BNF Rules: <clobbered_registers>, <string>
+program ClobberedRegistersTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInput1: Int32;
+  LInput2: Int32;
+  LOutput1: Int32;
+  LOutput2: Int32;
+
+begin
+  printf("Clobbered registers test:\n");
+  
+  LInput1 := 18;
+  LInput2 := 6;
+  
+  // Single clobbered register
+  asm
+    "movl %1, %%eax";
+    "addl $12, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput1)
+    : "m" (LInput1)
+    : "eax"
+  end;
+  
+  printf("  Single clobbered (eax): %d + 12 = %d\n", LInput1, LOutput1);
+  
+  // Multiple clobbered registers
+  asm
+    "movl %2, %%eax";
+    "movl %3, %%ebx";
+    "addl %%ebx, %%eax";
+    "movl %%eax, %%ecx";
+    "shll $1, %%ecx";
+    "movl %%ecx, %0";
+    "subl %%ebx, %%eax";
+    "movl %%eax, %1";
+    : "=m" (LOutput1), "=m" (LOutput2)
+    : "m" (LInput1), "m" (LInput2)
+    : "eax", "ebx", "ecx"
+  end;
+  
+  printf("  Multiple clobbered (eax,ebx,ecx):\n");
+  printf("    (%d + %d) << 1 = %d\n", LInput1, LInput2, LOutput1);
+  printf("    (%d + %d) - %d = %d\n", LInput1, LInput2, LInput2, LOutput2);
+  
+  // Memory clobber
+  LInput1 := 40;
+  asm
+    "movl %1, %%eax";
+    "divl %2";
+    "movl %%eax, %0";
+    : "=m" (LOutput1)
+    : "m" (LInput1), "m" (LInput2)
+    : "eax", "edx", "memory"
+  end;
+  
+  printf("  With memory clobber: %d / %d = %d\n", LInput1, LInput2, LOutput1);
+  
+  // Condition code clobber
+  LInput1 := 27;
+  asm
+    "movl %1, %%eax";
+    "cmpl $30, %%eax";
+    "jl below_30";
+    "movl $1, %0";
+    "jmp done";
+    "below_30:";
+    "movl $0, %0";
+    "done:";
+    : "=m" (LOutput1)
+    : "m" (LInput1)
+    : "eax", "cc"
+  end;
+  
+  printf("  Condition codes: %d >= 30 is %d\n", LInput1, LOutput1);
+  
+  printf("Clobbered registers test completed\n");
+end.

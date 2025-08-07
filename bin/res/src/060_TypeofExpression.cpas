@@ -1,0 +1,28 @@
+// 060_TypeofExpression.cpas
+// BNF Rules: <typeof_expression>, <expression>
+program TypeofExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInt: Int32;
+  LDouble: Double;
+  LChar: Char;
+  LTypeSize: Int32;
+
+begin
+  LInt := 42;
+  LDouble := 3.14;
+  LChar := 'A';
+  
+  // TypeOf returns type information that can be used with SizeOf
+  LTypeSize := SizeOf(TypeOf(LInt));
+  printf("TypeOf expressions:\n");
+  printf("  SizeOf(TypeOf(Int32 var)): %d\n", LTypeSize);
+  
+  LTypeSize := SizeOf(TypeOf(LDouble));
+  printf("  SizeOf(TypeOf(Double var)): %d\n", LTypeSize);
+  
+  LTypeSize := SizeOf(TypeOf(LChar));
+  printf("  SizeOf(TypeOf(Char var)): %d\n", LTypeSize);
+end.

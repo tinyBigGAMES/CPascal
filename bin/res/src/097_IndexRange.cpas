@@ -1,0 +1,52 @@
+// 097_IndexRange.cpas
+// BNF Rules: <index_range>, <constant_expression>
+program IndexRangeTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+type
+  TSmallArray = array[1..5] of Int32;
+  TCharArray = array['A'..'E'] of Int32;
+  TRangeArray = array[10..15] of Char;
+
+var
+  LSmallArray: TSmallArray;
+  LCharArray: TCharArray;
+  LRangeArray: TRangeArray;
+  LI: Int32;
+
+begin
+  printf("Index range test:\n");
+  
+  // Initialize arrays using index ranges
+  for LI := 1 to 5 do
+    LSmallArray[LI] := LI * 10;
+  
+  LCharArray['A'] := 100;
+  LCharArray['B'] := 200;
+  LCharArray['C'] := 300;
+  LCharArray['D'] := 400;
+  LCharArray['E'] := 500;
+  
+  LRangeArray[10] := 'X';
+  LRangeArray[11] := 'Y';
+  LRangeArray[12] := 'Z';
+  LRangeArray[13] := 'A';
+  LRangeArray[14] := 'B';
+  LRangeArray[15] := 'C';
+  
+  printf("  Small array [1..5]:\n");
+  for LI := 1 to 5 do
+    printf("    [%d] = %d\n", LI, LSmallArray[LI]);
+  
+  printf("  Char-indexed array ['A'..'E']:\n");
+  printf("    ['A'] = %d\n", LCharArray['A']);
+  printf("    ['C'] = %d\n", LCharArray['C']);
+  printf("    ['E'] = %d\n", LCharArray['E']);
+  
+  printf("  Range array [10..15]:\n");
+  for LI := 10 to 15 do
+    printf("    [%d] = %c\n", LI, LRangeArray[LI]);
+  
+  printf("Index range test completed\n");
+end.

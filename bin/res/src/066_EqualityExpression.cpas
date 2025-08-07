@@ -1,0 +1,28 @@
+// 066_EqualityExpression.cpas
+// BNF Rules: <equality_expression>, <relational_expression>, <equality_operator>
+program EqualityExpressionTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LA: Int32;
+  LB: Int32;
+  LC: Int32;
+  LResult1: Boolean;
+  LResult2: Boolean;
+  LResult3: Boolean;
+
+begin
+  LA := 10;
+  LB := 5;
+  LC := 10;
+  
+  LResult1 := LA = LC;
+  LResult2 := (LA > LB) = true;
+  LResult3 := (LA + LB) <> (LC * 2);
+  
+  printf("Equality expressions:\n");
+  printf("  %d = %d is %d\n", LA, LC, LResult1);
+  printf("  (%d > %d) = true is %d\n", LA, LB, LResult2);
+  printf("  (%d + %d) <> (%d * 2) is %d\n", LA, LB, LC, LResult3);
+end.

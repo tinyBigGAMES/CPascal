@@ -1,0 +1,68 @@
+// 118_OutputOperands.cpas
+// BNF Rules: <output_operands>, <operand>
+program OutputOperandsTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInput: Int32;
+  LOutput1: Int32;
+  LOutput2: Int32;
+  LOutput3: Int32;
+
+begin
+  printf("Output operands test:\n");
+  
+  LInput := 24;
+  
+  // Single output operand
+  asm
+    "movl %1, %%eax";
+    "addl $10, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LOutput1)
+    : "m" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Single output: %d + 10 = %d\n", LInput, LOutput1);
+  
+  // Multiple output operands
+  asm
+    "movl %3, %%eax";
+    "movl %%eax, %%ebx";
+    "addl $5, %%eax";
+    "movl %%eax, %0";
+    "subl $3, %%ebx";
+    "movl %%ebx, %1";
+    "movl %3, %%ecx";
+    "shll $1, %%ecx";
+    "movl %%ecx, %2";
+    : "=m" (LOutput1), "=m" (LOutput2), "=m" (LOutput3)
+    : "m" (LInput)
+    : "eax", "ebx", "ecx"
+  end;
+  
+  printf("  Multiple outputs from %d:\n", LInput);
+  printf("    Output1: +5 = %d\n", LOutput1);
+  printf("    Output2: -3 = %d\n", LOutput2);
+  printf("    Output3: <<1 = %d\n", LOutput3);
+  
+  // Mixed constraint output operands
+  LInput := 48;
+  asm
+    "movl %2, %%eax";
+    "movl %%eax, %0";
+    "shrl $2, %%eax";
+    "movl %%eax, %1";
+    : "=r" (LOutput1), "=m" (LOutput2)
+    : "r" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Mixed constraints from %d:\n", LInput);
+  printf("    Register output: %d\n", LOutput1);
+  printf("    Memory output: %d\n", LOutput2);
+  
+  printf("Output operands test completed\n");
+end.

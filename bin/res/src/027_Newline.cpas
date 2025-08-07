@@ -1,0 +1,21 @@
+// 027_Newline.cpas
+// BNF Rules: <newline>
+program NewlineTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LUnixNewline: PChar;
+  LWindowsNewline: PChar;
+  LMacNewline: PChar;
+
+begin
+  LUnixNewline := "Line1\nLine2";
+  LWindowsNewline := "Line1\r\nLine2";
+  LMacNewline := "Line1\\rLine2";
+  
+  printf("Newline variations:\n");
+  printf("Unix (\\n): %s\n", LUnixNewline);
+  printf("Windows (\\r\\n): %s\n", LWindowsNewline);
+  printf("Mac (\\r): %s\n", LMacNewline);
+end.

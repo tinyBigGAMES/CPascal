@@ -1,0 +1,53 @@
+// 114_InlineAssembly.cpas
+// BNF Rules: <inline_assembly>, <assembly_block>
+program InlineAssemblyTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LInput: Int32;
+  LOutput: Int32;
+  LResult: Int32;
+
+begin
+  printf("Inline assembly test:\n");
+  
+  LInput := 42;
+  
+  // Simple inline assembly
+  asm
+    "mov %1, %%eax";
+    "add $10, %%eax";
+    "mov %%eax, %0";
+  end;
+  
+  printf("  Assembly result: %d\n", LOutput);
+  
+  // Assembly with constraints
+  LInput := 15;
+  asm
+    "imul $3, %1";
+    "mov %1, %0";
+    : "=r" (LResult)
+    : "r" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Constrained assembly: %d * 3 = %d\n", LInput, LResult);
+  
+  // Assembly block with multiple instructions
+  LInput := 8;
+  asm
+    "mov %1, %%eax";
+    "shl $2, %%eax";
+    "add $5, %%eax";
+    "mov %%eax, %0";
+    : "=m" (LOutput)
+    : "m" (LInput)
+    : "eax"
+  end;
+  
+  printf("  Multi-instruction: (%d << 2) + 5 = %d\n", LInput, LOutput);
+  
+  printf("Inline assembly test completed\n");
+end.

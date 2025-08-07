@@ -1,0 +1,75 @@
+// 121_Operand.cpas
+// BNF Rules: <operand>, <string>, <expression>
+program OperandTest;
+
+function printf(format: PChar, ...): Int32; cdecl; external "msvcrt.dll";
+
+var
+  LValue1: Int32;
+  LValue2: Int32;
+  LResult: Int32;
+  LArray: array[0..2] of Int32;
+
+begin
+  printf("Operand test:\n");
+  
+  LValue1 := 25;
+  LValue2 := 10;
+  LArray[0] := 5;
+  LArray[1] := 15;
+  LArray[2] := 35;
+  
+  // Simple variable operands
+  asm
+    "movl %1, %%eax";
+    "addl %2, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LResult)
+    : "m" (LValue1), "m" (LValue2)
+    : "eax"
+  end;
+  
+  printf("  Variable operands: %d + %d = %d\n", LValue1, LValue2, LResult);
+  
+  // Expression operands
+  asm
+    "movl %1, %%eax";
+    "imull %2, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LResult)
+    : "m" (LValue1), "m" (LValue2 + 5)
+    : "eax"
+  end;
+  
+  printf("  Expression operand: %d * (%d + 5) = %d\n", LValue1, LValue2, LResult);
+  
+  // Array element operands
+  asm
+    "movl %1, %%eax";
+    "addl %2, %%eax";
+    "addl %3, %%eax";
+    "movl %%eax, %0";
+    : "=m" (LResult)
+    : "m" (LArray[0]), "m" (LArray[1]), "m" (LArray[2])
+    : "eax"
+  end;
+  
+  printf("  Array operands: %d + %d + %d = %d\n", 
+         LArray[0], LArray[1], LArray[2], LResult);
+  
+  // Mixed operand types
+  asm
+    "movl %1, %%eax";
+    "subl %2, %%eax";
+    "addl %3, %%eax";
+    "movl %%eax, %0";
+    : "=r" (LResult)
+    : "r" (LValue1 * 2), "m" (LArray[0]), "i" (100)
+    : "eax"
+  end;
+  
+  printf("  Mixed operands: (%d * 2) - %d + 100 = %d\n", 
+         LValue1, LArray[0], LResult);
+  
+  printf("Operand test completed\n");
+end.
