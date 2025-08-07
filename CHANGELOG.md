@@ -32,6 +32,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Added
+- **Repo Update** (2025-08-06 – jarroddavis68)
+  - Architecture: LLVM-based backend now fully operational with native x86-64 code generation
+  - Validation: 29 of 148 comprehensive test cases now passing
+  - Number Systems: All integer formats working (decimal, hex, binary, octal)
+  - Type System: Complete standard types implemented (Int8→UInt64, Single→Double)
+  - String Handling: Full string and character literal support with escape sequences
+  - Comments: All comment styles validated (line //, block /* */, brace { })
+  - Type Safety: Proper signed/unsigned integer promotion for C ABI compatibility
+  - Float Handling: IEEE-754 compliant with automatic float→double promotion for varargs
+  - Memory Management: Safe string constant generation and pointer handling
+  - Edge Cases: Complex literal parsing including UInt64 boundary values resolved
+  - IR Generation: Clean LLVM IR output with proper type conversions and truncation
+  - Testing: Comprehensive BNF grammar validation from basic tokens to complex expressions
+  - Performance: JIT execution pipeline working for rapid development testing
+  - C Interop: External function declarations and printf integration functional
+  - Code Quality: Professional error handling and diagnostic reporting
+  - Foundation: Solid parser→AST→LLVM pipeline established for advanced features
+  - Next Phase: Control flow structures (if/while/for) and function definitions
+  - Progress: 19.6% of language specification validated and working (29/148 tests)
+
 - **Update README.md** (2025-07-14 – jarroddavis68)
   - Fixed LICENCE link
   - Added CPascal homepage link
